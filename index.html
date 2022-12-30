@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="default" id="themer">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cardinal</title>
+
+    <link rel="stylesheet" href="css/styles.css"  />
+  </head>
+  <body>
+    <div id="container">
+      <div id="game">
+        <header id="header">
+          <div class="nothing"></div>
+          <h1 class="title" id="title">cardinal</h1>
+          <div id="menu_buttons" class="mbuttons"></div>
+        </header>
+
+        <div id="board-container" onmousedown="event.preventDefault()">
+          <div id="board" onmousedown="event.preventDefault()"></div>
+        </div>
+
+        <div id="keyboard-container">
+          <button id="cp01" class="button colorPicker"></button>
+          <button id="cp02" class="button colorPicker"></button>
+          <button id="cp03" class="button colorPicker"></button>
+          <button id="cp04" class="button colorPicker"></button>
+          <button id="cp05" class="button colorPicker"></button>
+        </div>
+
+        <div class="modal-container" id="modal_container">
+          <div class="modal" id="settings_modal">
+            <div class="modal-header">
+              <button class="close-button" id="settings_close">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="setting" id="dark_mode_container">
+                <div class="setting-name" id="dark_mode_name">dark mode</div>
+                <label class="switch" id="dark_mode_switch">
+                  <input type="checkbox" id="dark_mode_checker">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="palette_modal">
+            <div class="modal-header">
+              <button class="close-button" id="palette_close">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="palette" id="default">
+                <div class="color-container" id="default_container">
+                  <div class="color-square" id="default01" style="background-color:#FFC914;"></div>
+                  <div class="color-square" id="default02" style="background-color:#F15152;"></div>
+                  <div class="color-square" id="default03" style="background-color:#76B041;"></div>
+                  <div class="color-square" id="default04" style="background-color:#3772FF;"></div>
+                </div>
+              </div>
+              <div class="palette" id="colorblind">
+                <div class="color-container" id="colorblind_container">
+                  <div class="color-square" id="colorblind01" style="background-color:#FFB100;"></div>
+                  <div class="color-square" id="colorblind02" style="background-color:#FF5300;"></div>
+                  <div class="color-square" id="colorblind03" style="background-color:#EE007D;"></div>
+                  <div class="color-square" id="colorblind04" style="background-color:#6484FF;"></div>
+                </div>
+              </div>
+              <div class="palette" id="vintage">
+                <div class="color-container" id="vintage_container">
+                  <div class="color-square" id="vintage01" style="background-color:#FFCB69;"></div>
+                  <div class="color-square" id="vintage02" style="background-color:#F2AB7E;"></div>
+                  <div class="color-square" id="vintage03" style="background-color:#B1BE9D;"></div>
+                  <div class="color-square" id="vintage04" style="background-color:#A9A875;"></div>
+                </div>
+              </div>
+              <div class="palette" id="neon">
+                <div class="color-container" id="neon_container">
+                  <div class="color-square" id="neon01" style="background-color:#F8EC22;"></div>
+                  <div class="color-square" id="neon02" style="background-color:#FF47A6;"></div>
+                  <div class="color-square" id="neon03" style="background-color:#DB69DD;"></div>
+                  <div class="color-square" id="neon04" style="background-color:#3DD2FE;"></div>
+                </div>
+              </div>
+              <div class="palette" id="tape">
+                <div class="color-container" id="tape_container">
+                  <div class="color-square" id="tape01" style="background-color:#EEAE39;"></div>
+                  <div class="color-square" id="tape02" style="background-color:#F58300;"></div>
+                  <div class="color-square" id="tape03" style="background-color:#D02C38;"></div>
+                  <div class="color-square" id="tape04" style="background-color:#84337D;"></div>
+                </div>
+              </div>
+              <div class="palette" id="sunset">
+                <div class="color-container" id="sunset_container">
+                  <div class="color-square" id="sunset01" style="background-color:#F3B7A5;"></div>
+                  <div class="color-square" id="sunset02" style="background-color:#EE7E6D;"></div>
+                  <div class="color-square" id="sunset03" style="background-color:#DDA6B9;"></div>
+                  <div class="color-square" id="sunset04" style="background-color:#ACAEC5;"></div>
+                </div>
+              </div>
+              <div class="palette" id="grayscale">
+                <div class="color-container" id="grayscale_container">
+                  <div class="color-square" id="grayscale01" style="background-color:#E1E1E1;"></div>
+                  <div class="color-square" id="grayscale02" style="background-color:#ACACAC;"></div>
+                  <div class="color-square" id="grayscale03" style="background-color:#777777;"></div>
+                  <div class="color-square" id="grayscale04" style="background-color:#414141;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="overlay"></div>
+      </div>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>
