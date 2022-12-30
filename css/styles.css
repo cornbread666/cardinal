@@ -71,6 +71,7 @@ html, body {
   height: 100%;
   align-items: center;
   flex-direction: column;
+  touch-action: none;
 }
 
 #game {
@@ -118,7 +119,6 @@ header {
   align-items: center;
   flex-grow: 1;
   overflow: hidden;
-  touch-action: none;
 }
 
 #board {
