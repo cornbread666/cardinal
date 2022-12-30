@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       square.classList.add("button", "square");
       square.id = (i + 1).toString();
       square.style.backgroundColor = "white";
-      ['mousedown', 'mousemove', 'mouseup', 'pointerdown', 'pointermove', 'pointerup'].forEach( event =>
+      ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'].forEach( event =>
         square.addEventListener(event, setColor));
       gameBoard.appendChild(square);
     }
@@ -458,9 +458,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("mouseup", endColor);
     document.addEventListener("mouseup", didWin);
 
-    document.addEventListener("pointerdown", beginColor);
-    document.addEventListener("pointerup", endColor);
-    document.addEventListener("pointerup", didWin);
+    document.addEventListener("touchstart", beginColor);
+    document.addEventListener("touchend", endColor);
+    document.addEventListener("touchend", didWin);
   }
 
   function windowListeners() {
@@ -833,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sqNum = x + (5 * y) + 1;
         sq = document.getElementById((sqNum).toString());
         sq.style.animation = `square_flip 1.5s ease-in ${(delay * x) + (delay * y)}s 1 forwards`;
-        ['mousedown', 'mousemove', 'mouseup', 'pointerdown', 'pointermove', 'pointerup'].forEach( event =>
+        ['mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'].forEach( event =>
           sq.removeEventListener(event, setColor));
       }
     }
@@ -845,9 +845,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.removeEventListener("mouseup", endColor);
     document.removeEventListener("mouseup", didWin);
 
-    document.removeEventListener("pointerdown", beginColor);
-    document.removeEventListener("pointerup", endColor);
-    document.removeEventListener("pointerup", didWin);
+    document.removeEventListener("touchstart", beginColor);
+    document.removeEventListener("touchend", endColor);
+    document.removeEventListener("touchend", didWin);
 
     window.removeEventListener("blur", blurScreen);
     window.removeEventListener("focus", focusScreen);
