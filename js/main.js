@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (colorMode == "dark") {
       document.getElementById("dark_mode_checker").checked = true;
+      switchColorMode();
     }
-    switchColorMode();
 
     if (todayWon == 1) {
       ts = Number(window.localStorage.getItem("timeSpent"));
