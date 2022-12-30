@@ -118,6 +118,7 @@ header {
   align-items: center;
   flex-grow: 1;
   overflow: hidden;
+  touch-action: none;
 }
 
 #board {
