@@ -69,9 +69,12 @@ html, body {
   display: flex;
   background-color: white;
   height: 100%;
+  width: 100%;
   align-items: center;
   flex-direction: column;
   touch-action: none;
+  position: fixed;
+  overflow: hidden;
 }
 
 #game {
@@ -89,6 +92,7 @@ header {
   align-items: center;
   justify-content: space-between;
   position: relative;
+  max-width: 95%;
 }
 
 #title {
