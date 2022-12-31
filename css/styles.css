@@ -144,6 +144,7 @@ header {
   padding: 0;
   background-color: white;
   touch-action: none;
+  user-select: none;
 }
 
 #keyboard-container {
@@ -209,6 +210,7 @@ header {
   position: absolute;
   height: 25px;
   cursor: pointer;
+  user-select: none;
 }
 
 @keyframes square_flip {

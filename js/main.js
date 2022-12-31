@@ -390,6 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.style.height = "30px";
     settingsImg.style.cursor = "pointer";
     settingsImg.style.transform = "translate(-25%, 0)";
+    settingsImg.style.userSelect = "none";
     if (colorMode == "dark") { settingsImg.style.filter = "invert(1)"; }
     header.appendChild(settingsImg);
 
