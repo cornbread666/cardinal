@@ -313,7 +313,8 @@ document.addEventListener("DOMContentLoaded", () => {
     center = (cpRect.left + cpRect.right) / 2;
 
     resetImg = document.createElement("img");
-    resetImg.src = "icons/reset.png";
+    resetImg.src = "icons/reset_light.png";
+    if (colorMode == "dark") { resetImg.src = "icons/reset_dark.png"; }
     resetImg.id = "reset_button";
     if (!gameWon) { resetImg.addEventListener("click", resetGrid); }
     resetImg.classList.add("game_button");
@@ -323,7 +324,8 @@ document.addEventListener("DOMContentLoaded", () => {
     resetImg.classList.add("disable_select");
 
     highlightImg = document.createElement("img");
-    highlightImg.src = "icons/highlight.png";
+    highlightImg.src = "icons/highlight_light.png";
+    if (colorMode == "dark") { highlightImg.src = "icons/highlight_dark.png"; }
     highlightImg.id = "highlight_button";
     if (!gameWon) { highlightImg.addEventListener("click", highlight); }
     highlightImg.classList.add("game_button");
@@ -331,11 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
     highlightImg.style.left = `${center}px`;
     highlightImg.style.transform = "translate(-50%, 150%)";
     highlightImg.classList.add("disable_select");
-
-    if (colorMode == "dark") {
-      resetImg.style.filter = "invert(1)";
-      highlightImg.style.filter = "invert(1)";
-    }
 
     keyBoard.appendChild(resetImg);
     keyBoard.appendChild(highlightImg);
@@ -383,12 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     settingsImg = document.createElement("img");
-    if (colorMode == "dark") {
-      settingsImg.src = "icons/settings_dark.png";
-    } else {
-      settingsImg.src = "icons/settings_light.png";
-    }
-    settingsImg.src = "icons/settings.png";
+    settingsImg.src = "icons/settings_light.png";
+    if (colorMode == "dark") { settingsImg.src = "icons/settings_dark.png"; }
     settingsImg.id = "settings_button";
     settingsImg.addEventListener("click", settingsMenu);
     settingsImg.style.left = `${l}px`;
@@ -529,8 +522,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("title").style.color = "black";
       document.getElementById("cp05").style.backgroundColor = "white";
       document.getElementById("cp05").style.border = "2px solid white";
-      document.getElementById("reset_button").style.filter = "invert(0)";
-      document.getElementById("highlight_button").style.filter = "invert(0)";
+      document.getElementById("reset_button").src = "icons/reset_light.png";
+      document.getElementById("highlight_button").src = "icons/highlight_light.png";
       document.getElementById("settings_button").src = "icons/settings_light.png";
       document.getElementById("time").style.color = "black";
 
@@ -553,8 +546,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("title").style.color = "white";
       document.getElementById("cp05").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("cp05").style.border = "2px solid " + style.getPropertyValue('--dark-mode-black');
-      document.getElementById("reset_button").style.filter = "invert(1)";
-      document.getElementById("highlight_button").style.filter = "invert(1)";
+      document.getElementById("reset_button").src = "icons/reset_dark.png";
+      document.getElementById("highlight_button").src = "icons/highlight_dark.png";
       document.getElementById("settings_button").src = "icons/settings_dark.png";
       document.getElementById("time").style.color = "white";
 
