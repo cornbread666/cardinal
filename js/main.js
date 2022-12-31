@@ -667,6 +667,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function setColor(event) {
 
     sq = event.target;
+    if (sq.hasPointerCapture(event.pointerId)) { sq.releasePointerCapture(event.pointerId); }
 
     sqx = Math.floor((sq.id-1) % 5);
     sqy = Math.floor((sq.id-1) / 5);
