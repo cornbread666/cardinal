@@ -383,6 +383,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     settingsImg = document.createElement("img");
+    if (colorMode == "dark") {
+      settingsImg.src = "icons/settings_dark.png";
+    } else {
+      settingsImg.src = "icons/settings_light.png";
+    }
     settingsImg.src = "icons/settings.png";
     settingsImg.id = "settings_button";
     settingsImg.addEventListener("click", settingsMenu);
@@ -393,7 +398,6 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.style.cursor = "pointer";
     settingsImg.style.transform = "translate(-25%, 0)";
     settingsImg.classList.add("disable_select");
-    if (colorMode == "dark") { settingsImg.style.filter = "invert(1)"; }
     header.appendChild(settingsImg);
 
   }
@@ -527,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("cp05").style.border = "2px solid white";
       document.getElementById("reset_button").style.filter = "invert(0)";
       document.getElementById("highlight_button").style.filter = "invert(0)";
-      document.getElementById("settings_button").style.filter = "invert(0)";
+      document.getElementById("settings_button").src = "icons/settings_light.png";
       document.getElementById("time").style.color = "black";
 
       // palette modal
@@ -551,7 +555,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("cp05").style.border = "2px solid " + style.getPropertyValue('--dark-mode-black');
       document.getElementById("reset_button").style.filter = "invert(1)";
       document.getElementById("highlight_button").style.filter = "invert(1)";
-      document.getElementById("settings_button").style.filter = "invert(1)";
+      document.getElementById("settings_button").src = "icons/settings_dark.png";
       document.getElementById("time").style.color = "white";
 
       // palette modal
