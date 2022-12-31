@@ -230,7 +230,6 @@ header {
   width: 15px;
   height: 15px;
   cursor: pointer;
-  user-select: none;
 }
 
 .palette_square:nth-of-type(1) {
@@ -409,4 +408,12 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.disable_select {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }

@@ -320,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resetImg.style.top = `${cpRect.top}px`;
     resetImg.style.left = `${center}px`;
     resetImg.style.transform = "translate(-50%, 0)";
+    resetImg.classList.add("disable_select");
 
     highlightImg = document.createElement("img");
     highlightImg.src = "icons/highlight.png";
@@ -329,6 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
     highlightImg.style.top = `${cpRect.top}px`;
     highlightImg.style.left = `${center}px`;
     highlightImg.style.transform = "translate(-50%, 150%)";
+    highlightImg.classList.add("disable_select");
 
     if (colorMode == "dark") {
       resetImg.style.filter = "invert(1)";
@@ -390,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.style.height = "30px";
     settingsImg.style.cursor = "pointer";
     settingsImg.style.transform = "translate(-25%, 0)";
-    settingsImg.style.userSelect = "none";
+    settingsImg.classList.add("disable_select");
     if (colorMode == "dark") { settingsImg.style.filter = "invert(1)"; }
     header.appendChild(settingsImg);
 
