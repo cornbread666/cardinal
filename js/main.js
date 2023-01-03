@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("12/31/2022");
+    firstDay = new Date("01/02/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
