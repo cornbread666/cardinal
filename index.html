@@ -12,8 +12,7 @@
     <div id="container">
       <div id="game">
         <header id="header">
-          <div class="nothing"></div>
-          <h1 class="title" id="title">cardinal 2.3.4</h1>
+          <h1 class="title" id="title">cardinal</h1>
           <div id="menu_buttons" class="mbuttons"></div>
         </header>
 
@@ -30,6 +29,20 @@
         </div>
 
         <div class="modal-container" id="modal_container">
+
+          <div class="modal" id="scores_modal">
+            <div class="modal-header">
+              <button class="close-button" id="scores_close">&times;</button>
+            </div>
+            <div class="modal-body">
+              <div class="setting" id="stats_container">
+                <div class="statistic" id="games_played"></div>
+                <div class="statistic" id="win_percentage"></div>
+                <div class="statistic" id="average_time"></div>
+              </div>
+            </div>
+          </div>
+
           <div class="modal" id="settings_modal">
             <div class="modal-header">
               <button class="close-button" id="settings_close">&times;</button>

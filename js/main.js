@@ -109,6 +109,21 @@ document.addEventListener("DOMContentLoaded", () => {
       colorMode = cm;
     }
 
+    gp = window.localStorage.getItem("gamesPlayed");
+    if (!gp) {
+      window.localStorage.setItem("gamesPlayed", "1");
+    }
+
+    wp = window.localStorage.getItem("winPercentage");
+    if (!wp) {
+      window.localStorage.setItem("winPercentage", "0");
+    }
+
+    at = window.localStorage.getItem("averageTime");
+    if (!at) {
+      window.localStorage.setItem("averageTime", "00:00");
+    }
+
     // if today is a new day
     if (storedPuzzleIndex != index) {
       todayWon = 0;
@@ -344,6 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("palette_button0" + (i+1).toString()).remove();
       }
       document.getElementById("settings_button").remove();
+      document.getElementById("scores_button").remove();
     }
 
     menuContainer = document.getElementById("menu_buttons");
@@ -393,6 +409,19 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.classList.add("disable_select");
     header.appendChild(settingsImg);
 
+    scoresImg = document.createElement("img");
+    scoresImg.src = "icons/scores_light.png";
+    if (colorMode == "dark") { scoresImg.src = "icons/scores_dark.png"; }
+    scoresImg.id = "scores_button";
+    scoresImg.addEventListener("click", scoresMenu);
+    scoresImg.style.left = `${l}px`;
+    scoresImg.style.top = `${t}px`;
+    scoresImg.style.position = "absolute";
+    scoresImg.style.height = "30px";
+    scoresImg.style.cursor = "pointer";
+    scoresImg.style.transform = "translate(-150%, 0)";
+    scoresImg.classList.add("disable_select");
+    header.appendChild(scoresImg);
   }
 
   function setTimer(initial) {
@@ -438,9 +467,17 @@ document.addEventListener("DOMContentLoaded", () => {
     blurScreen();
   }
 
+  function scoresMenu() {
+    document.getElementById("scores_modal").classList.add("active");
+    document.getElementById("overlay").classList.add("active");
+
+    blurScreen();
+  }
+
   function closeModal() {
     document.getElementById("palette_modal").classList.remove("active");
     document.getElementById("settings_modal").classList.remove("active");
+    document.getElementById("scores_modal").classList.remove("active");
     document.getElementById("overlay").classList.remove("active");
 
     focusScreen();
@@ -469,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("palette_close").addEventListener("click", closeModal);
     document.getElementById("settings_close").addEventListener("click", closeModal);
+    document.getElementById("scores_close").addEventListener("click", closeModal);
     document.getElementById("overlay").addEventListener("click", closeModal);
 
     document.getElementById("default").addEventListener("click", function() { choosePalette("default"); }, false);
@@ -525,6 +563,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("reset_button").src = "icons/reset_light.png";
       document.getElementById("highlight_button").src = "icons/highlight_light.png";
       document.getElementById("settings_button").src = "icons/settings_light.png";
+      document.getElementById("scores_button").src = "icons/scores_light.png";
       document.getElementById("time").style.color = "black";
 
       // palette modal
@@ -549,6 +588,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("reset_button").src = "icons/reset_dark.png";
       document.getElementById("highlight_button").src = "icons/highlight_dark.png";
       document.getElementById("settings_button").src = "icons/settings_dark.png";
+      document.getElementById("scores_button").src = "icons/scores_dark.png";
       document.getElementById("time").style.color = "white";
 
       // palette modal
@@ -623,6 +663,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (document.getElementById("palette_modal").classList.contains("active")) {
       document.getElementById("palette_modal").classList.remove("active");
+    }
+    if (document.getElementById("settings_modal").classList.contains("active")) {
+      document.getElementById("settings_modal").classList.remove("active");
+    }
+    if (document.getElementById("scores_modal").classList.contains("active")) {
+      document.getElementById("scores_modal").classList.remove("active");
     }
   }
 

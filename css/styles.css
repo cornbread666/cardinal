@@ -105,12 +105,6 @@ header {
   cursor: default;
 }
 
-.nothing {
-  display: flex;
-  width: 60px;
-  height: 30px;
-}
-
 .mbuttons {
   display: flex;
   width: 60px;
@@ -234,18 +228,22 @@ header {
 
 .palette_square:nth-of-type(1) {
   background-color: var(--color1);
+  border-top-left-radius: 100%;
 }
 
 .palette_square:nth-of-type(2) {
   background-color: var(--color2);
+  border-top-right-radius: 100%;
 }
 
 .palette_square:nth-of-type(3) {
   background-color: var(--color3);
+  border-bottom-left-radius: 100%;
 }
 
 .palette_square:nth-of-type(4) {
   background-color: var(--color4);
+  border-bottom-right-radius: 100%;
 }
 
 .timer {
@@ -263,7 +261,7 @@ header {
   background-color: white;
   border: 2px solid black;
   z-index: 10;
-  width: 400px;
+  width: 350px;
   max-width: 80%;
   border-radius: 10px;
 }
@@ -328,7 +326,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 50%;
+  width: 55%;
   height: 100%;
 }
 
@@ -339,6 +337,7 @@ header {
   width: 30px;
   height: 30px;
   background-color: black;
+  border-radius: 50%;
 }
 
 .setting {
