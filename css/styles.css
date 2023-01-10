@@ -275,6 +275,7 @@ header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  font-size: 1rem;
 }
 
 .modal-header .close-button {
@@ -284,6 +285,10 @@ header {
   outline: none;
   background: none;
   font-size: 2.5rem;
+}
+
+#palette_header {
+  justify-content: space-between;
 }
 
 .modal-body {
@@ -320,6 +325,7 @@ header {
   cursor: pointer;
   border-top: 1px solid black;
   background-color: white;
+  transition: 200ms ease-in-out;
 }
 
 .color-container {
@@ -343,15 +349,17 @@ header {
 .setting {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 10px 0px;
   cursor: pointer;
-  border-top: 1px solid black;
   background-color: white;
   transition: 200ms ease-in-out;
+}
+
+#dark_mode_container {
+  width: 50%;
 }
 
 .setting-name {
@@ -361,8 +369,8 @@ header {
 .switch {
   position: relative;
   display: flex;
-  width: 60px;
-  height: 34px;
+  width: 52px;
+  height: 26px;
 }
 
 .switch input {
@@ -386,13 +394,21 @@ header {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 18px;
+  width: 18px;
   left: 4px;
   bottom: 4px;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+}
+
+.slider.round {
+  border-radius: 26px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 
 input:checked + .slider {
@@ -415,4 +431,67 @@ input:checked + .slider:before {
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+.stat-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px 0px;
+  cursor: default;
+  background-color: white;
+  border-top: 1px solid black;
+}
+
+.statistic {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px 0px;
+  cursor: default;
+}
+
+.stat-name {
+  font-size: 1rem;
+}
+
+.stat-num {
+  font-size: 1.5rem;
+}
+
+.rules-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.rules-square {
+  display: flex;
+  border: 2px solid black;
+  min-width: 40px;
+  min-height: 40px;
+  font-size: 1rem;
+  font-weight: thin;
+  cursor: default;
+  padding: 0;
+  background-color: white;
+  touch-action: none;
+  user-select: none;
+}
+
+.rules-text {
+  font-size: 1rem;
+  text-align: end;
+}
+
+#rules_container_01 {
+  border-top: 1px solid black;
 }

@@ -12,7 +12,7 @@
     <div id="container">
       <div id="game">
         <header id="header">
-          <h1 class="title" id="title">cardinal</h1>
+          <h1 class="title" id="title">cardinal 2.3.6</h1>
           <div id="menu_buttons" class="mbuttons"></div>
         </header>
 
@@ -35,10 +35,19 @@
               <button class="close-button" id="scores_close">&times;</button>
             </div>
             <div class="modal-body">
-              <div class="setting" id="stats_container">
-                <div class="statistic" id="games_played"></div>
-                <div class="statistic" id="win_percentage"></div>
-                <div class="statistic" id="average_time"></div>
+              <div class="stat-container" id="stats_container">
+                <div class="statistic" id="games_played">
+                  <div class="stat-name" id="games_played_name">played</div>
+                  <div class="stat-num" id="games_played_num"></div>
+                </div>
+                <div class="statistic" id="win_percentage">
+                  <div class="stat-name" id="win_percentage_name">win %</div>
+                  <div class="stat-num" id="win_percentage_num"></div>
+                </div>
+                <div class="statistic" id="average_time">
+                  <div class="stat-name" id="average_time_name">average time</div>
+                  <div class="stat-num" id="average_time_num"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -48,17 +57,31 @@
               <button class="close-button" id="settings_close">&times;</button>
             </div>
             <div class="modal-body">
-              <div class="setting" id="dark_mode_container">
-                <div class="setting-name" id="dark_mode_name">dark mode</div>
-                <label class="switch" id="dark_mode_switch">
-                  <input type="checkbox" id="dark_mode_checker">
-                  <span class="slider"></span>
-                </label>
+              <div class="setting" id="rules_container_01">
+                <div class="rules-board" id="rules_board_01">
+                  <div class="rules-square" id="rb01"></div>
+                  <div class="rules-square" id="rb02"></div>
+                  <div class="rules-square" id="rb03"></div>
+                  <div class="rules-square" id="rb04"></div>
+                  <div class="rules-square" id="rb05"></div>
+                  <div class="rules-square" id="rb06"></div>
+                  <div class="rules-square" id="rb07"></div>
+                  <div class="rules-square" id="rb08"></div>
+                  <div class="rules-square" id="rb09"></div>
+                </div>
+                <div class="rules-text" id="rules_text_01">The goal of the game is to fill the grid with colors according to the compasses.</div>
               </div>
             </div>
           </div>
           <div class="modal" id="palette_modal">
-            <div class="modal-header">
+            <div class="modal-header" id="palette_header">
+              <div class="setting" id="dark_mode_container">
+                <div class="setting-name" id="dark_mode_name">dark mode</div>
+                <label class="switch" id="dark_mode_switch">
+                  <input type="checkbox" id="dark_mode_checker">
+                  <span class="slider round"></span>
+                </label>
+              </div>
               <button class="close-button" id="palette_close">&times;</button>
             </div>
             <div class="modal-body">

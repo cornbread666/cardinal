@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameBoard = document.getElementById("board");
   keyBoard = document.getElementById("keyboard-container");
   header = document.getElementById("header");
+  modal = document.getElementById("modal_container");
   style = getComputedStyle(document.documentElement);
 
   grid = Array.from(Array(5), () => new Array(5).fill(0)); // 2d array for tracking color
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/02/2023");
+    firstDay = new Date("01/08/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
@@ -109,9 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
       colorMode = cm;
     }
 
-    gp = window.localStorage.getItem("gamesPlayed");
-    if (!gp) {
-      window.localStorage.setItem("gamesPlayed", "1");
+    gpn = 0;
+    gps = window.localStorage.getItem("gamesPlayed");
+    if (!gps) {
+      window.localStorage.setItem("gamesPlayed", "0");
+    } else {
+      gpn = Number(gps);
     }
 
     wp = window.localStorage.getItem("winPercentage");
@@ -131,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.localStorage.setItem("puzzleIndex", index.toString());
       window.localStorage.setItem("gridProgress", JSON.stringify(grid));
       window.localStorage.setItem("timeSpent", "0");
+      window.localStorage.setItem("gamesPlayed", (gpn+1).toString());
     } // else today has already been opened
     else {
       todayWon = Number(window.localStorage.getItem("todayWon"));
@@ -144,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    puzzles = ["112223320300623803310110", "111331331741110040031155010312132021223233"];
+    puzzles = ["x", "112223320300623803310110", "111331331741110040031155010312132021223233"];
     todaysPuzzle = puzzles[index];
 
     createSquares();
@@ -272,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function drawLine(X1, Y1, X2, Y2, id) {
+  function drawLine(X1, Y1, X2, Y2, id, parent) {
 
     x1 = X1, y1 = Y1, x2 = X2, y2 = Y2;
     if (X1 > X2) { x1 = X2; y1 = Y2; x2 = X1; y2 = Y1; }
@@ -289,7 +294,12 @@ document.addEventListener("DOMContentLoaded", () => {
     line.style.width = `${d}px`;
     line.style.transform = `translate(-${d/2}px,0) rotate(${a}rad) translate(${d/2}px,0)`;
     line.style.pointerEvents = "none";
-    gameBoard.appendChild(line);
+    if (parent === undefined) {
+      gameBoard.appendChild(line);
+    } else {
+      parent.appendChild(line);
+    }
+
   }
 
   function drawCoordinate(x, y, txt, id) {
@@ -464,12 +474,39 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("settings_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
 
+    sqList = ["rb01", "rb05", "rb09"];
+    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,2]];
+
+    for (let i = 0; i < sqList.length; i++) {
+      sq = document.getElementById(sqList[i]);
+      sqRect = sq.getBoundingClientRect();
+      console.log(sqRect);
+      l = sq.offsetLeft;
+      r = sq.offsetLeft + sq.offsetWidth;
+      t = sq.offsetTop;
+      b = sq.offsetTop + sq.offsetHeight;
+      xCenter = sq.offsetLeft + (sq.offsetWidth / 2);
+      yCenter = sq.offsetTop + (sq.offsetHeight / 2);
+      xOffset = sq.offsetWidth / 3.5;
+      yOffset = sq.offsetHeight / 3.5;
+
+      drawLine(l + xOffset, t + yOffset, r - xOffset, b - yOffset, "rc0" + (i+1).toString(), sq);
+      drawLine(l + xOffset, b - yOffset, r - xOffset, t + yOffset, "rc1" + (i+1).toString(), sq);
+    }
+
     blurScreen();
   }
 
   function scoresMenu() {
     document.getElementById("scores_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
+
+    gp = document.getElementById("games_played_num");
+    gp.innerText = window.localStorage.getItem("gamesPlayed");
+    wp = document.getElementById("win_percentage_num");
+    wp.innerText = window.localStorage.getItem("winPercentage");
+    at = document.getElementById("average_time_num");
+    at.innerText = window.localStorage.getItem("averageTime");
 
     blurScreen();
   }
@@ -570,14 +607,14 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("palette_modal").style.backgroundColor = "white";
       document.getElementById("palette_modal").style.border = "2px solid black";
       document.getElementById("palette_close").style.color = "black";
+      document.getElementById("dark_mode_container").style.backgroundColor = "white";
+      document.getElementById("dark_mode_name").style.color = "black";
 
       // settings modal
       document.getElementById("settings_modal").style.backgroundColor = "white";
       document.getElementById("settings_modal").style.border = "2px solid black";
       document.getElementById("settings_close").style.color = "black";
-      document.getElementById("dark_mode_container").style.backgroundColor = "white";
-      document.getElementById("dark_mode_container").style.borderTop = "1px solid black";
-      document.getElementById("dark_mode_name").style.color = "black";
+
     } else {
       // main game
       document.getElementById("container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -595,14 +632,21 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("palette_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("palette_modal").style.border = "2px solid gray";
       document.getElementById("palette_close").style.color = "gray";
+      document.getElementById("dark_mode_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("dark_mode_name").style.color = "white";
 
       // settings modal
       document.getElementById("settings_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("settings_modal").style.border = "2px solid gray";
       document.getElementById("settings_close").style.color = "gray";
-      document.getElementById("dark_mode_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
-      document.getElementById("dark_mode_container").style.borderTop = "1px solid gray";
-      document.getElementById("dark_mode_name").style.color = "white";
+
+      // scores modal
+      document.getElementById("scores_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("scores_modal").style.border = "2px solid gray";
+      document.getElementById("scores_close").style.color = "gray";
+      document.getElementById("stats_container").style.color = "white";
+      document.getElementById("stats_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("stats_container").style.borderTop = "1px solid gray";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
