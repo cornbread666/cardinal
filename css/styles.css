@@ -353,7 +353,7 @@ header {
   align-items: center;
   width: 100%;
   height: 100%;
-  cursor: pointer;
+  cursor: default;
   background-color: white;
   transition: 200ms ease-in-out;
 }
@@ -476,8 +476,8 @@ input:checked + .slider:before {
 .rules-square {
   display: flex;
   border: 2px solid black;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 45px;
+  min-height: 45px;
   font-size: 1rem;
   font-weight: thin;
   cursor: default;
@@ -485,13 +485,48 @@ input:checked + .slider:before {
   background-color: white;
   touch-action: none;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .rules-text {
   font-size: 1rem;
   text-align: end;
+  cursor: default;
 }
 
-#rules_container_01 {
+#rules_container_01, #rules_container_02, #rules_container_03 {
   border-top: 1px solid black;
+}
+
+#rb01, #rb11, #rb21, #rb22 {
+  border: 2px solid var(--color2);
+  background-color: var(--color2);
+}
+
+#rb05, #rb13, #rb14, #rb15, #rb16, #rb23, #rb24, #rb25, #rb26  {
+  border: 2px solid var(--color3);
+  background-color: var(--color3);
+}
+
+#rb09, #rb19, #rb27, #rb28, #rb29 {
+  border: 2px solid var(--color4);
+  background-color: var(--color4);
+}
+
+#rb13 {
+  border-bottom: 4px solid yellow;
+}
+
+#rb14 {
+  border-right: 4px solid yellow;
+}
+
+#rb15 {
+  border-left: 4px solid yellow;
+  border-right: 4px solid yellow;
+}
+
+#rb16 {
+  border-top: 4px solid yellow;
+  border-left: 4px solid yellow;
 }

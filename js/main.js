@@ -78,13 +78,14 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/08/2023");
+    firstDay = new Date("01/10/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
     console.log("puzzle number: " + (index + 1));
 
     gridFill = false;
+    firstTime = false;
 
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       colorMode = "dark";
@@ -95,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // load previous puzzle number. if first time visiting, set it to today
     storedPuzzleIndex = Number(window.localStorage.getItem("puzzleIndex"));
     if (!storedPuzzleIndex) {
+      firstTime = true;
       window.localStorage.setItem("puzzleIndex", index.toString());
     }
 
@@ -118,9 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
       gpn = Number(gps);
     }
 
-    wp = window.localStorage.getItem("winPercentage");
+    wp = window.localStorage.getItem("gamesWon");
     if (!wp) {
-      window.localStorage.setItem("winPercentage", "0");
+      window.localStorage.setItem("gamesWon", "0");
     }
 
     at = window.localStorage.getItem("averageTime");
@@ -186,6 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.localStorage.setItem("timeSpent", (t / 1000).toString());
         timeText((t / 1000));
       }, 100);
+    }
+
+    if (firstTime) {
+      settingsMenu();
     }
 
   }
@@ -297,12 +303,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (parent === undefined) {
       gameBoard.appendChild(line);
     } else {
+      line.style.borderTop = "1px solid black";
       parent.appendChild(line);
     }
 
   }
 
-  function drawCoordinate(x, y, txt, id) {
+  function drawCoordinate(x, y, txt, id, parent) {
 
     num = document.createElement("p");
     num.classList.add("coordinate_num");
@@ -311,7 +318,13 @@ document.addEventListener("DOMContentLoaded", () => {
     num.style.left = `${x}px`;
     num.style.top = `${y}px`;
     num.style.pointerEvents = "none";
-    gameBoard.appendChild(num);
+    if (parent === undefined) {
+      gameBoard.appendChild(num);
+    } else {
+      num.style.fontSize = "0.75rem";
+      parent.appendChild(num);
+    }
+
   }
 
   function createSquares() {
@@ -474,8 +487,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("settings_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
 
-    sqList = ["rb01", "rb05", "rb09"];
-    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,2]];
+    sqList = ["rb01", "rb05", "rb09", "rb11", "rb15", "rb19", "rb21", "rb25", "rb29"];
+    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,2], [0,1,0,0], [1,2,0,1], [0,0,0,2], [0,1,0,0], [1,2,0,1], [0,0,0,2]];
 
     for (let i = 0; i < sqList.length; i++) {
       sq = document.getElementById(sqList[i]);
@@ -492,6 +505,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       drawLine(l + xOffset, t + yOffset, r - xOffset, b - yOffset, "rc0" + (i+1).toString(), sq);
       drawLine(l + xOffset, b - yOffset, r - xOffset, t + yOffset, "rc1" + (i+1).toString(), sq);
+
+      for (let j = 0; j < 4; j++) {
+        coordinate = sqCoorList[i][j];
+        if (j == 0) {
+          drawCoordinate(xCenter, yCenter - yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "N", sq);
+        } else if (j == 1) {
+          drawCoordinate(xCenter + xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "E", sq);
+        } else if (j == 2) {
+          drawCoordinate(xCenter, yCenter + yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "S", sq);
+        } else if (j == 3) {
+          drawCoordinate(xCenter - xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "W", sq);
+        }
+      }
     }
 
     blurScreen();
@@ -504,7 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gp = document.getElementById("games_played_num");
     gp.innerText = window.localStorage.getItem("gamesPlayed");
     wp = document.getElementById("win_percentage_num");
-    wp.innerText = window.localStorage.getItem("winPercentage");
+    wp.innerText = window.localStorage.getItem("gamesWon");
     at = document.getElementById("average_time_num");
     at.innerText = window.localStorage.getItem("averageTime");
 
@@ -911,6 +937,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function gameWonCleanup() {
 
     window.localStorage.setItem("todayWon", "1");
+    gw = Number(window.localStorage.getItem("gamesWon")) + 1;
+    window.localStorage.setItem("gamesWon", gw.toString());
 
     fillGrid();
 
