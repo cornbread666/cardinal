@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/10/2023");
+    firstDay = new Date("01/11/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     at = window.localStorage.getItem("averageTime");
     if (!at) {
-      window.localStorage.setItem("averageTime", "00:00");
+      window.localStorage.setItem("averageTime", "0");
     }
 
     // if today is a new day
@@ -488,12 +488,46 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("overlay").classList.add("active");
 
     sqList = ["rb01", "rb05", "rb09", "rb11", "rb15", "rb19", "rb21", "rb25", "rb29"];
-    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,2], [0,1,0,0], [1,2,0,1], [0,0,0,2], [0,1,0,0], [1,2,0,1], [0,0,0,2]];
+    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,"x"], [0,1,0,0], [1,2,0,1], [0,0,0,"x"], [0,1,0,0], [1,2,0,1], [0,0,0,"x"]];
+    squares = ["rb02", "rb03", "rb04", "rb06", "rb07", "rb08", "rb12", "rb17", "rb18"];
+
+    for (let x = 0; x < squares.length; x++) {
+      sq = document.getElementById(squares[x]);
+      if (colorMode == "light") {
+        sq.style.backgroundColor = "white";
+        sq.style.border = "2px solid black";
+      } else {
+        sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+        sq.style.border = "2px solid gray"
+      }
+    }
+
+    for (let y = 0; y < sqList.length; y++) {
+
+      if (document.getElementById("rc0" + (y+1).toString())) {
+        document.getElementById("rc0" + (y+1).toString()).remove();
+      }
+      if (document.getElementById("rc1" + (y+1).toString())) {
+        document.getElementById("rc1" + (y+1).toString()).remove();
+      }
+      if (document.getElementById("rn0" + (y+1).toString() + "N")) {
+        document.getElementById("rn0" + (y+1).toString() + "N").remove();
+      }
+      if (document.getElementById("rn0" + (y+1).toString() + "E")) {
+        document.getElementById("rn0" + (y+1).toString() + "E").remove();
+      }
+      if (document.getElementById("rn0" + (y+1).toString() + "S")) {
+        document.getElementById("rn0" + (y+1).toString() + "S").remove();
+      }
+      if (document.getElementById("rn0" + (y+1).toString() + "W")) {
+        document.getElementById("rn0" + (y+1).toString() + "W").remove();
+      }
+    }
 
     for (let i = 0; i < sqList.length; i++) {
+
       sq = document.getElementById(sqList[i]);
       sqRect = sq.getBoundingClientRect();
-      console.log(sqRect);
       l = sq.offsetLeft;
       r = sq.offsetLeft + sq.offsetWidth;
       t = sq.offsetTop;
@@ -507,15 +541,18 @@ document.addEventListener("DOMContentLoaded", () => {
       drawLine(l + xOffset, b - yOffset, r - xOffset, t + yOffset, "rc1" + (i+1).toString(), sq);
 
       for (let j = 0; j < 4; j++) {
+
         coordinate = sqCoorList[i][j];
-        if (j == 0) {
-          drawCoordinate(xCenter, yCenter - yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "N", sq);
-        } else if (j == 1) {
-          drawCoordinate(xCenter + xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "E", sq);
-        } else if (j == 2) {
-          drawCoordinate(xCenter, yCenter + yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "S", sq);
-        } else if (j == 3) {
-          drawCoordinate(xCenter - xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "W", sq);
+        if (coordinate !== "x") {
+          if (j == 0) {
+            drawCoordinate(xCenter, yCenter - yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "N", sq);
+          } else if (j == 1) {
+            drawCoordinate(xCenter + xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "E", sq);
+          } else if (j == 2) {
+            drawCoordinate(xCenter, yCenter + yOffset, coordinate.toString(), "rn0" + (i+1).toString() + "S", sq);
+          } else if (j == 3) {
+            drawCoordinate(xCenter - xOffset, yCenter, coordinate.toString(), "rn0" + (i+1).toString() + "W", sq);
+          }
         }
       }
     }
@@ -527,12 +564,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("scores_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
 
+    gwn = Number(window.localStorage.getItem("gamesWon"));
+    gpn = Number(window.localStorage.getItem("gamesPlayed"));
+    atn = Number(window.localStorage.getItem("averageTime"));
+
     gp = document.getElementById("games_played_num");
     gp.innerText = window.localStorage.getItem("gamesPlayed");
+
     wp = document.getElementById("win_percentage_num");
-    wp.innerText = window.localStorage.getItem("gamesWon");
+    wp.innerText = Math.floor((gwn / gpn) * 100).toString();
+
     at = document.getElementById("average_time_num");
-    at.innerText = window.localStorage.getItem("averageTime");
+    if (atn < 3600) {
+      at.innerText = new Date(atn * 1000).toISOString().substring(14, 19);
+    } else {
+      at.innerText = new Date(atn * 1000).toISOString().substring(11, 19);
+    }
 
     blurScreen();
   }
@@ -641,6 +688,26 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("settings_modal").style.border = "2px solid black";
       document.getElementById("settings_close").style.color = "black";
 
+      document.getElementById("rules_container_01").style.backgroundColor = "white";
+      document.getElementById("rules_container_01").style.borderTop = "1px solid black";
+      document.getElementById("rules_text_01").style.color = "black";
+
+      document.getElementById("rules_container_02").style.backgroundColor = "white";
+      document.getElementById("rules_container_02").style.borderTop = "1px solid black";
+      document.getElementById("rules_text_02").style.color = "black";
+
+      document.getElementById("rules_container_03").style.backgroundColor = "white";
+      document.getElementById("rules_container_03").style.borderTop = "1px solid black";
+      document.getElementById("rules_text_03").style.color = "black";
+
+      // scores modal
+      document.getElementById("scores_modal").style.backgroundColor = "white";
+      document.getElementById("scores_modal").style.border = "2px solid black";
+      document.getElementById("scores_close").style.color = "black";
+      document.getElementById("stats_container").style.color = "black";
+      document.getElementById("stats_container").style.backgroundColor = "white";
+      document.getElementById("stats_container").style.borderTop = "1px solid black";
+
     } else {
       // main game
       document.getElementById("container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -665,6 +732,18 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("settings_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("settings_modal").style.border = "2px solid gray";
       document.getElementById("settings_close").style.color = "gray";
+
+      document.getElementById("rules_container_01").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_container_01").style.borderTop = "1px solid gray";
+      document.getElementById("rules_text_01").style.color = "white";
+
+      document.getElementById("rules_container_02").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_container_02").style.borderTop = "1px solid gray";
+      document.getElementById("rules_text_02").style.color = "white";
+
+      document.getElementById("rules_container_03").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_container_03").style.borderTop = "1px solid gray";
+      document.getElementById("rules_text_03").style.color = "white";
 
       // scores modal
       document.getElementById("scores_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -904,10 +983,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (win) {
       if (noLoneSquares() && checkPaths()) {
-        console.log("winner");
         gameWon = true;
         timer.stop();
         gameWonCleanup();
+        gw = Number(window.localStorage.getItem("gamesWon")) + 1;
+        window.localStorage.setItem("gamesWon", gw.toString());
+
+        newT = Math.floor(timer.getTime() / 1000);
+        oldAvg = Number(window.localStorage.getItem("averageTime"));
+        newAvg = oldAvg + ((newT - oldAvg) / gw);
+
+        window.localStorage.setItem("averageTime", newAvg.toString());
       }
     }
   }
@@ -937,8 +1023,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function gameWonCleanup() {
 
     window.localStorage.setItem("todayWon", "1");
-    gw = Number(window.localStorage.getItem("gamesWon")) + 1;
-    window.localStorage.setItem("gamesWon", gw.toString());
 
     fillGrid();
 
@@ -962,6 +1046,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.removeEventListener("blur", blurScreen);
     window.removeEventListener("focus", focusScreen);
+
+    setTimeout(scoresMenu, 1000);
   }
 
   function checkDirection(i, d) {

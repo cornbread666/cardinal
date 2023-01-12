@@ -492,6 +492,7 @@ input:checked + .slider:before {
   font-size: 1rem;
   text-align: end;
   cursor: default;
+  padding: 10px 0;
 }
 
 #rules_container_01, #rules_container_02, #rules_container_03 {
@@ -529,4 +530,8 @@ input:checked + .slider:before {
 #rb16 {
   border-top: 4px solid yellow;
   border-left: 4px solid yellow;
+}
+
+#settings_modal {
+  width: 400px;
 }
