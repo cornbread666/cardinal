@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     at = window.localStorage.getItem("averageTime");
-    if (!at or at === "00:00") {
+    if (!at || at === "00:00") {
       window.localStorage.setItem("averageTime", "0");
     }
 
@@ -190,9 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 100);
     }
 
-    if (firstTime) {
+    /*if (firstTime) {
       settingsMenu();
-    }
+    }*/
 
   }
 
