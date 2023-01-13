@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  console.log("egg");
+
   class Timer {
     constructor() {
       this.isRunning = false;
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (this.isRunning) {
         return console.error('Timer is already running');
       }
-      console.log("timer started");
+      //console.log("timer started");
       this.isRunning = true;
       this.startTime = Date.now();
     }
@@ -27,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!this.isRunning) {
         return console.error('Timer is already stopped');
       }
-      console.log("timer stopped");
+      //console.log("timer stopped");
       this.isRunning = false;
       this.overallTime = this.overallTime + this._getTimeElapsedSinceLastStart();
     }
@@ -73,16 +75,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   timer = new Timer();
 
+  index = 0;
+
   gameWon = false;
+
+  var timerInterval;
 
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/11/2023");
+    firstDay = new Date("01/12/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    console.log("puzzle number: " + (index + 1));
 
     gridFill = false;
     firstTime = false;
@@ -125,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.localStorage.setItem("gamesWon", "0");
     }
 
-    window.localStorage.setItem("averageTime", "0");
     at = window.localStorage.getItem("averageTime");
     if (!at || at === "00:00") {
       window.localStorage.setItem("averageTime", "0");
@@ -183,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       timer.start();
       ts = Number(window.localStorage.getItem("timeSpent"));
-      setInterval(() => {
+      timerInterval = setInterval(() => {
         tmp = timer.getTime();
         t = tmp + (ts * 1000);
         window.localStorage.setItem("timeSpent", (t / 1000).toString());
@@ -564,6 +568,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function scoresMenu() {
     document.getElementById("scores_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
+    if (colorMode == "light") {
+      document.getElementById("clipboard_copy").style.color = "white";
+    } else {
+      document.getElementById("clipboard_copy").style.color = style.getPropertyValue('--dark-mode-black');
+    }
 
     gwn = Number(window.localStorage.getItem("gamesWon"));
     gpn = Number(window.localStorage.getItem("gamesPlayed"));
@@ -619,6 +628,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("settings_close").addEventListener("click", closeModal);
     document.getElementById("scores_close").addEventListener("click", closeModal);
     document.getElementById("overlay").addEventListener("click", closeModal);
+    document.getElementById("share_button").addEventListener("click", shareScore);
 
     document.getElementById("default").addEventListener("click", function() { choosePalette("default"); }, false);
     document.getElementById("colorblind").addEventListener("click", function() { choosePalette("colorblind"); }, false);
@@ -708,6 +718,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("stats_container").style.color = "black";
       document.getElementById("stats_container").style.backgroundColor = "white";
       document.getElementById("stats_container").style.borderTop = "1px solid black";
+      document.getElementById("share_container").style.backgroundColor = "white";
+      document.getElementById("clipboard_copy").style.color = "black";
+      document.getElementById("my_info").style.backgroundColor = "white";
+      document.getElementById("my_info").style.borderTop = "1px solid black";
+      document.getElementById("name").style.color = "black";
+      document.getElementById("email").style.color = "black";
 
     } else {
       // main game
@@ -753,6 +769,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("stats_container").style.color = "white";
       document.getElementById("stats_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("stats_container").style.borderTop = "1px solid gray";
+      document.getElementById("share_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("clipboard_copy").style.color = "white";
+      document.getElementById("my_info").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("my_info").style.borderTop = "1px solid gray";
+      document.getElementById("name").style.color = "white";
+      document.getElementById("email").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
@@ -986,6 +1008,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (noLoneSquares() && checkPaths()) {
         gameWon = true;
         timer.stop();
+        clearInterval(timerInterval);
         gameWonCleanup();
         gw = Number(window.localStorage.getItem("gamesWon")) + 1;
         window.localStorage.setItem("gamesWon", gw.toString());
@@ -1023,6 +1046,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function gameWonCleanup() {
 
+    document.getElementById("share_container").classList.add("active");
     window.localStorage.setItem("todayWon", "1");
 
     fillGrid();
@@ -1049,6 +1073,42 @@ document.addEventListener("DOMContentLoaded", () => {
     window.removeEventListener("focus", focusScreen);
 
     setTimeout(scoresMenu, 1000);
+  }
+
+  function shareScore() {
+
+    yc = String.fromCodePoint("0x1f7e1");
+    rc = String.fromCodePoint("0x1f534");
+    gc = String.fromCodePoint("0x1f7e2");
+    bc = String.fromCodePoint("0x1f535");
+    oc = String.fromCodePoint("0x1f7e0");
+    pc = String.fromCodePoint("0x1f7e3");
+
+    timeNumber = Number(window.localStorage.getItem("timeSpent"));
+    timeSpent = "";
+    if (atn < 3600) {
+      timeSpent = new Date(timeNumber * 1000).toISOString().substring(14, 19);
+    } else {
+      timeSpent = new Date(timeNumber * 1000).toISOString().substring(11, 19);
+    }
+
+    if (colorMode == "light") {
+      document.getElementById("clipboard_copy").style.color = "black";
+    } else {
+      document.getElementById("clipboard_copy").style.color = "white";
+    }
+
+    if (navigator.clipboard) {
+      if (document.getElementById("themer").className === "colorblind") {
+        navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
+${yc}${oc}${pc}${bc}`);
+      } else {
+        navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
+${yc}${rc}${gc}${bc}`);
+      }
+    } else {
+      document.getElementById("clipboard_copy").style.innerText = "clipboard copy disabled";
+    }
   }
 
   function checkDirection(i, d) {
@@ -1212,4 +1272,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return pressedNESW;
   }
-})
+});

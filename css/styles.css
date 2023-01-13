@@ -412,7 +412,7 @@ header {
 }
 
 input:checked + .slider {
-  background-color: green;
+  background-color: var(--color4);
 }
 
 input:focus + .slider {
@@ -534,4 +534,45 @@ input:checked + .slider:before {
 
 #settings_modal {
   width: 400px;
+}
+
+#share_container {
+  display: none;
+  border-top: none;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#share_container.active {
+  display: flex;
+}
+
+#share_button {
+  text-align: center;
+  width: 40%;
+  color: white;
+  background-color: var(--color4);
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#clipboard_copy {
+  user-select: none;
+  font-size: 1rem;
+  padding-top: 10px;
+}
+
+#my_info {
+  flex-direction: column;
+}
+
+#name {
+  padding-top: 10px;
+  font-size: 1.25rem;
+}
+
+#email {
+  font-size: 1rem;
 }
