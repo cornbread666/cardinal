@@ -22,8 +22,8 @@
   }
 
   :root.tape {
-    --color1: #EEAE39;
-    --color2: #F58300;
+    --color1: #EFB343;
+    --color2: #E07800;
     --color3: #D02C38;
     --color4: #84337D;
   }
@@ -31,8 +31,8 @@
   :root.vintage {
     --color1: #FFCB69;
     --color2: #F2AB7E;
-    --color3: #B1BE9D;
-    --color4: #A9A875;
+    --color3: #A9A875;
+    --color4: #9BBCBF;
   }
 
   :root.sunset {
@@ -61,7 +61,7 @@
 
 html, body {
   height: 100%;
-  font-family: "Helvetica";
+  font-family: "Avenir";
 }
 
 #container {
@@ -100,7 +100,7 @@ header {
   font-size: 2.5rem;
   margin: 0.4rem 0 0.4rem 0;
   text-align: center;
-  font-family: "Helvetica";
+  font-family: "Avenir";
   display: flex;
   cursor: default;
 }
@@ -196,7 +196,7 @@ header {
   color: black;
   font-weight: thin;
   text-align: center;
-  font-family: "Helvetica";
+  font-family: "Avenir";
   transform: translate(-50%, -50%);
 }
 
@@ -453,7 +453,7 @@ input:checked + .slider:before {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 10px 0px;
+  padding-top: 10px;
   cursor: default;
 }
 
@@ -575,4 +575,34 @@ input:checked + .slider:before {
 
 #email {
   font-size: 1rem;
+}
+
+#graph_container {
+  border: none;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.bar-container {
+  display: flex;
+  font-size: 1rem;
+  justify-content: flex-start;
+  flex-direction: row;
+  width: 80%;
+  padding: 2px 0;
+}
+
+.bar-legend {
+  width: 10%;
+  text-align: center;
+}
+
+.bar-bar {
+  display: flex;
+  text-align: end;
+  padding-right: 2px;
+  background-color: var(--color4);
+  color: white;
+  justify-content: flex-end;
+  align-items: center;
 }

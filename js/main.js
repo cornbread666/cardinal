@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  console.log("egg");
-
   class Timer {
     constructor() {
       this.isRunning = false;
@@ -84,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/12/2023");
+    firstDay = new Date("01/13/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
@@ -135,6 +133,11 @@ document.addEventListener("DOMContentLoaded", () => {
       window.localStorage.setItem("averageTime", "0");
     }
 
+    scores = window.localStorage.getItem("allScores");
+    if (!scores) {
+      window.localStorage.setItem("allScores", JSON.stringify([0, 0, 0, 0, 0]));
+    }
+
     // if today is a new day
     if (storedPuzzleIndex != index) {
       todayWon = 0;
@@ -156,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    puzzles = ["x", "112223320300623803310110", "111331331741110040031155010312132021223233"];
+    puzzles = ["x", "x", "x", "31124102038313204004202002", "00304313033002861022013112202233"];
     todaysPuzzle = puzzles[index];
 
     createSquares();
@@ -591,6 +594,21 @@ document.addEventListener("DOMContentLoaded", () => {
       at.innerText = new Date(atn * 1000).toISOString().substring(11, 19);
     }
 
+    scores = JSON.parse(window.localStorage.getItem("allScores"));
+    max = Math.max(...scores);
+
+    for (let i = 5; i > 0; i--) {
+      s = scores[i-1];
+      bar = document.getElementById("bb0" + i.toString());
+      bar.innerText = s.toString();
+
+      if (s == 0) {
+          bar.style.width = "4%";
+      } else {
+          bar.style.width = `${4 + ((scores[i-1] / max) * 85)}%`;
+      }
+    }
+
     blurScreen();
   }
 
@@ -724,6 +742,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("my_info").style.borderTop = "1px solid black";
       document.getElementById("name").style.color = "black";
       document.getElementById("email").style.color = "black";
+      document.getElementById("graph_container").style.backgroundColor = "white";
+      document.getElementById("bl01").style.color = "black";
+      document.getElementById("bl02").style.color = "black";
+      document.getElementById("bl03").style.color = "black";
+      document.getElementById("bl04").style.color = "black";
+      document.getElementById("bl05").style.color = "black";
 
     } else {
       // main game
@@ -775,6 +799,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("my_info").style.borderTop = "1px solid gray";
       document.getElementById("name").style.color = "white";
       document.getElementById("email").style.color = "white";
+      document.getElementById("graph_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("bl01").style.color = "white";
+      document.getElementById("bl02").style.color = "white";
+      document.getElementById("bl03").style.color = "white";
+      document.getElementById("bl04").style.color = "white";
+      document.getElementById("bl05").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
@@ -1016,8 +1046,17 @@ document.addEventListener("DOMContentLoaded", () => {
         newT = Math.floor(timer.getTime() / 1000);
         oldAvg = Number(window.localStorage.getItem("averageTime"));
         newAvg = oldAvg + ((newT - oldAvg) / gw);
-
         window.localStorage.setItem("averageTime", newAvg.toString());
+
+        scores = JSON.parse(window.localStorage.getItem("allScores"));
+        stars = getScore(newT);
+        console.log("old scores:");
+        console.log(scores);
+        scores[stars-1] = scores[stars-1] + 1;
+        window.localStorage.setItem("allScores", JSON.stringify(scores));
+
+        console.log("time: " + newT.toString(), ", stars: ", + stars.toString(), ", scores:");
+        console.log(scores);
       }
     }
   }
@@ -1072,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.removeEventListener("blur", blurScreen);
     window.removeEventListener("focus", focusScreen);
 
-    setTimeout(scoresMenu, 1000);
+    setTimeout(scoresMenu, 2200);
   }
 
   function shareScore() {
@@ -1083,10 +1122,12 @@ document.addEventListener("DOMContentLoaded", () => {
     bc = String.fromCodePoint("0x1f535");
     oc = String.fromCodePoint("0x1f7e0");
     pc = String.fromCodePoint("0x1f7e3");
+    clock = String.fromCodePoint("0x1f553");
+    blackCircle = String.fromCodePoint("0x26AB");
 
     timeNumber = Number(window.localStorage.getItem("timeSpent"));
     timeSpent = "";
-    if (atn < 3600) {
+    if (timeNumber < 3600) {
       timeSpent = new Date(timeNumber * 1000).toISOString().substring(14, 19);
     } else {
       timeSpent = new Date(timeNumber * 1000).toISOString().substring(11, 19);
@@ -1098,17 +1139,40 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("clipboard_copy").style.color = "white";
     }
 
-    if (navigator.clipboard) {
-      if (document.getElementById("themer").className === "colorblind") {
-        navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
-${yc}${oc}${pc}${bc}`);
+    stars = getScore(timeNumber);
+
+    scoreString = "";
+    for (let i = 0; i < 5; i++) {
+      if ((i + 1) <= stars) {
+        scoreString = scoreString + clock;
       } else {
-        navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
-${yc}${rc}${gc}${bc}`);
+        scoreString = scoreString + blackCircle;
       }
-    } else {
-      document.getElementById("clipboard_copy").style.innerText = "clipboard copy disabled";
     }
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
+
+${scoreString}`);
+    }
+  }
+
+  function getScore(t) {
+
+    if (t < 60) {
+      stars = 5;
+    } else if (t >= 60 && t < 150) {
+      stars = 4;
+    } else if (t >= 150 && t < 300) {
+      stars = 3;
+    } else if (t >= 300 && t < 600) {
+      stars = 2;
+    } else {
+      stars = 1;
+    }
+
+    console.log("score: " + stars.toString());
+    return stars;
   }
 
   function checkDirection(i, d) {
