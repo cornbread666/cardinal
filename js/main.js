@@ -82,7 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
   gameSetup();
 
   function gameSetup() {
-    firstDay = new Date("01/13/2023");
+
+    puzzles = ["x", "x", "x", "242230023400133302351020", "01412430332000523105013120", "31124102038313204004202002", "223014441133034161052002", "30030024032044200650330121", "04220043240010140730301211", "201342040234352020423100", "00304313033002861022013112202233", "044331122600700500213014", "013023033610046102411110012023", "4014340300143301530153002032", "0114302415303002044213001013233133", "124123143003305632011102", "0341212412205039032024001333", "00032244032014302112600310202230", "321300233412101306400341", "04124043220033020057003300", "1222233110242563010052030212202230", "34041033540032000032511510112130", "204432400135000300550063", "04302123220005503114322212132023", "0230341155200220230003600020", "1203144378114300120110210010122132", "044224013200604723003200", "02123141420002520383300301102233", "001113310360010016303232021022", "441103334007201312106402132230", "102123320033330000331353011013233032", "0113204123501410013120531322", "3240041311330079040010001321", "41120133106421324310002302101231", "240131435106463013100011", "0321314414204126121030031022", "0113324325102123430100330212303032", "121331321033010004617106021013202330", "234132005103101002860300012331", "132403417302240011203034001122", "121340430310012100375035000310122330", "202343020420510420221340", "133023433232003603205002", "31022420212204403501001310122333", "21234202002322323032531031", "21122333001301423630600301031013213132", "03243442740040054200300100213033", "340130225301341002101056101232", "42033100105510103147010023", "011333312450660002200220021221233233", "102402430331220412005004", "04122134430010005423420112202133"];
+
+    firstDay = new Date("11/28/2022");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
@@ -159,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    puzzles = ["x", "x", "x", "31124102038313204004202002", "00304313033002861022013112202233"];
     todaysPuzzle = puzzles[index];
 
     createSquares();
@@ -1028,7 +1030,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     for (let c = 0; c < 4; c++) {
       for (let d = 0; d < 4; d++) {
-        if (nesw[c][d] != compassNESW[c][d]) {
+        b = false;
+        for (let e = 0; e < blanks.length; e++) {
+          if (c == blanks[e][0] && d == blanks[e][1]) {
+            b = true;
+          }
+        }
+        if ((nesw[c][d] != compassNESW[c][d]) && !b) {
           win = false;
         }
       }
@@ -1043,20 +1051,15 @@ document.addEventListener("DOMContentLoaded", () => {
         gw = Number(window.localStorage.getItem("gamesWon")) + 1;
         window.localStorage.setItem("gamesWon", gw.toString());
 
-        newT = Math.floor(timer.getTime() / 1000);
+        newT = Number(window.localStorage.getItem("timeSpent"));
         oldAvg = Number(window.localStorage.getItem("averageTime"));
         newAvg = oldAvg + ((newT - oldAvg) / gw);
         window.localStorage.setItem("averageTime", newAvg.toString());
 
         scores = JSON.parse(window.localStorage.getItem("allScores"));
         stars = getScore(newT);
-        console.log("old scores:");
-        console.log(scores);
         scores[stars-1] = scores[stars-1] + 1;
         window.localStorage.setItem("allScores", JSON.stringify(scores));
-
-        console.log("time: " + newT.toString(), ", stars: ", + stars.toString(), ", scores:");
-        console.log(scores);
       }
     }
   }
@@ -1171,7 +1174,6 @@ ${scoreString}`);
       stars = 1;
     }
 
-    console.log("score: " + stars.toString());
     return stars;
   }
 
@@ -1233,6 +1235,9 @@ ${scoreString}`);
               winPath = false;
             }
           }
+          if (grid[x][y] == 0) {
+            winPath = false;
+          }
         }
       }
     }
@@ -1244,6 +1249,9 @@ ${scoreString}`);
     binaryGrid = Array.from(Array(5), () => new Array(5));
     goodPath = false;
     color = grid[x1][y1];
+    if (color == 0) {
+      return false;
+    }
 
     for (let x = 0; x < 5; x++) {
       for (let y = 0; y < 5; y++) {
