@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.1";
 
     gridFill = false;
     firstTime = false;
@@ -340,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createSquares() {
 
     for (let i = 0; i < 25; i++) {
-      let square = document.createElement("button");
+      let square = document.createElement("div");
       square.classList.add("button", "square");
       square.id = (i + 1).toString();
       square.style.backgroundColor = "white";
@@ -439,6 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.style.height = "30px";
     settingsImg.style.cursor = "pointer";
     settingsImg.style.transform = "translate(-25%, 0)";
+    settingsImg.style.webkitTapHighlightColor = "transparent";
     settingsImg.classList.add("disable_select");
     header.appendChild(settingsImg);
 
@@ -453,6 +455,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scoresImg.style.height = "30px";
     scoresImg.style.cursor = "pointer";
     scoresImg.style.transform = "translate(-150%, 0)";
+    scoresImg.style.webkitTapHighlightColor = "transparent";
     scoresImg.classList.add("disable_select");
     header.appendChild(scoresImg);
   }
@@ -750,6 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("bl03").style.color = "black";
       document.getElementById("bl04").style.color = "black";
       document.getElementById("bl05").style.color = "black";
+      document.getElementById("version_info").style.backgroundColor = "white";
+      document.getElementById("version_info").style.color = "black";
 
     } else {
       // main game
@@ -807,6 +812,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("bl03").style.color = "white";
       document.getElementById("bl04").style.color = "white";
       document.getElementById("bl05").style.color = "white";
+      document.getElementById("version_info").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("version_info").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
