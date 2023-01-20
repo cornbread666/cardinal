@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.2";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.3";
 
     gridFill = false;
     firstTime = false;
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     todaysPuzzle = puzzles[index];
 
-    createSquares();
+    createSquares(true);
     colorPickerListeners();
     dragListeners();
     windowListeners();
@@ -338,17 +338,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  function createSquares() {
+  function createSquares(initial) {
+
+    if (!initial) {
+      for (let x = 0; x < 25; x++) {
+        document.getElementById((x + 1).toString()).remove();
+      }
+    }
+
+    w = (gameBoard.offsetWidth - 40) / 5;
+    h = (gameBoard.offsetHeight - 40) / 5;
+    size = 0;
+    if (w >= h) {
+      size = h;
+    } else {
+      size = w;
+    }
 
     for (let i = 0; i < 25; i++) {
       let square = document.createElement("div");
       square.classList.add("button", "square");
       square.id = (i + 1).toString();
       square.style.backgroundColor = "white";
+      square.style.width = `${size}px`;
+      square.style.height = `${size}px`;
       ['pointerdown', 'pointermove', 'pointerup'].forEach( event =>
         square.addEventListener(event, setColor));
       gameBoard.appendChild(square);
+      if (gameWon && !initial) {
+        square.style.borderRadius = "50%";
+      }
     }
+
+    fillGrid();
   }
 
   function gameButtons(initial) {
@@ -472,6 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
     time.classList.add("timer");
     time.style.position = "absolute";
     time.style.top = `${rect.top}px`;
+    time.style.transform = "translate(0, -25%)";
     if (colorMode == "light") {
       time.style.color = "black";
     } else {
@@ -610,7 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (s == 0) {
           bar.style.width = "4%";
       } else {
-          bar.style.width = `${4 + ((scores[i-1] / max) * 85)}%`;
+          bar.style.width = `${4 + ((scores[i-1] / max) * 80)}%`;
       }
     }
 
@@ -640,6 +663,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function windowListeners() {
+    window.addEventListener("resize", function() { createSquares(false) }, false);
     window.addEventListener("resize", function() { setCompasses(false) }, false);
     window.addEventListener("resize", function() { gameButtons(false) }, false);
     window.addEventListener("resize", function() { menuButtons(false) }, false);
@@ -1132,7 +1156,8 @@ document.addEventListener("DOMContentLoaded", () => {
     bc = String.fromCodePoint("0x1f535");
     oc = String.fromCodePoint("0x1f7e0");
     pc = String.fromCodePoint("0x1f7e3");
-    star = String.fromCodePoint("0x2b50");
+    star = String.fromCodePoint("0x2605");
+    blankStar = String.fromCodePoint("0x2606");
     clock = String.fromCodePoint("0x1f553");
     blackCircle = String.fromCodePoint("0x26AB");
 
@@ -1155,9 +1180,9 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreString = "";
     for (let i = 0; i < 5; i++) {
       if ((i + 1) <= stars) {
-        scoreString = scoreString + star;
+        scoreString = scoreString + star + " ";
       } else {
-        scoreString = scoreString + blackCircle;
+        scoreString = scoreString + blankStar + " ";
       }
     }
 
