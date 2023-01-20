@@ -1125,6 +1125,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bc = String.fromCodePoint("0x1f535");
     oc = String.fromCodePoint("0x1f7e0");
     pc = String.fromCodePoint("0x1f7e3");
+    star = String.fromCodePoint("0x2b50");
     clock = String.fromCodePoint("0x1f553");
     blackCircle = String.fromCodePoint("0x26AB");
 
@@ -1147,7 +1148,7 @@ document.addEventListener("DOMContentLoaded", () => {
     scoreString = "";
     for (let i = 0; i < 5; i++) {
       if ((i + 1) <= stars) {
-        scoreString = scoreString + clock;
+        scoreString = scoreString + star;
       } else {
         scoreString = scoreString + blackCircle;
       }
