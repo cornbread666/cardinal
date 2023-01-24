@@ -83,12 +83,12 @@
               </div>
             </div>
           </div>
-
           <div class="modal" id="settings_modal">
-            <div class="modal-header">
+            <div class="modal-header" id="settings_header">
+              <div id="tutorial_title">tutorial</div>
               <button class="close-button" id="settings_close">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="settings_body">
               <div class="setting" id="rules_container_01">
                 <div class="rules-board" id="rules_board_01">
                   <div class="rules-square" id="rb01"></div>
@@ -101,8 +101,9 @@
                   <div class="rules-square" id="rb08"></div>
                   <div class="rules-square" id="rb09"></div>
                 </div>
-                <div class="rules-text" id="rules_text_01">The goal of the game is to fill the grid with colors according to the compasses.<br /><br />
-                                                          A blank compass point means any number of that color's tiles can exist in that direction.</div>
+                <div class="rules-text" id="rules_check_01">✓</div>
+                <div class="rules-text" id="rules_text_01">The goal of the game is to fill the grid with colors according to the compasses on the starting tiles. <br /> <br />
+                                                          The four numbers in a compass represent how many other tiles of that color need to be North, East, South, and West of the compass.</div>
               </div>
               <div class="setting" id="rules_container_02">
                 <div class="rules-board" id="rules_board_02">
@@ -116,6 +117,12 @@
                   <div class="rules-square" id="rb18"></div>
                   <div class="rules-square" id="rb19"></div>
                 </div>
+                <div id="check_container">
+                  <div class="rules-text" id="rules_check_02">✓</div>
+                  <div class="rules-text" id="rules_ex_02">&times;</div>
+                  ✓
+                </div>
+
                 <div class="rules-text" id="rules_text_02">Every tile of a color must share an edge with another tile of that color.</div>
               </div>
               <div class="setting" id="rules_container_03">
@@ -130,8 +137,21 @@
                   <div class="rules-square" id="rb28"></div>
                   <div class="rules-square" id="rb29"></div>
                 </div>
-                <div class="rules-text" id="rules_text_03">When complete, the grid will be divided into colored regions and there will be no blank tiles.</div>
+                <div class="rules-text" id="rules_check_03">✓</div>
+                <div class="rules-text" id="rules_text_03">A blank compass point means any number of that color's tiles can exist in that direction. <br /><br />
+                                                          When complete, the grid will be divided into colored regions and there will be no blank tiles.
+                </div>
               </div>
+              <div class="setting" id="rules_bottom_row">
+                <img class="rules-arrow" id="left_arrow" src="icons/left_light.png" />
+                <div class="setting" id="rules_dots">
+                  <div class="rules-dot" id="rules_dot_01"></div>
+                  <div class="rules-dot" id="rules_dot_02"></div>
+                  <div class="rules-dot" id="rules_dot_03"></div>
+                </div>
+                <img class="rules-arrow" id="right_arrow" src="icons/right_light.png" />
+              </div>
+
             </div>
           </div>
           <div class="modal" id="palette_modal">

@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   index = 0;
 
+  mn = 1;
+
   gameWon = false;
 
   var timerInterval;
@@ -83,13 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function gameSetup() {
 
-    puzzles = ["x", "x", "x", "242230023400133302351020", "01412430332000523105013120", "31124102038313204004202002", "223014441133034161052002", "30030024032044200650330121", "04220043240010140730301211", "201342040234352020423100", "00304313033002861022013112202233", "044331122600700500213014", "013023033610046102411110012023", "4014340300143301530153002032", "0114302415303002044213001013233133", "124123143003305632011102", "0341212412205039032024001333", "00032244032014302112600310202230", "321300233412101306400341", "04124043220033020057003300", "1222233110242563010052030212202230", "34041033540032000032511510112130", "204432400135000300550063", "04302123220005503114322212132023", "0230341155200220230003600020", "1203144378114300120110210010122132", "044224013200604723003200", "02123141420002520383300301102233", "001113310360010016303232021022", "441103334007201312106402132230", "102123320033330000331353011013233032", "0113204123501410013120531322", "3240041311330079040010001321", "41120133106421324310002302101231", "240131435106463013100011", "0321314414204126121030031022", "0113324325102123430100330212303032", "121331321033010004617106021013202330", "234132005103101002860300012331", "132403417302240011203034001122", "121340430310012100375035000310122330", "202343020420510420221340", "133023433232003603205002", "31022420212204403501001310122333", "21234202002322323032531031", "21122333001301423630600301031013213132", "03243442740040054200300100213033", "340130225301341002101056101232", "42033100105510103147010023", "011333312450660002200220021221233233", "102402430331220412005004", "04122134430010005423420112202133", "33043230001023004523005700212332", "34301113320203312111321401202332", "31130421025050041300342130", "2234044132122201740020111120", "123422200033400345210213", "04304321370002202002303600112022", "01142144330002002354700401202230", "321300233412101306400341", "1244221120038006015421001020", "22440221224630043100341010133032", "034041112850000300121143"];
+    puzzles = ["x", "x", "x", "242230023400133302351020", "01412430332000523105013120", "31124102038313204004202002", "223014441133034161052002", "30030024032044200650330121", "420314210020751012002731", "434033128027001400350012", "410320321033310001011167", "334314239305002140053110", "040044127700021010015510", "413324125037212120041001", "411223101031103134300234", "04220043240010140730301211", "201342040234352020423100", "00304313033002861022013112202233", "044331122600700500213014", "013023033610046102411110012023", "4014340300143301530153002032", "0114302415303002044213001013233133", "124123143003305632011102", "0341212412205039032024001333", "00032244032014302112600310202230", "321300233412101306400341", "04124043220033020057003300", "1222233110242563010052030212202230", "34041033540032000032511510112130", "204432400135000300550063", "04302123220005503114322212132023", "0230341155200220230003600020", "1203144378114300120110210010122132", "044224013200604723003200", "02123141420002520383300301102233", "001113310360010016303232021022", "441103334007201312106402132230", "102123320033330000331353011013233032", "0113204123501410013120531322", "3240041311330079040010001321", "41120133106421324310002302101231", "240131435106463013100011", "0321314414204126121030031022", "0113324325102123430100330212303032", "121331321033010004617106021013202330", "234132005103101002860300012331", "132403417302240011203034001122", "121340430310012100375035000310122330", "202343020420510420221340", "133023433232003603205002", "31022420212204403501001310122333", "21234202002322323032531031", "21122333001301423630600301031013213132", "03243442740040054200300100213033", "340130225301341002101056101232", "42033100105510103147010023", "011333312450660002200220021221233233", "102402430331220412005004", "04122134430010005423420112202133", "33043230001023004523005700212332", "34301113320203312111321401202332", "31130421025050041300342130", "2234044132122201740020111120", "123422200033400345210213", "04304321370002202002303600112022", "01142144330002002354700401202230", "321300233412101306400341", "1244221120038006015421001020", "22440221224630043100341010133032", "034041112850000300121143"];
 
     firstDay = new Date("01/16/2023");
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.4";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.5";
 
     gridFill = false;
     firstTime = false;
@@ -202,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (firstTime) {
-      settingsMenu();
+      settingsMenu(1);
     }
 
   }
@@ -455,7 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
     settingsImg.src = "icons/settings_light.png";
     if (colorMode == "dark") { settingsImg.src = "icons/settings_dark.png"; }
     settingsImg.id = "settings_button";
-    settingsImg.addEventListener("click", settingsMenu);
+    settingsImg.addEventListener("click", function() { settingsMenu(1) }, false);
     settingsImg.style.left = `${l}px`;
     settingsImg.style.top = `${t}px`;
     settingsImg.style.position = "absolute";
@@ -519,13 +521,101 @@ document.addEventListener("DOMContentLoaded", () => {
     blurScreen();
   }
 
-  function settingsMenu() {
+  function settingsMenu(menuNum) {
+
     document.getElementById("settings_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
 
-    sqList = ["rb01", "rb05", "rb09", "rb11", "rb15", "rb19", "rb21", "rb25", "rb29"];
-    sqCoorList = [[0,1,0,0], [1,2,0,1], [0,0,0,"x"], [0,1,0,0], [1,2,0,1], [0,0,0,"x"], [0,1,0,0], [1,2,0,1], [0,0,0,"x"]];
-    squares = ["rb02", "rb03", "rb04", "rb06", "rb07", "rb08", "rb12", "rb17", "rb18"];
+    sqList = [];
+    sqCoorList = [];
+    squares = [];
+
+    if (menuNum > 1) {
+      document.getElementById("left_arrow").style.visibility = "visible";
+    } else {
+      document.getElementById("left_arrow").style.visibility = "hidden";
+    }
+    if (menuNum < 3) {
+      document.getElementById("right_arrow").style.visibility = "visible";
+    } else {
+      document.getElementById("right_arrow").style.visibility = "hidden";
+    }
+
+    for (let i = 0; i < 3; i++) {
+      if ((i+1) != menuNum) {
+        document.getElementById("rules_container_0" + (i+1).toString()).classList.remove("active");
+        document.getElementById("rules_dot_0" + (i+1).toString()).style.height = "10px";
+        document.getElementById("rules_dot_0" + (i+1).toString()).style.width = "10px";
+      } else {
+        document.getElementById("rules_container_0" + (i+1).toString()).classList.add("active");
+        document.getElementById("rules_dot_0" + (i+1).toString()).style.height = "20px";
+        document.getElementById("rules_dot_0" + (i+1).toString()).style.width = "20px";
+      }
+    }
+
+    if (menuNum == 1) {
+      sqList = ["rb04"];
+      sqCoorList = [[0,2,1,0]];
+      squares = ["rb01", "rb02", "rb03", "rb05", "rb06", "rb07", "rb08", "rb09"];
+
+      if (colorMode == "light") {
+        document.getElementById("rb07").style.animation = "rb07w 6s infinite steps(1, start)";
+        document.getElementById("rb05").style.animation = "rb05w 6s infinite steps(1, start)";
+        document.getElementById("rb06").style.animation = "rb06w 6s infinite steps(1, start)";
+        document.getElementById("rb08").style.animation = "rb08w 6s infinite steps(1, start)";
+      } else {
+        document.getElementById("rb07").style.animation = "rb07b 6s infinite steps(1, start)";
+        document.getElementById("rb05").style.animation = "rb05b 6s infinite steps(1, start)";
+        document.getElementById("rb06").style.animation = "rb06b 6s infinite steps(1, start)";
+        document.getElementById("rb08").style.animation = "rb08b 6s infinite steps(1, start)";
+      }
+      document.getElementById("rules_check_01").style.animation = "check01 6s infinite steps(1, start)";
+    } else if (menuNum == 2) {
+      sqList = ["rb11", "rb19"];
+      sqCoorList = [[0,2,2,0], [2,0,0,2]];
+      squares = ["rb12", "rb13", "rb14", "rb15", "rb16", "rb17", "rb18"];
+
+      if (colorMode == "light") {
+        document.getElementById("rb18").style.animation = "rb18w 12s infinite steps(1, start)";
+        document.getElementById("rb15").style.animation = "rb15w 12s infinite steps(1, start)";
+        document.getElementById("rb16").style.animation = "rb16w 12s infinite steps(1, start)";
+        document.getElementById("rb17").style.animation = "rb17w 12s infinite steps(1, start)";
+        document.getElementById("rb14").style.animation = "rb14w 12s infinite steps(1, start)";
+        document.getElementById("rb12").style.animation = "rb12w 12s infinite steps(1, start)";
+        document.getElementById("rb13").style.animation = "rb13w 12s infinite steps(1, start)";
+      } else {
+        document.getElementById("rb18").style.animation = "rb18b 12s infinite steps(1, start)";
+        document.getElementById("rb15").style.animation = "rb15b 12s infinite steps(1, start)";
+        document.getElementById("rb16").style.animation = "rb16b 12s infinite steps(1, start)";
+        document.getElementById("rb17").style.animation = "rb17b 12s infinite steps(1, start)";
+        document.getElementById("rb14").style.animation = "rb14b 12s infinite steps(1, start)";
+        document.getElementById("rb12").style.animation = "rb12b 12s infinite steps(1, start)";
+        document.getElementById("rb13").style.animation = "rb13b 12s infinite steps(1, start)";
+      }
+      document.getElementById("rules_check_02").style.animation = "check02 12s infinite steps(1, start)";
+      document.getElementById("rules_ex_02").style.animation = "ex02 12s infinite steps(1, start)";
+    } else if (menuNum == 3) {
+      sqList = ["rb21", "rb22", "rb23"];
+      sqCoorList = [[0,0,"x",0], [0,0,2,0], [0,0,2,0]];
+      squares = ["rb24", "rb25", "rb26", "rb27", "rb28", "rb29"];
+
+      if (colorMode == "light") {
+        document.getElementById("rb24").style.animation = "rb24w 6s infinite steps(1, start)";
+        document.getElementById("rb25").style.animation = "rb25w 6s infinite steps(1, start)";
+        document.getElementById("rb27").style.animation = "rb27w 6s infinite steps(1, start)";
+        document.getElementById("rb28").style.animation = "rb28w 6s infinite steps(1, start)";
+        document.getElementById("rb26").style.animation = "rb26w 6s infinite steps(1, start)";
+        document.getElementById("rb29").style.animation = "rb29w 6s infinite steps(1, start)";
+      } else {
+        document.getElementById("rb24").style.animation = "rb24b 6s infinite steps(1, start)";
+        document.getElementById("rb25").style.animation = "rb25b 6s infinite steps(1, start)";
+        document.getElementById("rb27").style.animation = "rb27b 6s infinite steps(1, start)";
+        document.getElementById("rb28").style.animation = "rb28b 6s infinite steps(1, start)";
+        document.getElementById("rb26").style.animation = "rb26b 6s infinite steps(1, start)";
+        document.getElementById("rb29").style.animation = "rb29b 6s infinite steps(1, start)";
+      }
+      document.getElementById("rules_check_03").style.animation = "check03 6s infinite steps(1, start)";
+    }
 
     for (let x = 0; x < squares.length; x++) {
       sq = document.getElementById(squares[x]);
@@ -593,6 +683,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    mn = menuNum;
     blurScreen();
   }
 
@@ -646,6 +737,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("scores_modal").classList.remove("active");
     document.getElementById("overlay").classList.remove("active");
 
+    mn = 1;
+
+    document.getElementById("rb05").style.animation = "none";
+    document.getElementById("rb06").style.animation = "none";
+    document.getElementById("rb07").style.animation = "none";
+    document.getElementById("rb08").style.animation = "none";
+    document.getElementById("rules_check_01").style.animation = "none";
+
     focusScreen();
   }
 
@@ -676,6 +775,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("scores_close").addEventListener("click", closeModal);
     document.getElementById("overlay").addEventListener("click", closeModal);
     document.getElementById("share_button").addEventListener("click", shareScore);
+
+    document.getElementById("left_arrow").addEventListener("click", function() { settingsMenu((mn-1)) }, false);
+    document.getElementById("right_arrow").addEventListener("click", function() { settingsMenu((mn + 1)) }, false);
 
     document.getElementById("default").addEventListener("click", function() { choosePalette("default"); }, false);
     document.getElementById("colorblind").addEventListener("click", function() { choosePalette("colorblind"); }, false);
@@ -746,6 +848,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("settings_modal").style.border = "2px solid black";
       document.getElementById("settings_close").style.color = "black";
 
+      document.getElementById("tutorial_title").style.color = "black";
+
       document.getElementById("rules_container_01").style.backgroundColor = "white";
       document.getElementById("rules_container_01").style.borderTop = "1px solid black";
       document.getElementById("rules_text_01").style.color = "black";
@@ -757,6 +861,15 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_03").style.backgroundColor = "white";
       document.getElementById("rules_container_03").style.borderTop = "1px solid black";
       document.getElementById("rules_text_03").style.color = "black";
+
+      document.getElementById("check_container").style.color = "white";
+      document.getElementById("rules_bottom_row").style.backgroundColor = "white";
+      document.getElementById("rules_dots").style.backgroundColor = "white";
+      document.getElementById("rules_dot_01").style.backgroundColor = "black";
+      document.getElementById("rules_dot_02").style.backgroundColor = "black";
+      document.getElementById("rules_dot_03").style.backgroundColor = "black";
+      document.getElementById("left_arrow").src = "icons/left_light.png";
+      document.getElementById("right_arrow").src = "icons/right_light.png";
 
       // scores modal
       document.getElementById("scores_modal").style.backgroundColor = "white";
@@ -805,6 +918,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("settings_modal").style.border = "2px solid gray";
       document.getElementById("settings_close").style.color = "gray";
 
+      document.getElementById("tutorial_title").style.color = "white";
+
       document.getElementById("rules_container_01").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_container_01").style.borderTop = "1px solid gray";
       document.getElementById("rules_text_01").style.color = "white";
@@ -816,6 +931,15 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_03").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_container_03").style.borderTop = "1px solid gray";
       document.getElementById("rules_text_03").style.color = "white";
+
+      document.getElementById("check_container").style.color = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_bottom_row").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_dots").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_dot_01").style.backgroundColor = "white";
+      document.getElementById("rules_dot_02").style.backgroundColor = "white";
+      document.getElementById("rules_dot_03").style.backgroundColor = "white";
+      document.getElementById("left_arrow").src = "icons/left_dark.png";
+      document.getElementById("right_arrow").src = "icons/right_dark.png";
 
       // scores modal
       document.getElementById("scores_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
