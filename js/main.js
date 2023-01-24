@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.6";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.7";
 
     gridFill = false;
     firstTime = false;
@@ -205,6 +205,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (firstTime) {
       settingsMenu(1);
+    } else if (!gridFill) {
+      startPrompt();
     }
 
   }
@@ -740,21 +742,19 @@ document.addEventListener("DOMContentLoaded", () => {
     blurScreen();
   }
 
-  function closeModal() {
-    document.getElementById("palette_modal").classList.remove("active");
-    document.getElementById("settings_modal").classList.remove("active");
-    document.getElementById("scores_modal").classList.remove("active");
-    document.getElementById("overlay").classList.remove("active");
+  function closeModal(clicked = "close") {
 
-    mn = 1;
+    if (!(clicked == "overlay" && document.getElementById("start_modal").classList.contains("active"))) {
+      document.getElementById("palette_modal").classList.remove("active");
+      document.getElementById("settings_modal").classList.remove("active");
+      document.getElementById("scores_modal").classList.remove("active");
+      document.getElementById("start_modal").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
 
-    document.getElementById("rb05").style.animation = "none";
-    document.getElementById("rb06").style.animation = "none";
-    document.getElementById("rb07").style.animation = "none";
-    document.getElementById("rb08").style.animation = "none";
-    document.getElementById("rules_check_01").style.animation = "none";
+      mn = 1;
 
-    focusScreen();
+      focusScreen();
+    }
   }
 
   function colorPickerListeners() {
@@ -782,8 +782,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("palette_close").addEventListener("click", closeModal);
     document.getElementById("settings_close").addEventListener("click", closeModal);
     document.getElementById("scores_close").addEventListener("click", closeModal);
-    document.getElementById("overlay").addEventListener("click", closeModal);
+    document.getElementById("overlay").addEventListener("click", function() { closeModal("overlay") }, false);
     document.getElementById("share_button").addEventListener("click", shareScore);
+    document.getElementById("start_button").addEventListener("click", closeModal);
 
     document.getElementById("left_arrow").addEventListener("click", function() { settingsMenu((mn-1)) }, false);
     document.getElementById("right_arrow").addEventListener("click", function() { settingsMenu((mn + 1)) }, false);
@@ -903,6 +904,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("version_info").style.backgroundColor = "white";
       document.getElementById("version_info").style.color = "black";
 
+      // start modal
+      document.getElementById("start_modal").style.border = "2px solid black";
+      document.getElementById("start_modal").style.backgroundColor = "white";
+      document.getElementById("start_container").style.backgroundColor = "white";
+      document.getElementById("cardinal_intro").style.color = "black";
+
     } else {
       // main game
       document.getElementById("container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -973,6 +980,12 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("bl05").style.color = "white";
       document.getElementById("version_info").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("version_info").style.color = "white";
+
+      // start modal
+      document.getElementById("start_modal").style.border = "2px solid gray";
+      document.getElementById("start_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("start_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("cardinal_intro").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
@@ -1022,24 +1035,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function focusScreen() {
-    if (!gameWon) {
-      timer.start();
+
+    if (!document.getElementById("start_modal").classList.contains("active")
+    && !document.getElementById("palette_modal").classList.contains("active")
+    && !document.getElementById("settings_modal").classList.contains("active")
+    && !document.getElementById("scores_modal").classList.contains("active")) {
+
+      if (!gameWon) {
+        timer.start();
+      }
+
+      setCompasses(false);
+      fillGrid();
     }
 
-    setCompasses(false);
-    fillGrid();
-    if (document.getElementById("overlay").classList.contains("active")) {
-      document.getElementById("overlay").classList.remove("active");
-    }
-    if (document.getElementById("palette_modal").classList.contains("active")) {
-      document.getElementById("palette_modal").classList.remove("active");
-    }
-    if (document.getElementById("settings_modal").classList.contains("active")) {
-      document.getElementById("settings_modal").classList.remove("active");
-    }
-    if (document.getElementById("scores_modal").classList.contains("active")) {
-      document.getElementById("scores_modal").classList.remove("active");
-    }
+  }
+
+  function startPrompt() {
+
+    document.getElementById("start_modal").classList.add("active");
+    document.getElementById("overlay").classList.add("active");
+    document.getElementById("cardinal_intro").innerText = "cardinal #" + index.toString();
+
+    blurScreen();
   }
 
   function beginColor() {

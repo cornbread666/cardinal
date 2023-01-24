@@ -1122,3 +1122,31 @@ input:checked + .slider:before {
 #version_info {
   font-size: 0.8rem;
 }
+
+#start_modal {
+  display: flex;
+  width: auto;
+}
+
+#start_container {
+  border: none;
+  flex-direction: column;
+}
+
+#cardinal_intro {
+  padding-bottom: 10px;
+}
+
+#start_button {
+  width: 80%;
+  text-align: center;
+  color: white;
+  background-color: var(--color4);
+  padding: 10px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  font-size: 1.5rem;
+  -webkit-tap-highlight-color: transparent;
+}
