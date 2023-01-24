@@ -1044,9 +1044,10 @@ input:checked + .slider:before {
 
 #share_container {
   display: none;
-  border-top: none;
+  border-top: 1px solid black;
   justify-content: center;
   flex-direction: column;
+  padding: 20px 0;
 }
 
 #share_container.active {
