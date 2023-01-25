@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.2.2";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.2.3";
 
     gridFill = false;
 
