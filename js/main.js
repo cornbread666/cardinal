@@ -74,9 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
   timer = new Timer();
 
   index = 0;
-
   mn = 1;
-
+  firstTime = false;
   gameWon = false;
 
   var timerInterval;
@@ -91,10 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.1.7";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.2.2";
 
     gridFill = false;
-    firstTime = false;
 
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       colorMode = "dark";
@@ -744,16 +742,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function closeModal(clicked = "close") {
 
-    if (!(clicked == "overlay" && document.getElementById("start_modal").classList.contains("active"))) {
-      document.getElementById("palette_modal").classList.remove("active");
+    if (firstTime) {
       document.getElementById("settings_modal").classList.remove("active");
-      document.getElementById("scores_modal").classList.remove("active");
-      document.getElementById("start_modal").classList.remove("active");
-      document.getElementById("overlay").classList.remove("active");
+      firstTime = false;
+      startPrompt();
+    } else {
+      if (!(clicked == "overlay" && document.getElementById("start_modal").classList.contains("active"))) {
+        document.getElementById("palette_modal").classList.remove("active");
+        document.getElementById("settings_modal").classList.remove("active");
+        document.getElementById("scores_modal").classList.remove("active");
+        document.getElementById("start_modal").classList.remove("active");
+        document.getElementById("overlay").classList.remove("active");
 
-      mn = 1;
+        mn = 1;
 
-      focusScreen();
+        focusScreen();
+      }
     }
   }
 
@@ -784,6 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("scores_close").addEventListener("click", closeModal);
     document.getElementById("overlay").addEventListener("click", function() { closeModal("overlay") }, false);
     document.getElementById("share_button").addEventListener("click", shareScore);
+    document.getElementById("share_button").addEventListener("touchstart", shareScore);
     document.getElementById("start_button").addEventListener("click", closeModal);
 
     document.getElementById("left_arrow").addEventListener("click", function() { settingsMenu((mn-1)) }, false);
