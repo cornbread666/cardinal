@@ -1202,6 +1202,7 @@ input:checked + .slider:before {
 #practice_intro_02 {
   text-align: right;
   font-size: 0.8rem;
+  padding-left: 20px;
 }
 
 #practice_button_02 {
