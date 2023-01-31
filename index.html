@@ -39,6 +39,7 @@
           <button id="cp03" class="button colorPicker"></button>
           <button id="cp04" class="button colorPicker"></button>
           <button id="cp05" class="button colorPicker"></button>
+          <button id="cp06" class="button colorPicker"></button>
         </div>
 
         <div class="modal-container" id="modal_container">
@@ -103,6 +104,21 @@
             <div class="modal-body" id="settings_body">
               <div class="setting" id="rules_container_01">
                 <div class="rules-board" id="rules_board_01">
+                  <div class="rules-square" id="rb31"></div>
+                  <div class="rules-square" id="rb32"></div>
+                  <div class="rules-square" id="rb33"></div>
+                  <div class="rules-square" id="rb34"></div>
+                  <div class="rules-square" id="rb35"></div>
+                  <div class="rules-square" id="rb36"></div>
+                  <div class="rules-square" id="rb37"></div>
+                  <div class="rules-square" id="rb38"></div>
+                  <div class="rules-square" id="rb39"></div>
+                </div>
+                <div class="rules-text" id="rules_check_01">✓</div>
+                <div class="rules-text" id="rules_text_01">The goal of the game is to fill the grid with colors according to the compasses on the starting tiles.</div>
+              </div>
+              <div class="setting" id="rules_container_02">
+                <div class="rules-board" id="rules_board_02">
                   <div class="rules-square" id="rb01"></div>
                   <div class="rules-square" id="rb02"></div>
                   <div class="rules-square" id="rb03"></div>
@@ -113,12 +129,11 @@
                   <div class="rules-square" id="rb08"></div>
                   <div class="rules-square" id="rb09"></div>
                 </div>
-                <div class="rules-text" id="rules_check_01">✓</div>
-                <div class="rules-text" id="rules_text_01">The goal of the game is to fill the grid with colors according to the compasses on the starting tiles. <br /> <br />
-                                                          The four numbers in a compass represent how many other tiles of that color need to be North, East, South, and West of the compass.</div>
+                <div class="rules-text" id="rules_check_02">✓</div>
+                <div class="rules-text" id="rules_text_02">The four numbers in a compass represent how many other tiles of that color need to be North, East, South, and West of the compass.</div>
               </div>
-              <div class="setting" id="rules_container_02">
-                <div class="rules-board" id="rules_board_02">
+              <div class="setting" id="rules_container_03">
+                <div class="rules-board" id="rules_board_03">
                   <div class="rules-square" id="rb11"></div>
                   <div class="rules-square" id="rb12"></div>
                   <div class="rules-square" id="rb13"></div>
@@ -130,15 +145,16 @@
                   <div class="rules-square" id="rb19"></div>
                 </div>
                 <div id="check_container">
-                  <div class="rules-text" id="rules_check_02">✓</div>
-                  <div class="rules-text" id="rules_ex_02">&times;</div>
+                  <div class="rules-text" id="rules_check_03">✓</div>
+                  <div class="rules-text" id="rules_ex_03">&times;</div>
                   ✓
                 </div>
 
-                <div class="rules-text" id="rules_text_02">Every tile of a color must share an edge with another tile of that color.</div>
+                <div class="rules-text" id="rules_text_03">Every tile of a color must share an edge with another tile of that color.<br /><br />
+                                                          A blank compass point means any number of that color's tiles can exist in that direction.</div>
               </div>
-              <div class="setting" id="rules_container_03">
-                <div class="rules-board" id="rules_board_03">
+              <div class="setting" id="rules_container_04">
+                <div class="rules-board" id="rules_board_04">
                   <div class="rules-square" id="rb21"></div>
                   <div class="rules-square" id="rb22"></div>
                   <div class="rules-square" id="rb23"></div>
@@ -149,9 +165,12 @@
                   <div class="rules-square" id="rb28"></div>
                   <div class="rules-square" id="rb29"></div>
                 </div>
-                <div class="rules-text" id="rules_check_03">✓</div>
-                <div class="rules-text" id="rules_text_03">A blank compass point means any number of that color's tiles can exist in that direction. <br /><br />
-                                                          When complete, the grid will be divided into colored regions and there will be no blank tiles.
+                <div class="rules-text" id="rules_check_04">✓</div>
+                <div class="rules-text" id="rules_text_04">When complete, the grid will be divided into colored regions and there will be no blank tiles.</div>
+                <div class="stat-container" id="practice_container_02">
+                  <button id="practice_button_02">practice</button>
+                  <div id="practice_intro_02">note: practice puzzles don't<br />
+                    affect your daily score!</div>
                 </div>
               </div>
               <div class="setting" id="rules_bottom_row">
@@ -160,6 +179,7 @@
                   <div class="rules-dot" id="rules_dot_01"></div>
                   <div class="rules-dot" id="rules_dot_02"></div>
                   <div class="rules-dot" id="rules_dot_03"></div>
+                  <div class="rules-dot" id="rules_dot_04"></div>
                 </div>
                 <img class="rules-arrow" id="right_arrow" src="icons/right_light.png" />
               </div>
@@ -241,6 +261,11 @@
               <div class="stat-container" id="start_container">
                 <div id="cardinal_intro"></div>
                 <button id="start_button">start</button>
+              </div>
+              <div class="stat-container" id="practice_container">
+                <button id="practice_button">practice</button>
+                <div id="practice_intro">note: practice puzzles don't<br />
+                  affect your daily score!</div>
               </div>
             </div>
           </div>

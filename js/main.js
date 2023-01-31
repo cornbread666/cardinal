@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   timer = new Timer();
 
+  practice = true;
+  activeGame = false;
   index = 0;
   mn = 1;
   firstTime = false;
@@ -80,17 +82,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   var timerInterval;
 
-  gameSetup();
+  intro();
 
-  function gameSetup() {
-
-    puzzles = ["x", "x", "x", "242230023400133302351020", "01412430332000523105013120", "31124102038313204004202002", "223014441133034161052002", "30030024032044200650330121", "420314210020751012002731", "434033128027001400350012", "410320321033310001011167", "23424100102500533015044032", "421114124046220242020001", "403411430025410601213002", "334314239305002140053110", "040044127700021010015510", "413324125037212120041001", "411223101031103134300234", "04220043240010140730301211", "201342040234352020423100", "044331122600700500213014", "41334001006510340015013003", "242104009405363011000100", "2312243058202003200401240131", "11442341421310012135102323", "241340203402420100420024", "223313435205001111336013", "41112333501600205510004400", "24331341520202203004402500", "042230449600241202101002", "03440131163060042210310110", "103004420142022067000031", "013023033610046102411110012023", "4014340300143301530153002032", "124123143003305632011102", "0341212412205039032024001333", "00032244032014302112600310202230", "321300233412101306400341", "04124043220033020057003300", "1222233110242563010052030212202230", "34041033540032000032511510112130", "204432400135000300550063", "04302123220005503114322212132023", "0230341155200220230003600020", "1203144378114300120110210010122132", "044224013200604723003200", "02123141420002520383300301102233", "001113310360010016303232021022", "441103334007201312106402132230", "102123320033330000331353011013233032", "0113204123501410013120531322", "3240041311330079040010001321", "41120133106421324310002302101231", "240131435106463013100011", "0321314414204126121030031022", "0113324325102123430100330212303032", "121331321033010004617106021013202330", "234132005103101002860300012331", "132403417302240011203034001122", "121340430310012100375035000310122330", "202343020420510420221340", "133023433232003603205002", "31022420212204403501001310122333", "21234202002322323032531031", "21122333001301423630600301031013213132", "03243442740040054200300100213033", "340130225301341002101056101232", "42033100105510103147010023", "011333312450660002200220021221233233", "102402430331220412005004", "04122134430010005423420112202133", "33043230001023004523005700212332", "34301113320203312111321401202332", "00304313033002861022013112202233", "31130421025050041300342130", "2234044132122201740020111120", "123422200033400345210213", "0114302415303002044213001013233133", "04304321370002202002303600112022", "01142144330002002354700401202230", "321300233412101306400341", "1244221120038006015421001020", "22440221224630043100341010133032", "034041112850000300121143"];
-
+  function intro() {
     firstDay = new Date("01/16/2023"); // 01/16/2023
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.2.4";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.2.5";
 
     gridFill = false;
 
@@ -109,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     palette = window.localStorage.getItem("userPalette");
     if (!palette) {
+      palette = "default";
       window.localStorage.setItem("userPalette", "default");
     }
 
@@ -159,36 +159,64 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    todaysPuzzle = puzzles[index];
-
-    createSquares(true);
+    windowListeners();
     colorPickerListeners();
     dragListeners();
-    windowListeners();
+    createSquares(true);
     choosePalette(palette);
-    puzzleSpecs(todaysPuzzle);
     gameButtons(true);
     menuButtons(true);
-    setTimer(true);
-    if (gridFill) {
-      fillGrid();
-    }
-    setCompasses(true);
-    window.localStorage.setItem("gridProgress", JSON.stringify(grid));
 
     if (colorMode == "dark") {
       document.getElementById("dark_mode_checker").checked = true;
       switchColorMode();
     }
 
+    if (firstTime) {
+      settingsMenu(1);
+    } else if (todayWon == 1) {
+      gameSetup();
+    } else {
+      startPrompt();
+    }
+  }
+
+  function gameSetup() {
+
+    grid = Array.from(Array(5), () => new Array(5).fill(0));
+    cors = [];
+    compassNESW = [];
+    blanks = [];
+
+    gameWon = false;
+    practice = false;
+
+    puzzles = ["x", "x", "x", "242230023400133302351020", "01412430332000523105013120", "31124102038313204004202002", "223014441133034161052002", "30030024032044200650330121", "420314210020751012002731", "434033128027001400350012", "410320321033310001011167", "23424100102500533015044032", "421114124046220242020001", "403411430025410601213002", "334314239305002140053110", "040044127700021010015510", "413324125037212120041001", "411223101031103134300234", "04220043240010140730301211", "201342040234352020423100", "044331122600700500213014", "41334001006510340015013003", "242104009405363011000100", "2312243058202003200401240131", "11442341421310012135102323", "241340203402420100420024", "223313435205001111336013", "41112333501600205510004400", "24331341520202203004402500", "042230449600241202101002", "03440131163060042210310110", "103004420142022067000031", "013023033610046102411110012023", "4014340300143301530153002032", "124123143003305632011102", "0341212412205039032024001333", "00032244032014302112600310202230", "321300233412101306400341", "04124043220033020057003300", "1222233110242563010052030212202230", "34041033540032000032511510112130", "204432400135000300550063", "04302123220005503114322212132023", "0230341155200220230003600020", "1203144378114300120110210010122132", "044224013200604723003200", "02123141420002520383300301102233", "001113310360010016303232021022", "441103334007201312106402132230", "102123320033330000331353011013233032", "0113204123501410013120531322", "3240041311330079040010001321", "41120133106421324310002302101231", "240131435106463013100011", "0321314414204126121030031022", "0113324325102123430100330212303032", "121331321033010004617106021013202330", "234132005103101002860300012331", "132403417302240011203034001122", "121340430310012100375035000310122330", "202343020420510420221340", "133023433232003603205002", "31022420212204403501001310122333", "21234202002322323032531031", "21122333001301423630600301031013213132", "03243442740040054200300100213033", "340130225301341002101056101232", "42033100105510103147010023", "011333312450660002200220021221233233", "102402430331220412005004", "04122134430010005423420112202133", "33043230001023004523005700212332", "34301113320203312111321401202332", "00304313033002861022013112202233", "31130421025050041300342130", "2234044132122201740020111120", "123422200033400345210213", "0114302415303002044213001013233133", "04304321370002202002303600112022", "01142144330002002354700401202230", "321300233412101306400341", "1244221120038006015421001020", "22440221224630043100341010133032", "034041112850000300121143"];
+
+    todaysPuzzle = puzzles[index];
+
+    activeGame = true;
+    createSquares(false);
+    puzzleSpecs(todaysPuzzle);
+    fillGrid();
+    setCompasses(false);
+    setTimer(false);
+    timer.reset();
+    window.localStorage.setItem("gridProgress", JSON.stringify(grid));
+
+    ts = Number(window.localStorage.getItem("timeSpent"));
+    if (ts == 0) {
+      gpn = Number(window.localStorage.getItem("gamesPlayed"));
+      window.localStorage.setItem("gamesPlayed", (gpn+1).toString());
+    }
+
+    todayWon = Number(window.localStorage.getItem("todayWon"));
     if (todayWon == 1) {
-      ts = Number(window.localStorage.getItem("timeSpent"));
       timeText(ts);
       gameWon = true;
       gameWonCleanup();
     } else {
       timer.start();
-      ts = Number(window.localStorage.getItem("timeSpent"));
       timerInterval = setInterval(() => {
         tmp = timer.getTime();
         t = tmp + (ts * 1000);
@@ -196,13 +224,30 @@ document.addEventListener("DOMContentLoaded", () => {
         timeText((t / 1000));
       }, 100);
     }
+  }
 
-    if (firstTime) {
-      settingsMenu(1);
-    } else if (!gridFill) {
-      startPrompt();
-    }
+  function practiceSetup() {
 
+    grid = Array.from(Array(5), () => new Array(5).fill(0));
+    cors = [];
+    compassNESW = [];
+    blanks = [];
+
+    gameWon = false;
+    practice = true;
+    activeGame = true;
+
+    clearInterval(timerInterval);
+    timer.stop();
+
+    randCompasses();
+    randPuzzle();
+    compassNESW = compassCheck();
+
+    createSquares(false);
+    setCompasses(false);
+    setTimer(false);
+    resetGrid();
   }
 
   function puzzleSpecs(puzzleString) {
@@ -226,66 +271,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function setCompasses(initial) {
 
-    for (let i = 0; i < 4; i++) {
+    if (cors.length > 0) {
+      for (let i = 0; i < 4; i++) {
 
-      if (!initial) {
+        if (!initial) {
 
-        if (document.getElementById("compass0" + (i+1).toString())) {
-          document.getElementById("compass0" + (i+1).toString()).remove();
-        }
-        if (document.getElementById("compass1" + (i+1).toString())) {
-          document.getElementById("compass1" + (i+1).toString()).remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "N")) {
-          document.getElementById("compass0" + (i+1).toString() + "N").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "E")) {
-          document.getElementById("compass0" + (i+1).toString() + "E").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "S")) {
-          document.getElementById("compass0" + (i+1).toString() + "S").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "W")) {
-          document.getElementById("compass0" + (i+1).toString() + "W").remove();
-        }
-      }
-
-      xin = cors[i][0];
-      yin = cors[i][1];
-      sqNum = +xin + (5 * +yin) + 1;
-
-      sq = document.getElementById(sqNum.toString());
-
-      sq.style.backgroundColor = style.getPropertyValue('--color' + (i + 1).toString());
-      sq.style.border = "2px solid " + style.getPropertyValue('--color' + (i + 1).toString());
-      grid[xin][yin] = i + 1;
-
-      sqRect = sq.getBoundingClientRect();
-      xCenter = (sqRect.left + sqRect.right) / 2;
-      yCenter = (sqRect.top + sqRect.bottom) / 2;
-      xOffset = sqRect.width / 3.5;
-      yOffset = sqRect.height / 3.5;
-
-      drawLine(sqRect.left + xOffset, sqRect.top + yOffset, sqRect.right - xOffset, sqRect.bottom - yOffset, "compass0" + (i+1).toString());
-      drawLine(sqRect.left + xOffset, sqRect.bottom - yOffset, sqRect.right - xOffset, sqRect.top + yOffset, "compass1" + (i+1).toString());
-
-      for (let j = 0; j < 4; j++) {
-        coordinate = compassNESW[i][j];
-        blank = false;
-        for (let x = 0; x < blanks.length; x++) {
-          if (blanks[x][0] == i && blanks[x][1] == j) {
-            blank = true;
+          if (document.getElementById("compass0" + (i+1).toString())) {
+            document.getElementById("compass0" + (i+1).toString()).remove();
+          }
+          if (document.getElementById("compass1" + (i+1).toString())) {
+            document.getElementById("compass1" + (i+1).toString()).remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "N")) {
+            document.getElementById("compass0" + (i+1).toString() + "N").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "E")) {
+            document.getElementById("compass0" + (i+1).toString() + "E").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "S")) {
+            document.getElementById("compass0" + (i+1).toString() + "S").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "W")) {
+            document.getElementById("compass0" + (i+1).toString() + "W").remove();
           }
         }
-        if (!blank) {
-          if (j == 0) {
-            drawCoordinate(xCenter, yCenter - yOffset, coordinate.toString(), "compass0" + (i+1).toString() + "N");
-          } else if (j == 1) {
-            drawCoordinate(xCenter + xOffset, yCenter, coordinate.toString(), "compass0" + (i+1).toString() + "E");
-          } else if (j == 2) {
-            drawCoordinate(xCenter, yCenter + yOffset, coordinate.toString(), "compass0" + (i+1).toString() + "S");
-          } else if (j == 3) {
-            drawCoordinate(xCenter - xOffset, yCenter, coordinate.toString(), "compass0" + (i+1).toString() + "W");
+
+        xin = cors[i][0];
+        yin = cors[i][1];
+        sqNum = +xin + (5 * +yin) + 1;
+
+        sq = document.getElementById(sqNum.toString());
+
+        sq.style.backgroundColor = style.getPropertyValue('--color' + (i + 1).toString());
+        sq.style.border = "2px solid " + style.getPropertyValue('--color' + (i + 1).toString());
+        grid[xin][yin] = i + 1;
+
+        sqRect = sq.getBoundingClientRect();
+        xCenter = (sqRect.left + sqRect.right) / 2;
+        yCenter = (sqRect.top + sqRect.bottom) / 2;
+        xOffset = sqRect.width / 3.5;
+        yOffset = sqRect.height / 3.5;
+
+        drawLine(sqRect.left + xOffset, sqRect.top + yOffset, sqRect.right - xOffset, sqRect.bottom - yOffset, "compass0" + (i+1).toString());
+        drawLine(sqRect.left + xOffset, sqRect.bottom - yOffset, sqRect.right - xOffset, sqRect.top + yOffset, "compass1" + (i+1).toString());
+
+        for (let j = 0; j < 4; j++) {
+          coordinate = compassNESW[i][j];
+          blank = false;
+          for (let x = 0; x < blanks.length; x++) {
+            if (blanks[x][0] == i && blanks[x][1] == j) {
+              blank = true;
+            }
+          }
+          if (!blank) {
+            if (j == 0) {
+              drawCoordinate(xCenter, yCenter - yOffset, coordinate.toString(), "compass0" + (i+1).toString() + "N");
+            } else if (j == 1) {
+              drawCoordinate(xCenter + xOffset, yCenter, coordinate.toString(), "compass0" + (i+1).toString() + "E");
+            } else if (j == 2) {
+              drawCoordinate(xCenter, yCenter + yOffset, coordinate.toString(), "compass0" + (i+1).toString() + "S");
+            } else if (j == 3) {
+              drawCoordinate(xCenter - xOffset, yCenter, coordinate.toString(), "compass0" + (i+1).toString() + "W");
+            }
           }
         }
       }
@@ -340,7 +387,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!initial) {
       for (let x = 0; x < 25; x++) {
-        document.getElementById((x + 1).toString()).remove();
+        if (document.getElementById((x + 1).toString())) {
+          document.getElementById((x + 1).toString()).remove();
+        }
       }
     }
 
@@ -378,30 +427,36 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("highlight_button").remove();
     }
 
-    cpRect = document.getElementById("cp05").getBoundingClientRect();
-    center = (cpRect.left + cpRect.right) / 2;
+    cp05Rect = document.getElementById("cp05").getBoundingClientRect();
+    cp06Rect = document.getElementById("cp06").getBoundingClientRect();
+    centerx05 = (cp05Rect.left + cp05Rect.right) / 2;
+    centery05 = (cp05Rect.top + cp05Rect.bottom) / 2;
+    centerx06 = (cp06Rect.left + cp06Rect.right) / 2;
+    centery06 = (cp06Rect.top + cp06Rect.bottom) / 2;
 
     resetImg = document.createElement("img");
     resetImg.src = "icons/reset_light.png";
     if (colorMode == "dark") { resetImg.src = "icons/reset_dark.png"; }
     resetImg.id = "reset_button";
-    if (!gameWon) { resetImg.addEventListener("click", resetGrid); }
+    document.getElementById("cp05").addEventListener("click", resetGrid);
     resetImg.classList.add("game_button");
-    resetImg.style.top = `${cpRect.top}px`;
-    resetImg.style.left = `${center}px`;
-    resetImg.style.transform = "translate(-50%, 0)";
+    resetImg.style.top = `${centery05}px`;
+    resetImg.style.left = `${centerx05}px`;
+    resetImg.style.transform = "translate(-50%, -50%)";
     resetImg.classList.add("disable_select");
+    resetImg.style.pointerEvents = "none";
 
     highlightImg = document.createElement("img");
     highlightImg.src = "icons/highlight_light.png";
     if (colorMode == "dark") { highlightImg.src = "icons/highlight_dark.png"; }
     highlightImg.id = "highlight_button";
-    if (!gameWon) { highlightImg.addEventListener("click", highlight); }
+    document.getElementById("cp06").addEventListener("click", highlight);
     highlightImg.classList.add("game_button");
-    highlightImg.style.top = `${cpRect.top}px`;
-    highlightImg.style.left = `${center}px`;
-    highlightImg.style.transform = "translate(-50%, 150%)";
+    highlightImg.style.top = `${centery06}px`;
+    highlightImg.style.left = `${centerx06}px`;
+    highlightImg.style.transform = "translate(-50%, -50%)";
     highlightImg.classList.add("disable_select");
+    highlightImg.style.pointerEvents = "none";
 
     keyBoard.appendChild(resetImg);
     keyBoard.appendChild(highlightImg);
@@ -483,7 +538,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function setTimer(initial) {
 
     if (!initial) {
-      document.getElementById("time").remove();
+      if (document.getElementById("time")) {
+        document.getElementById("time").remove();
+      }
     }
 
     rect = keyBoard.getBoundingClientRect();
@@ -498,15 +555,21 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       time.style.color = "white";
     }
+    if (practice) {
+      time.innerText = "practice";
+    }
     keyBoard.appendChild(time);
-    timeText(Number(window.localStorage.getItem("timeSpent")));
+    if (!practice) {
+      timeText(Number(window.localStorage.getItem("timeSpent")));
+    }
+
   }
 
   function timeText(seconds) {
     if (seconds < 3600) {
-      document.getElementById('time').innerText = new Date(seconds * 1000).toISOString().substring(14, 19);
+      document.getElementById("time").innerText = new Date(seconds * 1000).toISOString().substring(14, 19);
     } else {
-      document.getElementById('time').innerText = new Date(seconds * 1000).toISOString().substring(11, 19);
+      document.getElementById("time").innerText = new Date(seconds * 1000).toISOString().substring(11, 19);
     }
   }
 
@@ -531,13 +594,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.getElementById("left_arrow").style.visibility = "hidden";
     }
-    if (menuNum < 3) {
+    if (menuNum < 4) {
       document.getElementById("right_arrow").style.visibility = "visible";
     } else {
       document.getElementById("right_arrow").style.visibility = "hidden";
     }
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       if ((i+1) != menuNum) {
         document.getElementById("rules_container_0" + (i+1).toString()).classList.remove("active");
         document.getElementById("rules_dot_0" + (i+1).toString()).style.height = "10px";
@@ -548,8 +611,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("rules_dot_0" + (i+1).toString()).style.width = "20px";
       }
     }
-
     if (menuNum == 1) {
+      sqList = ["rb34"];
+      sqCoorList = [[0,2,1,0]];
+      squares = ["rb31", "rb32", "rb33", "rb35", "rb36", "rb37", "rb38", "rb39"];
+
+    } else if (menuNum == 2) {
       sqList = ["rb04"];
       sqCoorList = [[0,2,1,0]];
       squares = ["rb01", "rb02", "rb03", "rb05", "rb06", "rb07", "rb08", "rb09"];
@@ -565,10 +632,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("rb06").style.animation = "rb06b 6s infinite steps(1, start)";
         document.getElementById("rb08").style.animation = "rb08b 6s infinite steps(1, start)";
       }
-      document.getElementById("rules_check_01").style.animation = "check01 6s infinite steps(1, start)";
-    } else if (menuNum == 2) {
+      document.getElementById("rules_check_02").style.animation = "check01 6s infinite steps(1, start)";
+    } else if (menuNum == 3) {
       sqList = ["rb11", "rb19"];
-      sqCoorList = [[0,2,2,0], [2,0,0,2]];
+      sqCoorList = [[0,"x",2,0], [2,0,0,2]];
       squares = ["rb12", "rb13", "rb14", "rb15", "rb16", "rb17", "rb18"];
 
       if (colorMode == "light") {
@@ -588,11 +655,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("rb12").style.animation = "rb12b 12s infinite steps(1, start)";
         document.getElementById("rb13").style.animation = "rb13b 12s infinite steps(1, start)";
       }
-      document.getElementById("rules_check_02").style.animation = "check02 12s infinite steps(1, start)";
-      document.getElementById("rules_ex_02").style.animation = "ex02 12s infinite steps(1, start)";
-    } else if (menuNum == 3) {
+      document.getElementById("rules_check_03").style.animation = "check02 12s infinite steps(1, start)";
+      document.getElementById("rules_ex_03").style.animation = "ex02 12s infinite steps(1, start)";
+    } else if (menuNum == 4) {
       sqList = ["rb21", "rb22", "rb23"];
-      sqCoorList = [[0,0,"x",0], [0,0,2,0], [0,0,2,0]];
+      sqCoorList = [[0,0,2,0], [0,0,2,0], [0,0,2,0]];
       squares = ["rb24", "rb25", "rb26", "rb27", "rb28", "rb29"];
 
       if (colorMode == "light") {
@@ -610,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("rb26").style.animation = "rb26b 6s infinite steps(1, start)";
         document.getElementById("rb29").style.animation = "rb29b 6s infinite steps(1, start)";
       }
-      document.getElementById("rules_check_03").style.animation = "check03 6s infinite steps(1, start)";
+      document.getElementById("rules_check_04").style.animation = "check03 6s infinite steps(1, start)";
     }
 
     for (let x = 0; x < squares.length; x++) {
@@ -695,7 +762,11 @@ document.addEventListener("DOMContentLoaded", () => {
     gp.innerText = window.localStorage.getItem("gamesPlayed");
 
     wp = document.getElementById("win_percentage_num");
-    wp.innerText = Math.floor((gwn / gpn) * 100).toString();
+    if (gpn == 0) {
+      wp.innerText = 0;
+    } else {
+      wp.innerText = Math.floor((gwn / gpn) * 100).toString();
+    }
 
     at = document.getElementById("average_time_num");
     if (atn < 3600) {
@@ -740,8 +811,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (firstTime) {
       document.getElementById("settings_modal").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
       firstTime = false;
-      startPrompt();
+      if (clicked != "practice") {
+        startPrompt();
+      }
     } else {
       if (!(clicked == "overlay" && document.getElementById("start_modal").classList.contains("active"))) {
         document.getElementById("palette_modal").classList.remove("active");
@@ -785,8 +859,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("overlay").addEventListener("click", function() { closeModal("overlay") }, false);
     document.getElementById("share_button").addEventListener("click", shareScore);
     document.getElementById("share_button").addEventListener("touchstart", shareScore);
+    document.getElementById("start_button").addEventListener("click", gameSetup);
     document.getElementById("start_button").addEventListener("click", closeModal);
-    document.getElementById("start_button").addEventListener("click", increaseGamesPlayed);
+    document.getElementById("practice_button").addEventListener("click", practiceSetup);
+    document.getElementById("practice_button").addEventListener("click", closeModal);
+    document.getElementById("practice_button_02").addEventListener("click", practiceSetup);
+    document.getElementById("practice_button_02").addEventListener("click", function() { closeModal("practice") }, false);
 
     document.getElementById("left_arrow").addEventListener("click", function() { settingsMenu((mn-1)) }, false);
     document.getElementById("right_arrow").addEventListener("click", function() { settingsMenu((mn + 1)) }, false);
@@ -823,6 +901,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    fillGrid();
+
     window.localStorage.setItem("userPalette", theme);
   }
 
@@ -841,12 +921,16 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("header").style.borderBottom = "1px solid black";
       document.getElementById("title").style.color = "black";
       document.getElementById("cp05").style.backgroundColor = "white";
-      document.getElementById("cp05").style.border = "2px solid white";
+      document.getElementById("cp05").style.border = "2px solid black";
+      document.getElementById("cp06").style.backgroundColor = "white";
+      document.getElementById("cp06").style.border = "2px solid black";
       document.getElementById("reset_button").src = "icons/reset_light.png";
       document.getElementById("highlight_button").src = "icons/highlight_light.png";
       document.getElementById("settings_button").src = "icons/settings_light.png";
       document.getElementById("scores_button").src = "icons/scores_light.png";
-      document.getElementById("time").style.color = "black";
+      if (document.getElementById("time")) {
+        document.getElementById("time").style.color = "black";
+      }
 
       // palette modal
       document.getElementById("palette_modal").style.backgroundColor = "white";
@@ -865,6 +949,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_01").style.backgroundColor = "white";
       document.getElementById("rules_container_01").style.borderTop = "1px solid black";
       document.getElementById("rules_text_01").style.color = "black";
+      document.getElementById("rules_check_01").style.color = "white";
 
       document.getElementById("rules_container_02").style.backgroundColor = "white";
       document.getElementById("rules_container_02").style.borderTop = "1px solid black";
@@ -874,14 +959,23 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_03").style.borderTop = "1px solid black";
       document.getElementById("rules_text_03").style.color = "black";
 
+      document.getElementById("rules_container_04").style.backgroundColor = "white";
+      document.getElementById("rules_container_04").style.borderTop = "1px solid black";
+      document.getElementById("rules_text_04").style.color = "black";
+
       document.getElementById("check_container").style.color = "white";
       document.getElementById("rules_bottom_row").style.backgroundColor = "white";
       document.getElementById("rules_dots").style.backgroundColor = "white";
       document.getElementById("rules_dot_01").style.backgroundColor = "black";
       document.getElementById("rules_dot_02").style.backgroundColor = "black";
       document.getElementById("rules_dot_03").style.backgroundColor = "black";
+      document.getElementById("rules_dot_04").style.backgroundColor = "black";
       document.getElementById("left_arrow").src = "icons/left_light.png";
       document.getElementById("right_arrow").src = "icons/right_light.png";
+
+      document.getElementById("practice_container_02").style.backgroundColor = "white";
+      document.getElementById("practice_container_02").style.borderTop = "1px solid black";
+      document.getElementById("practice_intro_02").style.color = "black";
 
       // scores modal
       document.getElementById("scores_modal").style.backgroundColor = "white";
@@ -911,6 +1005,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("start_modal").style.backgroundColor = "white";
       document.getElementById("start_container").style.backgroundColor = "white";
       document.getElementById("cardinal_intro").style.color = "black";
+      document.getElementById("practice_container").style.backgroundColor = "white";
+      document.getElementById("practice_container").style.borderTop = "1px solid black";
+      document.getElementById("practice_intro").style.color = "black";
 
     } else {
       // main game
@@ -918,12 +1015,16 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("header").style.borderBottom = "1px solid gray";
       document.getElementById("title").style.color = "white";
       document.getElementById("cp05").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
-      document.getElementById("cp05").style.border = "2px solid " + style.getPropertyValue('--dark-mode-black');
+      document.getElementById("cp05").style.border = "2px solid white";
+      document.getElementById("cp06").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("cp06").style.border = "2px solid white";
       document.getElementById("reset_button").src = "icons/reset_dark.png";
       document.getElementById("highlight_button").src = "icons/highlight_dark.png";
       document.getElementById("settings_button").src = "icons/settings_dark.png";
       document.getElementById("scores_button").src = "icons/scores_dark.png";
-      document.getElementById("time").style.color = "white";
+      if (document.getElementById("time")) {
+        document.getElementById("time").style.color = "white";
+      }
 
       // palette modal
       document.getElementById("palette_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -942,6 +1043,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_01").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_container_01").style.borderTop = "1px solid gray";
       document.getElementById("rules_text_01").style.color = "white";
+      document.getElementById("rules_check_01").style.color = style.getPropertyValue('--dark-mode-black');
 
       document.getElementById("rules_container_02").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_container_02").style.borderTop = "1px solid gray";
@@ -951,14 +1053,23 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rules_container_03").style.borderTop = "1px solid gray";
       document.getElementById("rules_text_03").style.color = "white";
 
+      document.getElementById("rules_container_04").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("rules_container_04").style.borderTop = "1px solid gray";
+      document.getElementById("rules_text_04").style.color = "white";
+
       document.getElementById("check_container").style.color = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_bottom_row").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_dots").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("rules_dot_01").style.backgroundColor = "white";
       document.getElementById("rules_dot_02").style.backgroundColor = "white";
       document.getElementById("rules_dot_03").style.backgroundColor = "white";
+      document.getElementById("rules_dot_04").style.backgroundColor = "white";
       document.getElementById("left_arrow").src = "icons/left_dark.png";
       document.getElementById("right_arrow").src = "icons/right_dark.png";
+
+      document.getElementById("practice_container_02").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("practice_container_02").style.borderTop = "1px solid gray";
+      document.getElementById("practice_intro_02").style.color = "white";
 
       // scores modal
       document.getElementById("scores_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -988,6 +1099,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("start_modal").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("start_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("cardinal_intro").style.color = "white";
+      document.getElementById("practice_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+      document.getElementById("practice_container").style.borderTop = "1px solid gray";
+      document.getElementById("practice_intro").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
@@ -996,61 +1110,65 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function blurScreen() {
-    timer.stop();
 
-    if (!gameWon) {
-      for (let i = 0; i < 4; i++) {
-        if (document.getElementById("compass0" + (i+1).toString())) {
-          document.getElementById("compass0" + (i+1).toString()).remove();
-        }
-        if (document.getElementById("compass1" + (i+1).toString())) {
-          document.getElementById("compass1" + (i+1).toString()).remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "N")) {
-          document.getElementById("compass0" + (i+1).toString() + "N").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "E")) {
-          document.getElementById("compass0" + (i+1).toString() + "E").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "S")) {
-          document.getElementById("compass0" + (i+1).toString() + "S").remove();
-        }
-        if (document.getElementById("compass0" + (i+1).toString() + "W")) {
-          document.getElementById("compass0" + (i+1).toString() + "W").remove();
-        }
-      }
+    if (activeGame) {
 
-      for (let x = 0; x < 5; x++) {
-        for (let y = 0; y < 5; y++) {
-          sq = document.getElementById((x + (5 * y) + 1).toString());
-          if (colorMode == "light") {
-            sq.style.backgroundColor = "white";
-            sq.style.border = "2px solid black";
-          } else {
-            sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
-            sq.style.border = "2px solid gray";
+      timer.stop();
+
+      if (!gameWon) {
+        for (let i = 0; i < 4; i++) {
+          if (document.getElementById("compass0" + (i+1).toString())) {
+            document.getElementById("compass0" + (i+1).toString()).remove();
+          }
+          if (document.getElementById("compass1" + (i+1).toString())) {
+            document.getElementById("compass1" + (i+1).toString()).remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "N")) {
+            document.getElementById("compass0" + (i+1).toString() + "N").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "E")) {
+            document.getElementById("compass0" + (i+1).toString() + "E").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "S")) {
+            document.getElementById("compass0" + (i+1).toString() + "S").remove();
+          }
+          if (document.getElementById("compass0" + (i+1).toString() + "W")) {
+            document.getElementById("compass0" + (i+1).toString() + "W").remove();
+          }
+        }
+
+        for (let x = 0; x < 5; x++) {
+          for (let y = 0; y < 5; y++) {
+            sq = document.getElementById((x + (5 * y) + 1).toString());
+            if (colorMode == "light") {
+              sq.style.backgroundColor = "white";
+              sq.style.border = "2px solid black";
+            } else {
+              sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+              sq.style.border = "2px solid gray";
+            }
           }
         }
       }
     }
-
   }
 
   function focusScreen() {
 
-    if (!document.getElementById("start_modal").classList.contains("active")
-    && !document.getElementById("palette_modal").classList.contains("active")
-    && !document.getElementById("settings_modal").classList.contains("active")
-    && !document.getElementById("scores_modal").classList.contains("active")) {
+    if (activeGame) {
+      if (!document.getElementById("start_modal").classList.contains("active")
+      && !document.getElementById("palette_modal").classList.contains("active")
+      && !document.getElementById("settings_modal").classList.contains("active")
+      && !document.getElementById("scores_modal").classList.contains("active")) {
 
-      if (!gameWon) {
-        timer.start();
+        if (!gameWon && !practice) {
+          timer.start();
+        }
+
+        setCompasses(false);
+        fillGrid();
       }
-
-      setCompasses(false);
-      fillGrid();
     }
-
   }
 
   function startPrompt() {
@@ -1059,27 +1177,33 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("overlay").classList.add("active");
     document.getElementById("cardinal_intro").innerText = "cardinal #" + index.toString();
 
+    ts = Number(window.localStorage.getItem("timeSpent"));
+    if (ts != 0) {
+      document.getElementById("start_button").innerText = "continue";
+    }
+
     blurScreen();
   }
 
-  function increaseGamesPlayed() {
-    gpn = Number(window.localStorage.getItem("gamesPlayed"));
-    window.localStorage.setItem("gamesPlayed", (gpn+1).toString());
-  }
-
   function beginColor() {
-    drag = true;
-    if (highlighted) {
-      setCompasses(false);
-      highlighted = false;
+
+    if (activeGame) {
+      drag = true;
+      if (highlighted) {
+        setCompasses(false);
+        highlighted = false;
+      }
     }
+
   }
 
   function endColor() {
-    drag = false;
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
-        clicked[i][j] = 0;
+    if (activeGame) {
+      drag = false;
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+          clicked[i][j] = 0;
+        }
       }
     }
   }
@@ -1146,65 +1270,72 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function resetGrid() {
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 5; j++) {
-        sq = document.getElementById((i + (5 * j) + 1).toString());
-        valid = true;
-        for (let c = 0; c < 4; c++) {
-          if (i == cors[c][0] && j == cors[c][1]) {
-            valid = false;
+
+    if (activeGame) {
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+          sq = document.getElementById((i + (5 * j) + 1).toString());
+          valid = true;
+          for (let c = 0; c < 4; c++) {
+            if (i == cors[c][0] && j == cors[c][1]) {
+              valid = false;
+            }
           }
-        }
-        if (valid) {
-          grid[i][j] = 0;
-          if (colorMode == "light") {
-            sq.style.backgroundColor = "white";
-            sq.style.border = "2px solid black";
-          } else {
-            sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
-            sq.style.border = "2px solid gray";
+          if (valid) {
+            grid[i][j] = 0;
+            if (colorMode == "light") {
+              sq.style.backgroundColor = "white";
+              sq.style.border = "2px solid black";
+            } else {
+              sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+              sq.style.border = "2px solid gray";
+            }
           }
         }
       }
+      setCompasses();
+      if (!practice) {
+        window.localStorage.setItem("gridProgress", JSON.stringify(grid));
+      }
     }
-    setCompasses();
-    window.localStorage.setItem("gridProgress", JSON.stringify(grid));
   }
 
   function highlight() {
 
-    highlighted = true;
+    if (activeGame) {
+      highlighted = true;
 
-    nesw = compassCheck();
+      nesw = compassCheck();
 
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (j == 0 && document.getElementById("compass0" + (i+1).toString() + "N")) {
-          if (nesw[i][j] != compassNESW[i][j]) {
-            document.getElementById("compass0" + (i+1).toString() + "N").style.color = "white";
-          } else {
-            document.getElementById("compass0" + (i+1).toString() + "N").style.color = "black";
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+          if (j == 0 && document.getElementById("compass0" + (i+1).toString() + "N")) {
+            if (nesw[i][j] != compassNESW[i][j]) {
+              document.getElementById("compass0" + (i+1).toString() + "N").style.color = "white";
+            } else {
+              document.getElementById("compass0" + (i+1).toString() + "N").style.color = "black";
+            }
           }
-        }
-        if (j == 1 && document.getElementById("compass0" + (i+1).toString() + "E")) {
-          if (nesw[i][j] != compassNESW[i][j]) {
-            document.getElementById("compass0" + (i+1).toString() + "E").style.color = "white";
-          } else {
-            document.getElementById("compass0" + (i+1).toString() + "E").style.color = "black";
+          if (j == 1 && document.getElementById("compass0" + (i+1).toString() + "E")) {
+            if (nesw[i][j] != compassNESW[i][j]) {
+              document.getElementById("compass0" + (i+1).toString() + "E").style.color = "white";
+            } else {
+              document.getElementById("compass0" + (i+1).toString() + "E").style.color = "black";
+            }
           }
-        }
-        if (j == 2 && document.getElementById("compass0" + (i+1).toString() + "S")) {
-          if (nesw[i][j] != compassNESW[i][j]) {
-            document.getElementById("compass0" + (i+1).toString() + "S").style.color = "white";
-          } else {
-            document.getElementById("compass0" + (i+1).toString() + "S").style.color = "black";
+          if (j == 2 && document.getElementById("compass0" + (i+1).toString() + "S")) {
+            if (nesw[i][j] != compassNESW[i][j]) {
+              document.getElementById("compass0" + (i+1).toString() + "S").style.color = "white";
+            } else {
+              document.getElementById("compass0" + (i+1).toString() + "S").style.color = "black";
+            }
           }
-        }
-        if (j == 3 && document.getElementById("compass0" + (i+1).toString() + "W")) {
-          if (nesw[i][j] != compassNESW[i][j]) {
-            document.getElementById("compass0" + (i+1).toString() + "W").style.color = "white";
-          } else {
-            document.getElementById("compass0" + (i+1).toString() + "W").style.color = "black";
+          if (j == 3 && document.getElementById("compass0" + (i+1).toString() + "W")) {
+            if (nesw[i][j] != compassNESW[i][j]) {
+              document.getElementById("compass0" + (i+1).toString() + "W").style.color = "white";
+            } else {
+              document.getElementById("compass0" + (i+1).toString() + "W").style.color = "black";
+            }
           }
         }
       }
@@ -1213,65 +1344,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function didWin() {
 
-    window.localStorage.setItem("gridProgress", JSON.stringify(grid));
+    if (activeGame) {
+      if (!practice) {
+        window.localStorage.setItem("gridProgress", JSON.stringify(grid));
+      }
 
-    nesw = compassCheck();
+      nesw = compassCheck();
 
-    win = true;
+      win = true;
 
-    for (let c = 0; c < 4; c++) {
-      for (let d = 0; d < 4; d++) {
-        b = false;
-        for (let e = 0; e < blanks.length; e++) {
-          if (c == blanks[e][0] && d == blanks[e][1]) {
-            b = true;
+      for (let c = 0; c < 4; c++) {
+        for (let d = 0; d < 4; d++) {
+          b = false;
+          for (let e = 0; e < blanks.length; e++) {
+            if (c == blanks[e][0] && d == blanks[e][1]) {
+              b = true;
+            }
+          }
+          if ((nesw[c][d] != compassNESW[c][d]) && !b) {
+            win = false;
           }
         }
-        if ((nesw[c][d] != compassNESW[c][d]) && !b) {
-          win = false;
-        }
       }
-    }
 
-    if (win) {
-      if (noLoneSquares() && checkPaths()) {
-        gameWon = true;
-        timer.stop();
-        clearInterval(timerInterval);
-        gameWonCleanup();
-        gw = Number(window.localStorage.getItem("gamesWon")) + 1;
-        window.localStorage.setItem("gamesWon", gw.toString());
+      if (win) {
+        if (noLoneSquares() && checkPaths()) {
 
-        newT = Number(window.localStorage.getItem("timeSpent"));
-        oldAvg = Number(window.localStorage.getItem("averageTime"));
-        newAvg = oldAvg + ((newT - oldAvg) / gw);
-        window.localStorage.setItem("averageTime", newAvg.toString());
+          if (practice) {
+            gameWon = true;
+            gameWonCleanup();
+          } else {
+            gameWon = true;
+            timer.stop();
+            clearInterval(timerInterval);
+            gameWonCleanup();
+            gw = Number(window.localStorage.getItem("gamesWon")) + 1;
+            window.localStorage.setItem("gamesWon", gw.toString());
 
-        scores = JSON.parse(window.localStorage.getItem("allScores"));
-        stars = getScore(newT);
-        scores[stars-1] = scores[stars-1] + 1;
-        window.localStorage.setItem("allScores", JSON.stringify(scores));
+            newT = Number(window.localStorage.getItem("timeSpent"));
+            oldAvg = Number(window.localStorage.getItem("averageTime"));
+            newAvg = oldAvg + ((newT - oldAvg) / gw);
+            window.localStorage.setItem("averageTime", newAvg.toString());
+
+            scores = JSON.parse(window.localStorage.getItem("allScores"));
+            stars = getScore(newT);
+            scores[stars-1] = scores[stars-1] + 1;
+            window.localStorage.setItem("allScores", JSON.stringify(scores));
+          }
+        }
       }
     }
   }
 
   function fillGrid() {
-    gridProgress = JSON.parse(window.localStorage.getItem("gridProgress"));
-    for (let x = 0; x < 5; x++) {
-      for (let y = 0; y < 5; y++) {
-        grid[x][y] = gridProgress[x][y];
-        sq = document.getElementById((x + (5 * y) + 1).toString());
-        if (!gridProgress[x][y]) {
-          if (colorMode == "light") {
-            sq.style.backgroundColor = "white";
-            sq.style.border = "2px solid black";
+
+    if (practice) {
+      for (let x = 0; x < 5; x++) {
+        for (let y = 0; y < 5; y++) {
+          sq = document.getElementById((x + (5 * y) + 1).toString());
+          if (grid[x][y] == 0) {
+            if (colorMode == "light") {
+              sq.style.backgroundColor = "white";
+              sq.style.border = "2px solid black";
+            } else {
+              sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+              sq.style.border = "2px solid gray"
+            }
           } else {
-            sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
-            sq.style.border = "2px solid gray"
+            sq.style.backgroundColor = style.getPropertyValue('--color' + grid[x][y]);
+            sq.style.border = "2px solid " + style.getPropertyValue('--color' + grid[x][y]);
           }
-        } else {
-          sq.style.backgroundColor = style.getPropertyValue('--color' + gridProgress[x][y]);
-          sq.style.border = "2px solid " + style.getPropertyValue('--color' + gridProgress[x][y]);
+        }
+      }
+    } else {
+      gridProgress = JSON.parse(window.localStorage.getItem("gridProgress"));
+      for (let x = 0; x < 5; x++) {
+        for (let y = 0; y < 5; y++) {
+          grid[x][y] = gridProgress[x][y];
+          sq = document.getElementById((x + (5 * y) + 1).toString());
+          if (!gridProgress[x][y]) {
+            if (colorMode == "light") {
+              sq.style.backgroundColor = "white";
+              sq.style.border = "2px solid black";
+            } else {
+              sq.style.backgroundColor = style.getPropertyValue('--dark-mode-black');
+              sq.style.border = "2px solid gray"
+            }
+          } else {
+            sq.style.backgroundColor = style.getPropertyValue('--color' + gridProgress[x][y]);
+            sq.style.border = "2px solid " + style.getPropertyValue('--color' + gridProgress[x][y]);
+          }
         }
       }
     }
@@ -1279,8 +1441,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function gameWonCleanup() {
 
-    document.getElementById("share_container").classList.add("active");
-    window.localStorage.setItem("todayWon", "1");
+    activeGame = false;
+
+    if (!practice) {
+      document.getElementById("share_container").classList.add("active");
+      window.localStorage.setItem("todayWon", "1");
+    }
 
     fillGrid();
 
@@ -1295,17 +1461,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    document.getElementById("reset_button").removeEventListener("click", resetGrid);
-    document.getElementById("highlight_button").removeEventListener("click", highlight);
+    if (!practice) {
+      setTimeout(scoresMenu, 2200);
+    } else {
+      setTimeout(startPrompt, 2200);
+    }
 
-    document.removeEventListener("pointerdown", beginColor);
-    document.removeEventListener("pointerup", endColor);
-    document.removeEventListener("pointerup", didWin);
-
-    window.removeEventListener("blur", blurScreen);
-    window.removeEventListener("focus", focusScreen);
-
-    setTimeout(scoresMenu, 2200);
   }
 
   function shareScore() {
@@ -1539,5 +1700,180 @@ https://cornbread.games`);
     }
 
     return pressedNESW;
+  }
+
+  function randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  }
+
+  function shapeChecker(x, y) {
+    shapes = [];
+    if (checkDirection(y, "N") && checkDirection(x, "E")) {
+      if (grid[x][y-1] == 0 && grid[x+1][y] == 0) {
+        shapes.push(1);
+      }
+    }
+    if (checkDirection(y, "S") && checkDirection(x, "E")) {
+      if (grid[x][y+1] == 0 && grid[x+1][y] == 0) {
+        shapes.push(2);
+      }
+    }
+    if (checkDirection(y, "S") && checkDirection(x, "W")) {
+      if (grid[x][y+1] == 0 && grid[x-1][y] == 0) {
+        shapes.push(3);
+      }
+    }
+    if (checkDirection(y, "N") && checkDirection(x, "W")) {
+      if (grid[x][y-1] == 0 && grid[x-1][y] == 0) {
+        shapes.push(4);
+      }
+    }
+    if (checkDirection(y, "N") && checkDirection(y, "S")) {
+      if (grid[x][y-1] == 0 && grid[x][y+1] == 0) {
+        shapes.push(5);
+      }
+    }
+    if (checkDirection(x, "E") && checkDirection(x, "W")) {
+      if (grid[x+1][y] == 0 && grid[x-1][y] == 0) {
+        shapes.push(6);
+      }
+    }
+    return shapes;
+
+  }
+
+  function drawShape(x, y, c, s) {
+    grid[x][y] = c;
+    switch(s) {
+      case 1:
+        grid[x][y-1] = c;
+        grid[x+1][y] = c;
+        break;
+      case 2:
+        grid[x][y+1] = c;
+        grid[x+1][y] = c;
+        break;
+      case 3:
+        grid[x][y+1] = c;
+        grid[x-1][y] = c;
+        break;
+      case 4:
+        grid[x][y-1] = c;
+        grid[x-1][y] = c;
+        break;
+      case 5:
+        grid[x][y-1] = c;
+        grid[x][y+1] = c;
+        break;
+      case 6:
+        grid[x+1][y] = c;
+        grid[x-1][y] = c;
+        break;
+      default:
+        console.log("oops!");
+    }
+  }
+
+  function randCompasses() {
+    setC = 0;
+    while (setC < 4) {
+      x = randInt(0, 4);
+      y = randInt(0, 4);
+      shapes = shapeChecker(x, y);
+      if (grid[x][y] == 0 && shapes.length > 0) {
+        randex = randInt(0, (shapes.length - 1));
+        shape = shapes[randex];
+        setC += 1;
+        drawShape(x, y, setC, shape);
+        comp = [x,y];
+        nesw = [0,0,0,0];
+        cors.push(comp);
+        compassNESW.push(nesw);
+      }
+    }
+  }
+
+  function availableSpots() {
+    n = 0;
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        if (grid[i][j] == 0) {
+          n += 1;
+        }
+      }
+    }
+    return n;
+  }
+
+  function getAvailableSq(i) {
+
+    n = 0;
+    for (let x = 0; x < 5; x++)  {
+      for (let y = 0; y < 5; y++) {
+        if (grid[x][y] == 0) {
+          n += 1;
+          if (n == i) {
+            return [x,y];
+          }
+        }
+      }
+    }
+  }
+
+  function getAdjacentColors(x, y) {
+    adjacentColors = [];
+    if (checkDirection(y, "N")) {
+      if (grid[x][y-1] != 0) {
+        adjacentColors.push(grid[x][y-1]);
+      }
+    }
+    if (checkDirection(x, "E")) {
+      if (grid[x+1][y] != 0) {
+        adjacentColors.push(grid[x+1][y]);
+      }
+    }
+    if (checkDirection(y, "S")) {
+      if (grid[x][y+1] != 0) {
+        adjacentColors.push(grid[x][y+1]);
+      }
+    }
+    if (checkDirection(x, "W")) {
+      if (grid[x-1][y] != 0) {
+        adjacentColors.push(grid[x-1][y]);
+      }
+    }
+    return adjacentColors;
+  }
+
+  function randPuzzle() {
+
+    colorCounts = [0,0,0,0];
+    spots = availableSpots();
+    while (spots > 0) {
+      spot = randInt(1, spots);
+      sqCors = getAvailableSq(spot);
+      sqx = sqCors[0];
+      sqy = sqCors[1];
+      adjacentColors = getAdjacentColors(sqx, sqy);
+      if (adjacentColors.length == 1) {
+        c = adjacentColors[0];
+        grid[sqx][sqy] = c;
+        colorCounts[c-1] += 1;
+      } else if (adjacentColors.length > 1) {
+        min = colorCounts[adjacentColors[0] - 1];
+        mindex = 0;
+        for (let i = 1; i < adjacentColors.length; i++) {
+          c = colorCounts[adjacentColors[i] - 1];
+          if (c < min) {
+            min = c;
+            mindex = i;
+          }
+        }
+        c = adjacentColors[mindex];
+        grid[sqx][sqy] = c;
+        colorCounts[c-1] += 1;
+      }
+      spots = availableSpots();
+    }
   }
 });
