@@ -61,6 +61,7 @@
 html, body {
   height: 100%;
   font-family: "Avenir", Arial;
+  overflow-y: hidden;
 }
 
 #container {
@@ -191,7 +192,7 @@ header {
   height: 46px;
   margin-left: 5px;
   margin-right: 5px;
-  border: 2px solid black;
+  border: none;
   background-color: white;
 }
 
@@ -200,7 +201,7 @@ header {
   height: 46px;
   margin-left: 5px;
   margin-right: 5px;
-  border: 2px solid black;
+  border: none;
   background-color: white;
 }
 
@@ -222,7 +223,7 @@ header {
 
 .game_button {
   position: absolute;
-  width: 28px;
+  width: 46px;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -332,6 +333,7 @@ header {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   pointer-events: none;
+  backdrop-filter: blur(3px);
 }
 
 #overlay.active {
