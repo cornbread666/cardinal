@@ -207,12 +207,12 @@ header {
 
 .compass_line {
   border-top: 2px solid black;
-  position: absolute;
+  position: fixed;
   height: 0;
 }
 
 .coordinate_num {
-  position: absolute;
+  position: fixed;
   font-size: 1rem;
   color: black;
   font-weight: thin;
@@ -222,7 +222,7 @@ header {
 }
 
 .game_button {
-  position: absolute;
+  position: fixed;
   width: 46px;
   cursor: pointer;
   user-select: none;
@@ -288,7 +288,7 @@ header {
   max-width: 80%;
   max-height: 100%;
   border-radius: 10px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .modal.active {
@@ -585,6 +585,7 @@ input:checked + .slider:before {
   visibility: hidden;
   width: 30px;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #rules_dots {
@@ -1146,7 +1147,8 @@ input:checked + .slider:before {
 
 #start_modal {
   display: flex;
-  width: auto;
+  width: 200px;
+  justify-content: center;
 }
 
 #start_container {
