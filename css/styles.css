@@ -63,6 +63,7 @@ html, body {
   font-family: "Avenir", Arial;
   overflow-y: hidden;
   overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #container {
