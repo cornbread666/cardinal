@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.4";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.5";
 
     gridFill = false;
 
@@ -1467,8 +1467,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function shareScore() {
 
-    document.getElementById("clipboard_copy").innerText = "copied to clipboard";
-
     yc = String.fromCodePoint("0x1f7e1");
     rc = String.fromCodePoint("0x1f534");
     gc = String.fromCodePoint("0x1f7e2");
@@ -1499,11 +1497,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(`cardinal #${index.toString()} — ${timeSpent}
+    shareString = `cardinal #${index.toString()} — ${timeSpent}
 ${scoreString}
 
-https://cornbread.games`);
+https://cornbread.games`;
+
+    hasTouchScreen = false;
+    if ("maxTouchPoints" in navigator) {
+      hasTouchScreen = navigator.maxTouchPoints > 0;
+    } else if ("msMaxTouchPoints" in navigator) {
+      hasTouchScreen = navigator.msMaxTouchPoints > 0;
+    }
+
+    if (navigator.share && hasTouchScreen) {
+      navigator.share({
+        text: shareString
+      })
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareString);
+      document.getElementById("clipboard_copy").innerText = "copied to clipboard";
     } else {
       document.getElementById("clipboard_copy").innerText = "error copying score";
     }
