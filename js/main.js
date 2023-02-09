@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gameWon = false;
 
   var timerInterval;
+  var practiceInterval;
 
   puzzles = ["x", "x", "x", "x", "x", "x",
   // sunday through saturday, row begins with sunday.
@@ -118,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.5";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.6";
 
     gridFill = false;
 
@@ -228,6 +229,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fillGrid();
     setCompasses(false);
     setTimer(false);
+    clearInterval(practiceInterval);
+    clearInterval(timerInterval);
     timer.reset();
     window.localStorage.setItem("gridProgress", JSON.stringify(grid));
 
@@ -264,8 +267,9 @@ document.addEventListener("DOMContentLoaded", () => {
     practice = true;
     activeGame = true;
 
+    clearInterval(practiceInterval);
     clearInterval(timerInterval);
-    timer.stop();
+    timer.reset();
 
     randCompasses();
     randPuzzle();
@@ -275,6 +279,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setCompasses(false);
     setTimer(false);
     resetGrid();
+
+    timer.start();
+    practiceInterval = setInterval(() => {
+      t = timer.getTime();
+      timeText((t / 1000));
+    }, 100);
   }
 
   function puzzleSpecs(puzzleString) {
@@ -583,7 +593,7 @@ document.addEventListener("DOMContentLoaded", () => {
       time.style.color = "white";
     }
     if (practice) {
-      time.innerText = "practice";
+      time.innerText = "practice time: 00:00";
     }
     keyBoard.appendChild(time);
     if (!practice) {
@@ -593,11 +603,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function timeText(seconds) {
-    if (seconds < 3600) {
-      document.getElementById("time").innerText = new Date(seconds * 1000).toISOString().substring(14, 19);
-    } else {
-      document.getElementById("time").innerText = new Date(seconds * 1000).toISOString().substring(11, 19);
+
+    timeString = "";
+
+    if (practice) {
+      timeString = "practice time: ";
     }
+
+    if (seconds < 3600) {
+      timeString += new Date(seconds * 1000).toISOString().substring(14, 19);
+    } else {
+      timeString += new Date(seconds * 1000).toISOString().substring(11, 19);
+    }
+
+    document.getElementById("time").innerText = timeString;
   }
 
   function paletteSelection() {
@@ -611,6 +630,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("settings_modal").classList.add("active");
     document.getElementById("overlay").classList.add("active");
+
+    if (firstTime && menuNum < 4) {
+      document.getElementById("practice_container_02").classList.remove("active");
+    } else {
+      document.getElementById("practice_container_02").classList.add("active");
+    }
 
     sqList = [];
     sqCoorList = [];
@@ -1394,6 +1419,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (noLoneSquares() && checkPaths()) {
 
           if (practice) {
+            timer.stop();
             gameWon = true;
             gameWonCleanup();
           } else {

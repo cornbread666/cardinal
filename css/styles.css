@@ -1201,8 +1201,13 @@ input:checked + .slider:before {
 }
 
 #practice_container_02 {
+  display: none;
   width: 90%;
   flex-direction: row;
+}
+
+#practice_container_02.active {
+  display: flex;
 }
 
 #practice_intro_02 {
