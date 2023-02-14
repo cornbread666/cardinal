@@ -85,6 +85,36 @@ html, body {
   align-items: center;
 }
 
+#landscape_warning {
+  width: 90%;
+  max-width: 500px;
+  height: 100%;
+  flex-direction: column;
+  display: none;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+@media (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  #game {
+    display: none;
+  }
+  #landscape_warning {
+    display: flex;
+  }
+}
+
+#warning01 {
+  font-size: 2rem;
+  color: black;
+}
+
+#warning02 {
+  font-size: 1rem;
+  color: black;
+}
+
 header {
   border-bottom: 1px solid black;
   display: flex;

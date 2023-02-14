@@ -116,12 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function intro() {
 
-    if (screen.orientation) {
-      if (screen.orientation.lock) {
-        screen.orientation.lock("portrait");
-      }
-    }
-
     firstDay = new Date("01/16/2023"); // 01/16/2023
     today = new Date();
     diff = today - firstDay;
@@ -1066,6 +1060,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("practice_container").style.borderTop = "1px solid black";
       document.getElementById("practice_intro").style.color = "black";
 
+      document.getElementById("warning01").style.color = "black";
+      document.getElementById("warning02").style.color = "black";
+
     } else {
       // main game
       document.getElementById("container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
@@ -1157,6 +1154,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("practice_container").style.backgroundColor = style.getPropertyValue('--dark-mode-black');
       document.getElementById("practice_container").style.borderTop = "1px solid gray";
       document.getElementById("practice_intro").style.color = "white";
+
+      document.getElementById("warning01").style.color = "white";
+      document.getElementById("warning02").style.color = "white";
     }
 
     choosePalette(window.localStorage.getItem("userPalette"));
