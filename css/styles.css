@@ -96,7 +96,7 @@ html, body {
   justify-content: center;
 }
 
-@media (orientation: landscape) and (max-width: 600px) and (hover: none) and (pointer: coarse) {
+@media only screen and (orientation: landscape) and (max-width: 600px) and (hover: none) and (pointer: coarse) {
   #game {
     display: none;
   }
