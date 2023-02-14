@@ -115,11 +115,18 @@ document.addEventListener("DOMContentLoaded", () => {
   intro();
 
   function intro() {
+
+    if (screen.orientation) {
+      if (screen.orientation.lock) {
+        screen.orientation.lock("portrait");
+      }
+    }
+
     firstDay = new Date("01/16/2023"); // 01/16/2023
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.6";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.7";
 
     gridFill = false;
 
