@@ -1216,7 +1216,7 @@ document.addEventListener("DOMContentLoaded", () => {
       && !document.getElementById("settings_modal").classList.contains("active")
       && !document.getElementById("scores_modal").classList.contains("active")) {
 
-        if (!gameWon && !practice) {
+        if (!gameWon) {
           timer.start();
         }
 
