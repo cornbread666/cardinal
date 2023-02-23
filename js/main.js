@@ -136,7 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
     today = new Date();
     diff = today - firstDay;
     index = Math.floor(diff / (1000 * 3600 * 24));
-    index = 152;
     document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.8";
 
     gridFill = false;
