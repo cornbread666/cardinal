@@ -1599,11 +1599,10 @@ https://cornbread.games`;
 
   function getScore(t) {
 
-    offset = blanks.length * 30;
-    t01 = 60 + offset;
-    t02 = 150 + (offset * 1.5);
-    t03 = 300 + (offset * 2);
-    t04 = 600 + (offset * 3);
+    t01 = 60; // within 1 minute = 5 stars
+    t02 = 150; // within 2.5 minutes = 4 stars
+    t03 = 300; // within 5 minutes = 3 stars
+    t04 = 600; // within 10 minutes = 2 stars, 10+ minutes = 1 star
 
     if (t <= t01) {
       stars = 5;
