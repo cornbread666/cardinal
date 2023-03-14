@@ -134,9 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     firstDay = new Date("01/16/2023"); // 01/16/2023
     today = new Date();
-    diff = today - firstDay;
-    index = Math.floor(diff / (1000 * 3600 * 24));
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.3.9";
+    msPerDay = 1000 * 60 * 60 * 24;
+    utc1 = Date.UTC(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate());
+    utc2 = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+    index = (Math.abs(utc2 - utc1) / msPerDay);
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.1";
 
     gridFill = false;
 
