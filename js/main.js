@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 209 - 215
   "31231014046131250421000100011223", "114240042113004200344600", "13441130500310020572044122", "21330410376050050100002301113233", "00400144042000540350300413", "2043022104760021035003100220", "13241040571112020033002301111333",
   // 216 - 222
-  "2042132403221031301552020103132230"];
+  "2042132403221031301552020103132230", "142332104003343143110012", "1131044142020373450010000212", "24011410230012108502041011203133", "202234140223363301003203", "24330003540193050020001010", "1240430441130014402334001323"];
 
 
   intro();
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
     utc2 = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
     index = (Math.abs(utc2 - utc1) / msPerDay);
     console.log(index);
-    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.3";
+    document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.4";
 
     gridFill = false;
 
