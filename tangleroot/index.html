@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tangleroot Calculator</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header id="header">
+      <h1 id="title1">TANGLEROOT</h1>
+      <div id=menu_container>
+        <img src="icons/settings.png" class="menu_button" id="info_button" />
+        <div id="hamburger_container" class="hamburger_container">
+          <img src="icons/hamburger.png" class="menu_button" id="hamburger_button" />
+          <div id="hamburger_dropdown">
+            <a href="https://www.cornbread.games" id="cardinal" class="hamburger_option">cardinal</a>
+            <a href="https://www.cornbread.games/tangleroot" id="tangleroot" class="hamburger_option">tangleroot</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="plant_container"></div>
+
+    <div id="player_info">
+      <div id="flvl_container" class="player_info_container">
+        <label for="flvl_input" id="flvl_label" class="player_info_label">Farming level:</label>
+        <input type="number" id="flvl_input" min="1" max="99" step="1" value="1" class="player_info_input"/>
+      </div>
+      <div id="days_container" class="player_info_container">
+        <label for="days_input" id="days_label" class="player_info_label">Days:</label>
+        <input type="number" id="days_input" min="1" max="10000" step="1" value="1" class="player_info_input"/>
+      </div>
+      <div id="chance_container" class="player_info_container">
+        <div id="total_chance_text" class="player_info_label">Total chance:</div>
+        <div id="total_chance_num" class="player_info_label">0.0000%</div>
+      </div>
+      <div id="daysto" class="daysto_container">
+        <div id="daysto_text" class="player_info_label">Days to 100%:</div>
+        <div id="daysto_num" class="player_info_label">0</div>
+      </div>
+
+    </div>
+
+    <div id="add_plant_container">
+      <div id="plantAdder">&plus;</div>
+    </div>
+
+    <div id="modal_container">
+      <div class="modal" id="info_modal">
+        <div class="modal_header" id="info_modal_header">
+          <div id="info_title">Tangleroot Calculator</div>
+          <button class="close_button" id="info_close">&times;</button>
+        </div>
+        <div class="modal_body" id="info_modal_body">
+          <div class="info_text" id="info_text_001">
+            This tool is designed for players of the medieval point-and-click MMORPG Old School Runescape. <br /><br />
+            To use the calculator, simply input which crop types you plan to harvest and how many you plan to harvest each day.
+          </div>
+          <div class="info_text" id="info_text_002">
+            For crops with multiple patches that take more than 24 hours to grow, use the amount of patches divided by the number of days.<br /><br />
+            Example: Hardwood trees take three days to grow, but there are three patches, giving an average of one tree per day.
+          </div>
+          <div class="info_text" id="info_text_002">
+            This tool was inspired by RenderScape's Tangleroot simulator video on YouTube.<br /><br />
+            As I am not a professional statistician, if you notice any calculations that appear incorrect, or if you have anything (nice) to say, please feel free to contact me at cardinalsudoku@gmail.com.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay"></div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

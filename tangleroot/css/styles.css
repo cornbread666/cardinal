@@ -1,0 +1,346 @@
+:root,
+  :root {
+    --my-black: #121212;
+    --my-yellow: #ffff00;
+  }
+
+
+@font-face {
+  font-family: "Runescape";
+  src: url('fonts/runescape.ttf');
+  src: url('fonts/runescape.ttf') format('truetype');
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--my-black);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: "Runescape", "Avenir", Arial;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 95%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid white;
+}
+
+h1 {
+  color: var(--my-yellow);
+  font-size: min(6vw, 40px);
+}
+
+#menu_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.menu_button {
+  margin-left: 10px;
+  height: min(5vw, 30px);
+  cursor: pointer;
+  color: var(--my-yellow);
+}
+
+#add_plant_container {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#plantAdder {
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  border: 2px solid var(--my-yellow);
+  cursor: pointer;
+  margin: 0 auto;
+  padding: 0;
+  height: min(7vw, 40px);
+  width: min(7vw, 40px);
+  font-size: min(7vw, 40px);
+  color: var(--my-yellow);
+  background-color: var(--my-black);
+  border-radius: 100%;
+  user-select: none;
+}
+
+#plant_container {
+  width: 95%;
+}
+
+.plant {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: var(--my-black);
+  margin-top: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid white;
+  position: relative;
+}
+
+.animatePlant {
+  animation-delay: 0s;
+  animation: moveMeDown 0.75s ease-in;
+  margin-top: 10px;
+  padding-bottom: 10px;
+}
+
+@keyframes moveMeDown {
+  0% {
+    margin-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    max-height: 0;
+  }
+  25% {
+    opacity: 0;
+    margin-top: 10px;
+    padding-bottom: 10px;
+  }
+  100% {
+    opacity: 100%;
+    max-height: 500px;
+  }
+}
+
+.dropdown_parent {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  display: inline-flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown {
+  user-select: none;
+  cursor: pointer;
+  background-color: var(--my-black);
+  font-size: min(3vw, 20px);
+  padding: 10px;
+  border: 1px solid var(--my-yellow);
+  border-radius: 10px;
+  color: var(--my-yellow);
+  min-width: 10vw;
+}
+
+.options_container {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  z-index: 1;
+  max-height: 400px;
+  overflow: auto;
+  bottom: auto;
+}
+
+.option {
+  font-size: min(3vw, 20px);
+  text-align: center;
+  cursor: pointer;
+  color: black;
+  padding: 5px;
+  text-decoration: none;
+  display: block;
+  border: 1px solid var(--my-black);
+}
+
+.show {
+  display: block;
+}
+
+.action_label {
+  color: var(--my-yellow);
+  font-size: min(3vw, 20px);
+  margin-bottom: 5px;
+}
+
+.action_input {
+  font-family: inherit;
+  font-size: min(3vw, 20px);
+  color: var(--my-yellow);
+  width: 75%;
+  border: 1px solid var(--my-yellow);
+  border-radius: 5px;
+  background: var(--my-black);
+}
+
+#player_info {
+  width: 95%;
+  justify-content: space-evenly;
+  display: inline-flex;
+  flex-direction: row;
+  margin-top: 20px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid white;
+}
+
+.player_info_container {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.player_info_label {
+  color: var(--my-yellow);
+  font-size: min(3vw, 20px);
+  margin-bottom: 5px;
+  text-align: center;
+  line-height: 1em;
+}
+
+.player_info_input {
+  font-family: inherit;
+  font-size: min(3vw, 20px);
+  color: var(--my-yellow);
+  width:100%;
+  border: 1px solid var(--my-yellow);
+  border-radius: 5px;
+  background: var(--my-black);
+}
+
+input[type="number"] {
+  text-align: left;
+  padding-left: 5px;
+}
+
+.close_button {
+  display: inline-flex;
+  justify-content: center;
+  border: 1px solid red;
+  cursor: pointer;
+  height: min(5vw, 30px);
+  width: min(5vw, 30px);
+  font-size: min(5vw, 30px);
+  color: red;
+  background-color: var(--my-black);
+  border-radius: 100%;
+  user-select: none;
+  margin: 0 10px;
+}
+
+.infodrop_container {
+  align-items: center;
+  display: inline-flex;
+}
+
+#hamburger_dropdown {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  max-height: 400px;
+  overflow: auto;
+  background-color: #f1f1f1;
+  right: 0;
+  transform: translateX(-25%);
+}
+
+#hamburger_dropdown.show {
+  display: block;
+}
+
+.hamburger_option {
+  font-family: "Avenir", Arial;
+  font-size: min(3vw, 20px);
+  text-align: right;
+  cursor: pointer;
+  color: black;
+  padding: 5px;
+  text-decoration: none;
+  display: block;
+  border: 1px solid var(--my-black);
+  min-width: 10vw;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  background-color: var(--my-black);
+  border: 2px solid white;
+  z-index: 10;
+  width: 350px;
+  max-width: 75%;
+  max-height: 75%;
+  border-radius: 10px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal_header {
+  font-size: min(5vw, 30px);
+  color: var(--my-yellow);
+  padding: 15px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal_header .close_button {
+  color: white;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: min(5vw, 30px);
+}
+
+.modal_body {
+  padding: 0px 15px;
+  font-size: min(5vw, 30px);
+  display: flex;
+  flex-direction: column;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+#overlay.active {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.info_text {
+  border-top: 1px solid white;
+  color: var(--my-yellow);
+  font-size: min(3vw, 20px);
+  text-align: justify;
+  cursor: default;
+  padding: 10px 0;
+}
