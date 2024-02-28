@@ -62,9 +62,12 @@ h1 {
 }
 
 #plantAdder {
-  display: block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   vertical-align: middle;
+  line-height: 1em;
   border: 2px solid var(--my-yellow);
   cursor: pointer;
   margin: 0 auto;
