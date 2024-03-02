@@ -1,99 +1,98 @@
 const plantsJSON =
   '{ "Allotment" : [' +
-    '{ "Name" : "Potato" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Onion" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Cabbage" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Tomato" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Sweetcorn" , "Base_chance" : 224832 },' +
-    '{ "Name" : "Strawberry" , "Base_chance" : 187360 },' +
-    '{ "Name" : "Watermelon" , "Base_chance" : 160594 },' +
-    '{ "Name" : "Snape Grass" , "Base_chance" : 173977 }],' +
+    '{ "Name" : "Potato" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Onion" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Cabbage" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Tomato" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Sweetcorn" , "Base_chance" : 224832 , "Hespori_chance" : 449 },' +
+    '{ "Name" : "Strawberry" , "Base_chance" : 187360 , "Hespori_chance" : 374 },' +
+    '{ "Name" : "Watermelon" , "Base_chance" : 160594 , "Hespori_chance" : 321 },' +
+    '{ "Name" : "Snape Grass" , "Base_chance" : 173977 , "Hespori_chance" : 347 }],' +
   '"Belladonna" : [' +
-    '{ "Name" : "Nightshade" , "Base_chance" : 8000 }],' +
+    '{ "Name" : "Nightshade" , "Base_chance" : 8000 , "Hespori_chance" : 16 }],' +
   '"Bush" : [' +
-    '{ "Name" : "Redberries" , "Base_chance" : 44966 },' +
-    '{ "Name" : "Cadava berries" , "Base_chance" : 37472 },' +
-    '{ "Name" : "Dwellberries" , "Base_chance" : 32119 },' +
-    '{ "Name" : "Jangerberries" , "Base_chance" : 28104 },' +
-    '{ "Name" : "White berries" , "Base_chance" : 28104 },' +
-    '{ "Name" : "Poison ivy" , "Base_chance" : 28104 }],' +
+    '{ "Name" : "Redberries" , "Base_chance" : 44966 , "Hespori_chance" : 89 },' +
+    '{ "Name" : "Cadava berries" , "Base_chance" : 37472 , "Hespori_chance" : 74 },' +
+    '{ "Name" : "Dwellberries" , "Base_chance" : 32119 , "Hespori_chance" : 64 },' +
+    '{ "Name" : "Jangerberries" , "Base_chance" : 28104 , "Hespori_chance" : 56 },' +
+    '{ "Name" : "White berries" , "Base_chance" : 28104 , "Hespori_chance" : 56 },' +
+    '{ "Name" : "Poison ivy" , "Base_chance" : 28104 , "Hespori_chance" : 56 }],' +
   '"Cacti" : [' +
-    '{ "Name" : "Cactus" , "Base_chance" : 7000 },' +
-    '{ "Name" : "Potato Cactus" , "Base_chance" : 160594 }],' +
+    '{ "Name" : "Cactus" , "Base_chance" : 7000 , "Hespori_chance" : 14 },' +
+    '{ "Name" : "Potato Cactus" , "Base_chance" : 160594 , "Hespori_chance" : 321 }],' +
   '"Calquat" : [' +
-    '{ "Name" : "Calquat tree" , "Base_chance" : 6000 }],' +
+    '{ "Name" : "Calquat tree" , "Base_chance" : 6000 , "Hespori_chance" : 12 }],' +
   '"Celastrus" : [' +
-    '{ "Name" : "Celastrus tree" , "Base_chance" : 9000 }],' +
+    '{ "Name" : "Celastrus tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
   '"Crystal" : [' +
-    '{ "Name" : "Crystal tree" , "Base_chance" : 9000 }],' +
+    '{ "Name" : "Crystal tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
   '"Flower" : [' +
-    '{ "Name" : "Marigold" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Rosemary" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Nasturium" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Woad leaf" , "Base_chance" : 281040 },' +
-    '{ "Name" : "Limpwurt root" , "Base_chance" : 224832 },' +
-    '{ "Name" : "White lily" , "Base_chance" : 281040 }],' +
+    '{ "Name" : "Marigold" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Rosemary" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Nasturium" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Woad leaf" , "Base_chance" : 281040 , "Hespori_chance" : 562 },' +
+    '{ "Name" : "Limpwurt root" , "Base_chance" : 224832 , "Hespori_chance" : 449 },' +
+    '{ "Name" : "White lily" , "Base_chance" : 281040 , "Hespori_chance" : 562 }],' +
   '"Fruit" : [' +
-    '{ "Name" : "Apple tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Banana tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Orange tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Curry tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Pineapple tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Papaya tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Palm tree" , "Base_chance" : 9000 },' +
-    '{ "Name" : "Dragonfruit tree" , "Base_chance" : 9000 }],' +
+    '{ "Name" : "Apple tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Banana tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Orange tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Curry tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Pineapple tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Papaya tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Palm tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 },' +
+    '{ "Name" : "Dragonfruit tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
   '"Hardwood" : [' +
-    '{ "Name" : "Teak tree" , "Base_chance" : 5000 },' +
-    '{ "Name" : "Mahogany tree" , "Base_chance" : 5000 }],' +
+    '{ "Name" : "Teak tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 },' +
+    '{ "Name" : "Mahogany tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 }],' +
   '"Herb" : [' +
-    '{ "Name" : "Guam" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Marrentill" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Tarromin" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Harralander" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Goutweed" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Ranarr" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Toadflax" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Irit" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Avantoe" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Kwuarm" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Snapdragon" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Cadantine" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Lantadyme" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Dwarf weed" , "Base_chance" : 98364 },' +
-    '{ "Name" : "Torstol" , "Base_chance" : 98364 }],' +
+    '{ "Name" : "Guam" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Marrentill" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Tarromin" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Harralander" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Goutweed" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Ranarr" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Toadflax" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Irit" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Avantoe" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Kwuarm" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Snapdragon" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Cadantine" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Lantadyme" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Dwarf weed" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Torstol" , "Base_chance" : 98364 , "Hespori_chance" : 196 }],' +
   '"Hespori" : [' +
-    '{ "Name" : "Hespori" , "Base_chance" : 7000 }],' +
+    '{ "Name" : "Hespori" , "Base_chance" : 7000 , "Hespori_chance" : 0 }],' +
   '"Hops" : [' +
-    '{ "Name" : "Barley" , "Base_chance" : 112416 },' +
-    '{ "Name" : "Hammerstone" , "Base_chance" : 112416 },' +
-    '{ "Name" : "Asgarnian" , "Base_chance" : 89933 },' +
-    '{ "Name" : "Jute" , "Base_chance" : 89933 },' +
-    '{ "Name" : "Yanillian" , "Base_chance" : 74944 },' +
-    '{ "Name" : "Krandorian" , "Base_chance" : 64238 },' +
-    '{ "Name" : "Wildblood" , "Base_chance" : 56208 }],' +
+    '{ "Name" : "Barley" , "Base_chance" : 112416 , "Hespori_chance" : 244 },' +
+    '{ "Name" : "Hammerstone" , "Base_chance" : 112416 , "Hespori_chance" : 244 },' +
+    '{ "Name" : "Asgarnian" , "Base_chance" : 89933 , "Hespori_chance" : 179 },' +
+    '{ "Name" : "Jute" , "Base_chance" : 89933 , "Hespori_chance" : 179 },' +
+    '{ "Name" : "Yanillian" , "Base_chance" : 74944 , "Hespori_chance" : 149 },' +
+    '{ "Name" : "Krandorian" , "Base_chance" : 64238 , "Hespori_chance" : 128 },' +
+    '{ "Name" : "Wildblood" , "Base_chance" : 56208 , "Hespori_chance" : 112 }],' +
   '"Mushroom" : [' +
-    '{ "Name" : "Mushroom" , "Base_chance" : 7500 }],' +
+    '{ "Name" : "Mushroom" , "Base_chance" : 7500 , "Hespori_chance" : 15 }],' +
   '"Redwood" : [' +
-    '{ "Name" : "Redwood tree" , "Base_chance" : 5000 }],' +
+    '{ "Name" : "Redwood tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 }],' +
   '"Seaweed" : [' +
-    '{ "Name" : "Giant seaweed" , "Base_chance" : 7500 }],' +
+    '{ "Name" : "Giant seaweed" , "Base_chance" : 7500 , "Hespori_chance" : 15 }],' +
   '"Spirit" : [' +
-    '{ "Name" : "Spirit tree" , "Base_chance" : 5000 }],' +
+    '{ "Name" : "Spirit tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 }],' +
   '"Tree" : [' +
-    '{ "Name" : "Oak tree" , "Base_chance" : 22483 },' +
-    '{ "Name" : "Willow tree" , "Base_chance" : 16059 },' +
-    '{ "Name" : "Maple tree" , "Base_chance" : 14052 },' +
-    '{ "Name" : "Yew tree" , "Base_chance" : 11242 },' +
-    '{ "Name" : "Magic tree" , "Base_chance" : 9368 }],' +
+    '{ "Name" : "Oak tree" , "Base_chance" : 22483 , "Hespori_chance" : 44 },' +
+    '{ "Name" : "Willow tree" , "Base_chance" : 16059 , "Hespori_chance" : 32 },' +
+    '{ "Name" : "Maple tree" , "Base_chance" : 14052 , "Hespori_chance" : 28 },' +
+    '{ "Name" : "Yew tree" , "Base_chance" : 11242 , "Hespori_chance" : 22 },' +
+    '{ "Name" : "Magic tree" , "Base_chance" : 9368 , "Hespori_chance" : 18 }],' +
   '"Vine" : [' +
-    '{ "Name" : "Grapes" , "Base_chance" : 385426 }]}';
+    '{ "Name" : "Grapes" , "Base_chance" : 385426 , "Hespori_chance" : 770 }]}';
 
 const style = getComputedStyle(document.documentElement);
 const allPlants = JSON.parse(plantsJSON);
 const myBlack = (style.getPropertyValue('--my-black')).toString();
 const myYellow = (style.getPropertyValue('--my-yellow')).toString();
 var flvl = 1;
-var days = 1;
 var chances = [];
 var numplants = 1;
 
@@ -102,7 +101,6 @@ intro();
 function intro() {
   document.getElementById("plantAdder").addEventListener("click", addPlant);
   document.getElementById("flvl_input").addEventListener("input", flvlUpdate);
-  document.getElementById("days_input").addEventListener("input", daysUpdate);
   document.getElementById("hamburger_button").addEventListener("click", navbar);
   document.getElementById("info_button").addEventListener("click", showInfo);
   document.getElementById("overlay").addEventListener("click", closeModal);
@@ -239,6 +237,13 @@ function chanceWindow(n) {
   chanceNum.innerText = "0.0000%";
   chanceNum.style.visibility = "hidden";
 
+  let seedNum = document.createElement("input");
+  seedNum.classList.add("seed_input");
+  seedNum.id = "seed_num2" + n;
+  seedNum.setAttribute("type", "hidden");
+  seedNum.setAttribute("value", "0.0");
+
+  parent.appendChild(seedNum);
   parent.appendChild(chanceText);
   parent.appendChild(chanceNum);
 
@@ -365,16 +370,19 @@ function plantChance(event) {
   let d1 = document.getElementById("dropdown" + n1);
   let d2 = document.getElementById("dropdown" + n);
   let chance = document.getElementById("chance_num" + n);
+  let seed = document.getElementById("seed_num" + n);
 
   let actions = event.target.value;
   let crop = d1.innerText;
   let type = d2.innerText;
   var baseChance = 0;
+  var seedChance = 0;
 
   for (var p in allPlants) {
     for (var t in allPlants[p]) {
       if (allPlants[p][t]["Name"] === type) {
         baseChance = parseInt(allPlants[p][t]["Base_chance"]);
+        seedChance = parseInt(allPlants[p][t]["Hespori_chance"]);
       }
     }
   }
@@ -382,8 +390,15 @@ function plantChance(event) {
   let adjustedChance = baseChance - (flvl * 25);
   let c = 1 - Math.pow((1 - (1 / adjustedChance)), actions);
   let cFormatted = c.toLocaleString(undefined,{style: "percent", minimumFractionDigits: 4});
-
   chance.innerText = cFormatted;
+
+  var s = 0.0;
+  if (seedChance != 0) {
+    s = ((1 / seedChance) * actions);
+  } else {
+    s = 0.0;
+  }
+  seed.setAttribute("value", s.toString());
 
   updateTotalChance();
 }
@@ -409,18 +424,6 @@ function flvlUpdate(event) {
   updateTotalChance()
 }
 
-function daysUpdate(event) {
-
-  if (event.target.value < 0) {
-    event.target.value = 0;
-    days = 0;
-  } else {
-    days = event.target.value;
-  }
-
-  updateTotalChance()
-}
-
 function updateTotalChance() {
   let allChances = document.getElementsByClassName("chance_number");
   var tc = 0.0;
@@ -430,7 +433,7 @@ function updateTotalChance() {
   }
 
   let chanceText = document.getElementById("total_chance_num");
-  chanceText.innerText = ((tc / 100) * days).toLocaleString(undefined,{style: "percent", minimumFractionDigits: 4});
+  chanceText.innerText = (tc / 100).toLocaleString(undefined,{style: "percent", minimumFractionDigits: 4});
 
   let daysto = Math.ceil(100 / tc).toString();
   if (daysto === "Infinity") {
@@ -438,6 +441,21 @@ function updateTotalChance() {
   }
   let daysToText = document.getElementById("daysto_num");
   daysToText.innerText = daysto;
+
+  let allSeeds = document.getElementsByClassName("seed_input");
+  var seeds = 0.0;
+
+  for (var j = 0; j < allSeeds.length; j++) {
+    seeds += parseFloat(allSeeds[j].getAttribute("value"));
+  }
+  if (daysto === "∞") {
+    seeds = 0;
+  } else {
+    seeds = Math.ceil(seeds * daysto);
+  }
+
+  let hesporiText = document.getElementById("hespori_num");
+  hesporiText.innerText = seeds.toString();
 }
 
 function closePlant(event) {

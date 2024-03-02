@@ -3,7 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta property="og:title" content="Tangleroot Calculator" />
+    <meta name="twitter:title" content="Tangleroot Calculator" />
+
+    <meta name="description" content="How long must we suffer?">
+    <meta property="og:description" content="How long must we suffer?" />
+    <meta name="twitter:description" content="How long must we suffer?" />
+
+    <meta property="og:image" content="https://cornbread.games/tangleroot/icons/og_image.png" />
+    <meta name="twitter:image" content="https://cornbread.games/tangleroot/icons/og_image.png" />
+
     <title>Tangleroot Calculator</title>
+
+    <link rel="icon" type="image/x-icon" href="icons/favicon.ico" />
+
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
@@ -14,8 +28,8 @@
         <div id="hamburger_container" class="hamburger_container">
           <img src="icons/hamburger.png" class="menu_button" id="hamburger_button" />
           <div id="hamburger_dropdown">
-            <a href="https://www.cornbread.games" id="cardinal" class="hamburger_option">cardinal</a>
-            <a href="https://www.cornbread.games/tangleroot" id="tangleroot" class="hamburger_option">tangleroot</a>
+            <a href="https://www.cornbread.games" target="_blank" id="cardinal" class="hamburger_option">cardinal</a>
+            <a href="https://www.cornbread.games/tangleroot" target="_blank" id="tangleroot" class="hamburger_option">tangleroot</a>
           </div>
         </div>
       </div>
@@ -28,17 +42,17 @@
         <label for="flvl_input" id="flvl_label" class="player_info_label">Farming level:</label>
         <input type="number" id="flvl_input" min="1" max="99" step="1" value="1" class="player_info_input"/>
       </div>
-      <div id="days_container" class="player_info_container">
-        <label for="days_input" id="days_label" class="player_info_label">Days:</label>
-        <input type="number" id="days_input" min="1" max="10000" step="1" value="1" class="player_info_input"/>
-      </div>
       <div id="chance_container" class="player_info_container">
-        <div id="total_chance_text" class="player_info_label">Total chance:</div>
+        <div id="total_chance_text" class="player_info_label">Chance per day:</div>
         <div id="total_chance_num" class="player_info_label">0.0000%</div>
       </div>
       <div id="daysto" class="daysto_container">
         <div id="daysto_text" class="player_info_label">Days to 100%:</div>
         <div id="daysto_num" class="player_info_label">0</div>
+      </div>
+      <div id="hespori" class="hespori_container">
+        <div id="hespori_text" class="player_info_label">Hespori seeds gained:</div>
+        <div id="hespori_num" class="player_info_label">0</div>
       </div>
 
     </div>
