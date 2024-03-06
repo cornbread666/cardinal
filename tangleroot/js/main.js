@@ -271,7 +271,7 @@ function toggleDropdown(event) {
   let h = window.innerHeight;
   let bottom = dd.getBoundingClientRect().bottom;
 
-  if (bottom > (h * 0.75)) {
+  if (bottom > (h * 0.66)) {
     oc.style.bottom = "0%";
   } else {
     oc.style.bottom = "auto";

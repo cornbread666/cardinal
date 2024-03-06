@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pixel fight</title>
+
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+
+    <header id="header">
+      <h1 id="title1">PIXEL FIGHT</h1>
+    </header>
+
+    <div id="container">
+      <div id="settings_container">
+        <div class="slider_container" id="color_slider_container">
+          <div class="slider_title" id="color_slider_title">Colors: 2</div>
+          <input type="range" min="2" max="6" value="2" class="slider" id ="color_slider" />
+        </div>
+        <div class="slider_container" id="speed_slider_container">
+          <div class="slider_title" id="speed_slider_title">Speed: 30</div>
+          <input type="range" min="1" max="60" value="30" class="slider" id ="speed_slider" />
+        </div>
+        <div class="slider_container" id="size_slider_container">
+          <div class="slider_title" id="size_slider_title">Size: 5</div>
+          <input type="range" min="5" max="30" value="5" step="5" class="slider" id ="size_slider" />
+        </div>
+
+      </div>
+      <canvas id="canva"></canvas>
+      <div id="graph_container">
+        <canvas id="graph_canva"></canvas>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
