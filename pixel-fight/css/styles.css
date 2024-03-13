@@ -34,11 +34,10 @@ header {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
   width: 95%;
-  padding-top: 20px;
-  padding-bottom: 10px;
+  padding: 20px 0px;
   border-bottom: 3px solid var(--my-red);
   font-family: "Brodille", "Avenir", Arial;
 }
@@ -151,4 +150,129 @@ h1 {
 
 #xaxis.tick {
   visibility:hidden;
+}
+
+#menu_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.hamburger_container {
+  height: min(5vw, 30px);
+}
+
+.menu_button {
+  margin-left: 10px;
+  height: min(5vw, 30px);
+  cursor: pointer;
+  color: var(--my-yellow);
+}
+
+#hamburger_dropdown {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  max-height: 400px;
+  overflow: auto;
+  background-color: #f1f1f1;
+  right: 0;
+  transform: translateX(-25%);
+}
+
+#hamburger_dropdown.show {
+  display: block;
+}
+
+.hamburger_option {
+  font-family: "Avenir", Arial;
+  font-size: min(3vw, 20px);
+  text-align: right;
+  cursor: pointer;
+  color: black;
+  padding: 5px;
+  text-decoration: none;
+  display: block;
+  border: 1px solid var(--my-black);
+  min-width: 10vw;
+}
+
+#head_spacer {
+  margin-right: 20px;
+  height: min(5vw, 30px);
+  width: min(10vw, 60px);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  background-color: var(--my-white);
+  border: 2px solid var(--my-red);
+  z-index: 10;
+  width: 350px;
+  max-width: 75%;
+  max-height: 75%;
+  border-radius: 10px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal_header {
+  font-size: min(5vw, 30px);
+  color: var(--my-red);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Brodille", "Avenir", Arial;
+}
+
+.modal_header .close_button {
+  color: var(--my-red);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: min(5vw, 30px);
+}
+
+.modal_body {
+  padding: 0px 15px;
+  font-size: min(5vw, 30px);
+  display: flex;
+  flex-direction: column;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+#overlay.active {
+  pointer-events: all;
+  opacity: 1;
+}
+
+.info_text {
+  border-top: 1px solid var(--my-red);
+  color: black;
+  font-size: min(2.5vw, 16px);
+  cursor: default;
+  padding: 10px 0;
 }

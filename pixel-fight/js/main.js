@@ -31,6 +31,12 @@ var sizeSliderTitle = document.getElementById("size_slider_title");
 intro();
 
 function intro() {
+
+  document.getElementById("hamburger_button").addEventListener("click", navbar);
+  document.getElementById("info_button").addEventListener("click", showInfo);
+  document.getElementById("overlay").addEventListener("click", closeModal);
+  document.getElementById("info_close").addEventListener("click", closeModal);
+
   initializeGrid();
   initializeGraph();
   colorGrid();
@@ -157,6 +163,18 @@ function colorGrid() {
   colorData.push(tmpData);
   steps.push(stepCounter);
   stepCounter += 1;
+
+  let lastRun = colorData[colorData.length - 1];
+  var zeroes = 0;
+  for (var x = 0; x < numColors; x++) {
+    if (lastRun[x] == 0) {
+      zeroes += 1;
+    }
+  }
+  if (zeroes == (numColors - 1)) {
+    run = false;
+  }
+
   updateGrid();
   updateGraph();
 
@@ -196,6 +214,9 @@ function initializeGraph() {
           format: { style: "percent" }
         }
       }
+    },
+    animation: {
+      duration: 8000
     }
   };
 
@@ -211,7 +232,7 @@ function updateGraph() {
   var truncate = false;
   var xVals;
   let limit = 1000;
-  if (stepCounter > limit) {
+  if (stepCounter > limit && run) {
     truncate = true;
     xVals = steps.slice(1).slice(-limit);
   } else {
@@ -246,7 +267,11 @@ function updateGraph() {
   }
 
   chart.config.data = newData;
-  chart.update("none");
+  if (run) {
+    chart.update("none");
+  } else {
+    chart.update();
+  }
 }
 
 colorSlider.oninput = function() {
@@ -258,7 +283,10 @@ colorSlider.oninput = function() {
   steps = [];
   initializeGrid();
   initializeGraph();
-  run = true;
+  if (!run) {
+    run = true;
+    colorGrid();
+  }
 }
 
 speedSlider.oninput = function() {
@@ -281,4 +309,29 @@ function shuffleArray(a) {
         let j = Math.floor(Math.random() * (i + 1));
         [a[i], a[j]] = [a[j], a[i]];
     }
+}
+
+function navbar(event) {
+  document.getElementById("hamburger_dropdown").classList.toggle("show");
+}
+
+function showInfo() {
+  document.getElementById("info_modal").classList.add("active");
+  document.getElementById("overlay").classList.add("active");
+}
+
+function closeModal() {
+  if (document.getElementById("info_modal").classList.contains("active")) {
+    document.getElementById("info_modal").classList.remove("active");
+    document.getElementById("overlay").classList.remove("active");
+  }
+}
+
+window.onclick = function(event) {
+  if (!event.target.matches("#hamburger_button")) {
+    let hd = document.getElementById("hamburger_dropdown");
+    if (hd.classList.contains("show")) {
+      hd.classList.remove("show");
+    }
+  }
 }
