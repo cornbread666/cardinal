@@ -3,5 +3,5 @@
 
 ## sub-pages
 the sub-pages of my site allow me to freely code and post additional projects I work on:
-	- [Pixel Fight](https://cornbread.games/pixel-fight) - a zero-player game with dynamic data visualization
-	- [Tangleroot](https://cornbread.games/tangleroot) - a probability calculator built for an online gaming community
+- [Pixel Fight](https://cornbread.games/pixel-fight) - a zero-player game with dynamic data visualization
+- [Tangleroot](https://cornbread.games/tangleroot) - a probability calculator built for an online gaming community
