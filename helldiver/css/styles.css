@@ -61,8 +61,10 @@ body {
     background-image: url("assets/gold_bg.png");
     background-repeat: no-repeat;
     background-size: cover;
-    display: inline-block;
+    display: grid;
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    align-items: center;
+    justify-content: center;
 }
 
 #hex_row2 {
@@ -73,4 +75,12 @@ body {
 #hex_row3 {
     margin-top: 3vw;
     margin-bottom: -2vw;
+}
+
+.icon {
+    width: 20vw;
+    height: 20vw;
+    filter: grayscale(1);
+    mix-blend-mode: screen;
+    cursor: pointer; 
 }
