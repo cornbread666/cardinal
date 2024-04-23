@@ -78,8 +78,8 @@ body {
 }
 
 .icon {
-    width: 20vw;
-    height: 20vw;
+    width: 16vw;
+    height: 16vw;
     filter: grayscale(1);
     mix-blend-mode: screen;
     cursor: pointer; 
