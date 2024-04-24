@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "zendots";
+    src: url("assets/ZenDots-Regular.ttf");
+    src: url("assets/ZenDots-Regular.ttf") format('truetype');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -80,7 +86,128 @@ body {
 .icon {
     width: 16vw;
     height: 16vw;
-    filter: grayscale(1);
-    mix-blend-mode: screen;
+    mix-blend-mode: soft-light;
+    filter: brightness(150%);
     cursor: pointer; 
+}
+
+#overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+  
+#overlay.active {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    max-width: 90%;
+    max-height: 90%;
+    z-index: 10;
+    border-style: solid;
+    border-image: url("assets/gray_bg.png");
+    border-image-slice: 10 fill;
+    border-image-outset: 5vw;
+    background-image: url("assets/black_bg.png");
+}
+
+.modal.active {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+}
+
+.modal_input {
+    height: 20vw;
+    width: 70%;
+    caret-color: transparent;
+    line-height: 10vw;
+    text-align: center;
+    font-family: "zendots";
+    font-size: 2em;
+    border: 10px solid black;
+    background-image: url("assets/gold_bg.png");
+    background-size: cover;
+    filter: saturate(50%);
+    text-shadow: 2px 2px 5px white;
+}
+
+.close_button {
+    height: 15vw;
+    width: 15vw;
+    border-radius: 50%;
+    background-image: url("assets/red_bg.png");
+    background-size: cover;
+    border: none;
+    font-family: "zendots";
+    font-size: 2.5em;
+    color:white;
+    text-shadow: 2px 2px 5px black;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+*:focus {
+    outline: none;
+}
+
+.modal_body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-gap: 2vw;
+    align-items: center;
+    justify-items: center;
+    border: 10px solid black;
+    padding: 10px;
+}
+
+.modal_button {
+    width: 20vw;
+    height: 20vw;
+    background-image: url("assets/gold_bg.png");
+    background-size: cover;
+    line-height: 20vw;
+    text-align: center;
+    font-family: "zendots";
+    font-size: 1.8em;
+    border-radius: 50%;
+    text-shadow: 2px 2px 5px white;
+}
+
+#code_button_C {
+    background-image: url("assets/red_bg.png");
+}
+
+#code_button_K {
+    background-image: url("assets/green_bg.png");
 }
