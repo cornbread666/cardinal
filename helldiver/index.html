@@ -9,12 +9,14 @@
 </head>
 <body>
 
+    <p id="time">60:00</p>
+
     <div id="hex_container">
         <div class="hex_row" id="hex_row1">
             <div class="base_hex" id="base_hex11">
                 <div class="mid_hex" id="mid_hex11">
                     <div class="top_hex" id="top_hex11">
-                        <img src="css/assets/play.png" class="icon" id="code_icon">
+                        <img src="css/assets/play.png" class="icon" id="play_icon">
                     </div>
                 </div>
             </div>
@@ -23,7 +25,7 @@
             <div class="base_hex" id="base_hex21">
                 <div class="mid_hex" id="mid_hex21">
                     <div class="top_hex" id="top_hex21">
-                        <img src="css/assets/bulb.png" class="icon" id="code_icon">
+                        <img src="css/assets/bulb.png" class="icon" id="hint_icon">
                     </div>
                 </div>
             </div>
@@ -39,7 +41,7 @@
             <div class="base_hex" id="base_hex31">
                 <div class="mid_hex" id="mid_hex31">
                     <div class="top_hex" id="top_hex31">
-                        <img src="css/assets/glass.png" class="icon" id="code_icon">
+                        <img src="css/assets/glass.png" class="icon" id="glass_icon">
                     </div>
                 </div>
             </div>
@@ -55,7 +57,7 @@
             <div class="base_hex" id="base_hex41">
                 <div class="mid_hex" id="mid_hex41">
                     <div class="top_hex" id="top_hex41">
-                        <img src="css/assets/sickle.png" class="icon" id="code_icon">
+                        <img src="css/assets/sickle.png" class="icon" id="sickle_icon">
                     </div>
                 </div>
             </div>
@@ -63,30 +65,30 @@
     </div>
 
     <div id="modal_container">
-        <div class="modal" id="code_modal">
-            <div class="modal_header" id="code_header">
-                <input type="number" class="modal_input" id="code_input" max="9999">
-                <button class="close_button" id="code_close">&times;</button>
+        <div class="modal" id="keypad_modal">
+            <div class="modal_header" id="keypad_header">
+                <input type="number" class="modal_input" id="keypad_input" max="9999">
+                <button class="close_button" id="keypad_close">&times;</button>
             </div>
-            <div class="modal_body" id="code_body">
-                <div class="modal_button" id="code_button_1">1</div>
-                <div class="modal_button" id="code_button_2">2</div>
-                <div class="modal_button" id="code_button_3">3</div>
-                <div class="modal_button" id="code_button_4">4</div>
-                <div class="modal_button" id="code_button_5">5</div>
-                <div class="modal_button" id="code_button_6">6</div>
-                <div class="modal_button" id="code_button_7">7</div>
-                <div class="modal_button" id="code_button_8">8</div>
-                <div class="modal_button" id="code_button_9">9</div>
-                <div class="modal_button" id="code_button_C">C</div>
-                <div class="modal_button" id="code_button_0">0</div>
-                <div class="modal_button" id="code_button_K">OK</div>
+            <div class="modal_body" id="keypad_body">
+                <div class="keypad_button" id="keypad_button_1">1</div>
+                <div class="keypad_button" id="keypad_button_2">2</div>
+                <div class="keypad_button" id="keypad_button_3">3</div>
+                <div class="keypad_button" id="keypad_button_4">4</div>
+                <div class="keypad_button" id="keypad_button_5">5</div>
+                <div class="keypad_button" id="keypad_button_6">6</div>
+                <div class="keypad_button" id="keypad_button_7">7</div>
+                <div class="keypad_button" id="keypad_button_8">8</div>
+                <div class="keypad_button" id="keypad_button_9">9</div>
+                <div class="keypad_button" id="keypad_button_C">C</div>
+                <div class="keypad_button" id="keypad_button_0">0</div>
+                <div class="keypad_button" id="keypad_button_K">OK</div>
             </div>
         </div>
     </div>
     
 
     <div id="overlay"></div>
-    
+    <script src="js/main.js"></script>
 </body>
 </html>
