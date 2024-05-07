@@ -8,17 +8,14 @@
     - texture
 */
 
-let startAng, startAng2, startAng3, ang, textureElement, count;
+let ang;
+var count = 0;
 let rgtAng = 1.57;
 let turn = 0.2;
 
 function setup() {
 
   mainCanvas = createCanvas(windowWidth, windowHeight);
-  frameRate(12);
-
-  p5grain.setup();
-  textureElement = document.getElementById("texture_overlay");
 
   // Variations
   //PALETTE = ["#3A2923", "#684F44", "#7D5F60", "#A6624B", "#C59D7A", "#F1B87D", "#D17F76", "#6D918F", "#8C9687"];
@@ -31,28 +28,31 @@ function setup() {
   FG_PALETTE = [PALETTE[6], PALETTE[7], PALETTE[8]]; // foreground element colors
   RADIUS = 0.8; // radius of tumbleweed: 0.6 - 0.8
   ANGVOL = PI * 0.04; // volatility of angle change: 0.02 - 0.06
-  ROOTED = false; // if the tumbleweed's lines all originate from one position
-  SEED = 99; // consistently display tumbleweed
+  ROOTED = true; // if the tumbleweed's lines all originate from one position
+  SEED = 101; // consistently display tumbleweed
   randomSeed(SEED);
 
   // Globals
   cnv2 = createGraphics(width, height);
   twCanvas = createGraphics(width,height);
+  dotCanvas = createGraphics(width, height);
   frame = width * 0.05; // frame of undrawable space within the canvas
   edgeBuff = width * 0.05; // how far away lines will stay away from of window
   lineLength = height * 0.001;
 
-  background(BG_PALETTE[0]);
+  background(255, 0);
   alphaCircle();
-  blobMaker(30, 150);
+  //blobMaker(30, 150);
   lineMaker(20000, 6, 0.05, 1);
   dotMaker(400, 1, 125);
   lineMaker(20000, 3, 0.1, 2);
   dotMaker(700, 0.4, 180);
-  blobMaker(20, 8);
-  lineMaker(50000, 1, 1, 3);
+  //blobMaker(20, 8);
   dotMaker(800, 0.3, 255);
-  //image(twCanvas, 0, 0);
+  lineMaker(50000, 1, 1, 3);
+  
+  image(twCanvas, 0, 0);
+  //image(dotCanvas, 0, 0);
 }
 
 function alphaCircle() {
@@ -106,9 +106,16 @@ function blobMaker(numBlobs, alpha) {
 }
 
 function drawDot(size, alpha) {
-  push();
-  translate(random(width),random(height));
-  rotate(random(PI * 2));
+  let minDim = Math.min(height, width);
+  dotCanvas.push();
+  ranAng = random(PI * 2);
+  dotRad = minDim / 2;
+  ranRad = random(dotRad);
+  dotX = ranRad * cos(ranAng);
+  dotY = ranRad * sin(ranAng);
+  dotCanvas.translate(width / 2, height / 2);
+  dotCanvas.translate(dotX, dotY);
+  dotCanvas.rotate(random(PI * 2));
   sizeInc = size;
   let r = (startR = height * sizeInc * random(0.003, 0.011));
   var vertices = [];
@@ -125,17 +132,17 @@ function drawDot(size, alpha) {
     vertices.push({x: x2, y: y2});
   }
 
-  let c = color(random(FG_PALETTE));
+  let c = color(random(TW_PALETTE));
   c.setAlpha(alpha);
-  fill(c);
-  noStroke();
-  beginShape();
-  curveVertex(vertices[vertices.length-1].x, vertices[vertices.length-1].y);
-  vertices.forEach(v => curveVertex(v.x, v.y));
-  curveVertex(vertices[0].x, vertices[0].y);
-  curveVertex(vertices[1].x, vertices[1].y);
-  endShape();
-  pop();
+  dotCanvas.fill(c);
+  dotCanvas.noStroke();
+  dotCanvas.beginShape();
+  dotCanvas.curveVertex(vertices[vertices.length-1].x, vertices[vertices.length-1].y);
+  vertices.forEach(v => dotCanvas.curveVertex(v.x, v.y));
+  dotCanvas.curveVertex(vertices[0].x, vertices[0].y);
+  dotCanvas.curveVertex(vertices[1].x, vertices[1].y);
+  dotCanvas.endShape();
+  dotCanvas.pop();
 }
 
 function dotMaker(numDots, size, alpha) {
@@ -227,18 +234,6 @@ function edges() {
 
 function draw() {
 
-  background(255);
-
-  count += 1;
-
-  imageMode(CENTER);
-  translate(width / 2, height / 2);
-  rotate((count / 100) % (2 * PI));
-
-  image(mainCanvas, 0, 0);
-  image(twCanvas, 0, 0);
-
-  textureAnimate(textureElement);
 }
 
 function windowResized() {

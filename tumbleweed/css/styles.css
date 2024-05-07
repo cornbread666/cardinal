@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../js/assets/desert.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#tumbleweed {
+    overflow: hidden;
+    animation: rotating 100s linear infinite;
+}
+
+@keyframes rotating {
+    0% {
+      transform: translateY(25%) rotate(0deg);
+    }
+    50% {
+      transform: translateY(25%) rotate(180deg);
+    }
+    100% {
+      transform: translateY(25%) rotate(360deg);
+    }
+}
