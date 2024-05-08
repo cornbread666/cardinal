@@ -1,33 +1,124 @@
+@font-face {
+  font-family: "Groovy";
+  src: url('assets/GroovyDay.ttf');
+  src: url('assets/GroovyDay.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Peachy";
+  src: url('assets/PeachDays.ttf');
+  src: url('assets/PeachDays.ttf') format('truetype');
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
-    background-image: url('../js/assets/desert.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('assets/desert.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#tumbleweed_title {
+  width: 100%;
+  font-family: "Groovy";
+  font-size: 10vmin;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 2px 10px gray;
+}
+
+.bounce_text {
+  position: relative;
+  animation: bounce 8s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(-20px);
+  }
+  30% {
+    transform: translateY(20px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+
+#bounce1 {
+  animation-delay: 0s;
+}
+
+#bounce2 {
+  animation-delay: 0.1s;
+}
+
+#bounce3 {
+  animation-delay: 0.2s;
+}
+
+#bounce4 {
+  animation-delay: 0.3s;
+}
+
+#bounce5 {
+  animation-delay: 0.4s;
+}
+
+#bounce6 {
+  animation-delay: 0.5s;
+}
+
+#bounce7 {
+  animation-delay: 0.6s;
+}
+
+#bounce8 {
+  animation-delay: 0.7s;
+}
+
+#bounce9 {
+  animation-delay: 0.8s;
+}
+
+#bounce10 {
+  animation-delay: 0.9s;
+}
+
+#tmp {
+  font-family: "Peachy";
+  padding-top: 20px;
 }
 
 #tumbleweed {
-    overflow: hidden;
-    animation: rotating 100s linear infinite;
+  overflow: hidden;
+  animation: rotating 100s linear infinite;
 }
 
 @keyframes rotating {
-    0% {
-      transform: translateY(25%) rotate(0deg);
-    }
-    50% {
-      transform: translateY(25%) rotate(180deg);
-    }
-    100% {
-      transform: translateY(25%) rotate(360deg);
-    }
+  0% {
+    transform: translateY(25%) rotate(0deg);
+  }
+  50% {
+    transform: translateY(25%) rotate(180deg);
+  }
+  100% {
+    transform: translateY(25%) rotate(360deg);
+  }
 }
