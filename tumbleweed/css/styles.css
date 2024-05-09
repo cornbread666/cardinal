@@ -20,29 +20,38 @@
 body {
   width: 100vw;
   height: 100vh;
-  background-image: url('assets/desert.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-color: #fbe9e4;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.page {
+  max-width: 80%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#title_page {
+  display: flex;
+}
+
 #tumbleweed_title {
-  width: 100%;
+  width: 80%;
   font-family: "Groovy";
   font-size: 10vmin;
-  color: white;
+  color: #f4c67f;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  text-shadow: 0 2px 10px gray;
+  text-shadow: 0 2px 10px #774510;
 }
 
 .bounce_text {
-  position: relative;
   animation: bounce 8s infinite ease-in-out;
 }
 
@@ -101,11 +110,6 @@ body {
   animation-delay: 0.9s;
 }
 
-#tmp {
-  font-family: "Peachy";
-  padding-top: 20px;
-}
-
 #tumbleweed {
   overflow: hidden;
   animation: rotating 100s linear infinite;
@@ -121,4 +125,86 @@ body {
   100% {
     transform: translateY(25%) rotate(360deg);
   }
+}
+
+.triangle {
+  cursor: pointer;
+  margin: 5vmin;
+  width: 10vmin;
+  height: 10vmin;
+  opacity: 0.75;
+  transition: 0.5s;
+  position: relative;
+}
+
+.triangle:hover {
+  transition: 0.5s;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.answer.triangle {
+  margin: 0;
+  width: 5vmin;
+  height: 5vmin;
+  align-self: center;
+}
+
+.page_fly_in {
+  animation: fly-in 1s 1 ease-in;
+  display: flex;
+}
+
+.page_fly_out {
+  animation: fly-out 1s 1 ease-in forwards;
+}
+
+@keyframes fly-out {
+  0% {
+    transform: translateY(0);
+  }
+  99% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(-100vh);
+    display: none;
+  }
+}
+
+@keyframes fly-in {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.prompt_text {
+  font-family: "Peachy";
+  font-size: 2em;
+  text-align: left;
+}
+
+.option {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-top: 3px solid #f4c67f;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.answer_text {
+  font-family: "Peachy";
+  font-size: 1.5em;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.answer_container {
+  margin-top: 100px;
+  min-width: 50%;
+  align-items: flex-start;
 }
