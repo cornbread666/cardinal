@@ -164,12 +164,8 @@ body {
   0% {
     transform: translateY(0);
   }
-  99% {
-    transform: translateY(-100vh);
-  }
   100% {
     transform: translateY(-100vh);
-    display: none;
   }
 }
 

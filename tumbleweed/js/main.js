@@ -10,6 +10,7 @@ function intro() {
 function intro_blurb() {
     document.getElementById("title_page").classList.add("page_fly_out");
     setTimeout(function() {
+        document.getElementById("title_page").style.display = "none";
         document.getElementById("intro_page").classList.add("page_fly_in");
     }, 1001);
     
@@ -18,6 +19,7 @@ function intro_blurb() {
 function startQuiz() {
     document.getElementById("intro_page").classList.add("page_fly_out");
     setTimeout(function() {
+        document.getElementById("intro_page").style.display = "none";
         document.getElementById("page1").classList.add("page_fly_in");
     }, 1001);
     
