@@ -26,6 +26,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  touch-action: none;
 }
 
 .page {
@@ -237,21 +238,12 @@ body {
 }
 
 #horse_piece {
-  cursor: move;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
+  position: relative;
   width: 8vmin;
   height: 8vmin;
 }
 
-#horse_piece:active {
-  cursor: grabbing;
-  cursor: -moz-grabbing;
-  cursor: -webkit-grabbing;
-}
-
-#prompt31 {
+#chessmove_prompt {
   transition: opacity 1s;
   opacity: 0;
 }
