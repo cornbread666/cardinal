@@ -27,11 +27,12 @@ body {
   align-items: center;
   justify-content: center;
   touch-action: none;
+  overflow: hidden;
 }
 
 .page {
   max-width: 80%;
-  height: 100%;
+  height: 80%;
   display: none;
   flex-direction: column;
   align-items: center;
