@@ -25,7 +25,7 @@ function intro() {
     HORSEY.onpointerdown = beginDrag;
     HORSEY.onpointerup = stopDrag;
 
-    loadPage(8);
+    //loadPage(8);
 }
 
 function beginDrag(e) {
