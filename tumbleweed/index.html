@@ -81,42 +81,121 @@
             <p class="prompt_text" id="prompt3">make a move!</p>
 
             <div id="chess_board_container">
-                <div class="chess_row" id="chess_row1">
+                <ol class="chess_row" id="chess_row1">
                     <li class="chess_square" id="chess_square11" style="background-color: #774510;"></li>
                     <li class="chess_square" id="chess_square12"></li>
                     <li class="chess_square" id="chess_square13" style="background-color: #774510;"></li>
                     <li class="chess_square" id="chess_square14"></li>
-                </div>
-                <div class="chess_row" id="chess_row2">
+                </ol>
+                <ol class="chess_row" id="chess_row2">
                     <li class="chess_square" id="chess_square21"></li>
                     <li class="chess_square" id="chess_square22" style="background-color: #774510;"></li>
                     <li class="chess_square" id="chess_square23"></li>
                     <li class="chess_square" id="chess_square24" style="background-color: #774510;"></li>
-                </div>
-                <div class="chess_row" id="chess_row3">
+                </ol>
+                <ol class="chess_row" id="chess_row3">
                     <li class="chess_square" id="chess_square31" style="background-color: #774510;"></li>
                     <li class="chess_square" id="chess_square32"></li>
                     <li class="chess_square" id="chess_square33" style="background-color: #774510;">
                         <img src="css/assets/horsey.png" id="horse_piece" draggable="false"/>
                     </li>
                     <li class="chess_square" id="chess_square34"></li>
-                </div>
-                <div class="chess_row" id="chess_row4">
+                </ol>
+                <ol class="chess_row" id="chess_row4">
                     <li class="chess_square" id="chess_square41"></li>
                     <li class="chess_square" id="chess_square42" style="background-color: #774510;"></li>
                     <li class="chess_square" id="chess_square43"></li>
                     <li class="chess_square" id="chess_square44" style="background-color: #774510;"></li>
-                </div>
+                </ol>
             </div>
 
             <p class="prompt_text" id="chessmove_prompt">interesting...</p>
         </div>
 
         <div class="page" id="page4">
-            <p class="prompt_text" id="prompt4">tester</p>
+            <p class="prompt_text" id="prompt4">anime: real or fake?</p>
+
+            <div class="answer_container" id="answer_container4">
+                <div class="option" id="prompt4_option1">
+                    <p class="answer_text" id="prompt4_answer1">true</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt4_triangle1"/>
+                </div>
+                <div class="option" id="prompt4_option2">
+                    <p class="answer_text" id="prompt4_answer2">not</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt4_triangle2"/>
+                </div>
+            </div>
         </div>
 
-        
+        <div class="page" id="page5">
+            <p class="prompt_text" id="prompt5">what was the name of your first crush?</p>
+            <div class="answer_container" id="answer_container5">
+                <div class="option" id="prompt5_option1">
+                    <input type="text" class="answer_input" id="crush_input" name="crush" maxlength="50"><br><br>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt4_triangle2"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page6">
+            <p class="prompt_text" id="prompt6">make the longest word you can</p>
+            <ul class="tile_container" id="tile_container1">
+                <li class="letter_tile" id ="letter_tile1">S</li>
+                <li class="letter_tile" id ="letter_tile2">D</li>
+                <li class="letter_tile" id ="letter_tile3">E</li>
+                <li class="letter_tile" id ="letter_tile4">C</li>
+                <li class="letter_tile" id ="letter_tile5">A</li>
+                <li class="letter_tile" id ="letter_tile6">I</li>
+                <li class="letter_tile" id ="letter_tile7">B</li>
+                <li class="letter_tile" id ="letter_tile8">A</li>
+                <li class="letter_tile" id ="letter_tile9">T</li>
+            </ul>
+            <ul class="tile_container" id="tile_container2"></ul>
+            <img src="css/assets/triangle_ob.png" class="answer triangle tiles" id="prompt6_triangle1"/>
+            <p class="prompt_text" id="tile_prompt">good try...</p>
+        </div>
+
+        <div class="page" id="page7">
+            <p class="prompt_text" id="prompt7">would you rather be named cork or federal?</p>
+
+            <div class="answer_container" id="answer_container7">
+                <div class="option" id="prompt7_option1">
+                    <p class="answer_text" id="prompt7_answer1">cork</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt7_triangle1"/>
+                </div>
+                <div class="option" id="prompt7_option2">
+                    <p class="answer_text" id="prompt7_answer2">federal</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt7_triangle2"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page8">
+            <p class="prompt_text" id="prompt8">what is your favorite season?</p>
+
+            <div class="answer_container" id="answer_container8">
+                <div class="option" id="prompt8_option1">
+                    <p class="answer_text" id="prompt8_answer1">spring</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt8_triangle1"/>
+                </div>
+                <div class="option" id="prompt8_option2">
+                    <p class="answer_text" id="prompt8_answer2">summer</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt8_triangle2"/>
+                </div>
+                <div class="option" id="prompt8_option3">
+                    <p class="answer_text" id="prompt8_answer3">autumn</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt8_triangle3"/>
+                </div>
+                <div class="option" id="prompt8_option4">
+                    <p class="answer_text" id="prompt8_answer4">winter</p>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt8_triangle4"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="page9">
+            <p class="prompt_text" id="prompt9">tester</p>
+        </div>
 
         <!-- <iframe src="sketch.html" style="height:100vmin;width:100vmin;border:none;" scrolling="no" id="tumbleweed"></iframe> -->
         <script src="js/main.js"></script>
