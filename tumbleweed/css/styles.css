@@ -10,6 +10,12 @@
   src: url('assets/PeachDays.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: "CMU";
+  src: url('assets/cmu.ttf');
+  src: url('assets/cmu.ttf') format('truetype');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -312,4 +318,47 @@ body {
 
 #prompt5_option1 {
   padding-top: 20px;
+}
+
+#drake_equation {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "CMU";
+}
+
+#drake_container {
+  display: flex;
+  flex-direction: row;
+}
+
+#drake_list_container {
+  cursor: move;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 5ch 1fr;
+}
+
+.drake_subgrid {
+  display: grid;
+  gap: 10px;
+  grid-template-rows: repeat(8, 1fr);
+}
+
+.drake_term {
+  list-style-type: none;
+  font-family: "CMU";
+  font-size: 3vmin;
+  padding: 5px;
+  line-height: 1rem;
+  text-align: center;
+  align-self: center;
+}
+
+.drake_desc {
+  list-style-type: none;
+  font-family: Helvetica, sans-serif;
+  font-size: 3vmin;
+  line-height: 1rem;
+  padding: 10px 5px;
+  border: 1px solid #f4c67f;
 }

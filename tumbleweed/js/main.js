@@ -22,18 +22,20 @@ function intro() {
         letterTiles[i].addEventListener("click", letterTileSwapper);
     }
 
-    HORSEY.onpointerdown = beginDrag;
-    HORSEY.onpointerup = stopDrag;
+    HORSEY.onpointerdown = beginChessDrag;
+    HORSEY.onpointerup = stopChessDrag;
 
-    //loadPage(8);
+    Sortable.create(document.getElementById("drake_subgrid2"), { handle: ".drake_desc" });
+
+    loadPage(9);
 }
 
-function beginDrag(e) {
-    HORSEY.onpointermove = drag;
+function beginChessDrag(e) {
+    HORSEY.onpointermove = chessDrag;
     HORSEY.setPointerCapture(e.pointerId);
 }
 
-function stopDrag(e) {
+function stopChessDrag(e) {
     HORSEY.onpointermove = null;
     HORSEY.releasePointerCapture(e.pointerId);
     let targetElements = document.elementsFromPoint(e.pageX, e.pageY);
@@ -66,7 +68,7 @@ function stopDrag(e) {
     }
 }
 
-function drag(e) {
+function chessDrag(e) {
     e.target.style.position = "absolute";
     e.target.style.left = `${e.clientX-20}px`;
     e.target.style.top = `${e.clientY-20}px`;
