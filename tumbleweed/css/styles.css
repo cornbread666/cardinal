@@ -34,16 +34,15 @@ body {
   align-items: center;
   justify-content: center;
   touch-action: none;
-  overflow: scroll;
 }
 
 .page {
   max-width: 80%;
-  max-height: 80%;
+  max-height: 90%;
   display: none;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 #title_page {
@@ -286,8 +285,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 1vmin;
+  margin-right: 1vmin;
   line-height: 1rem;
 }
 
@@ -337,6 +336,7 @@ body {
   display: grid;
   gap: 10px;
   grid-template-columns: 5ch 1fr;
+  margin-bottom: 30px;
 }
 
 .drake_subgrid {
@@ -361,5 +361,15 @@ body {
   font-size: 3vmin;
   line-height: 1rem;
   padding: 10px 5px;
-  border: 1px solid #f4c67f;
+  border: 3px solid #f4c67f;
+  text-align: left;
+  align-self: center;
+}
+
+.drake_highlight {
+  background-color: #b3dfde;
+}
+
+.drake_filter {
+  background-color: #f4c67f;
 }

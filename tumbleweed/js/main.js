@@ -1,6 +1,18 @@
 let PAGE_NUMBER = 0;
 let HORSEY = document.getElementById("horse_piece");
 
+const drakeListenerConfig = { attributes: false, childList: true, subtree: false };
+const drakeCallback = (mutationList, observer) => {
+    for (const mutation of mutationList) {
+      if (mutation.type === "childList") {
+        checkDrakeDescriptions();
+      }
+    }
+};
+const drakeObserver = new MutationObserver(drakeCallback);
+drakeObserver.observe(document.getElementById("drake_subgrid2"), drakeListenerConfig);
+let exitDrake = false;
+
 // POTENTIAL TUMBLEWEED VARIABLES
 let VALID_HORSE = false;
 let TILES_LENGTH = 0;
@@ -12,12 +24,12 @@ function intro() {
     document.getElementById("play_triangle").addEventListener("click", introBlurb);
     document.getElementById("intro_triangle").addEventListener("click", startQuiz);
 
-    questionPages = document.getElementsByClassName("answer triangle");
+    let questionPages = document.getElementsByClassName("answer triangle");
     for (let i = 0; i < questionPages.length; i++) {
         questionPages[i].addEventListener("click", nextPage);
     }
 
-    letterTiles = document.getElementsByClassName("letter_tile");
+    let letterTiles = document.getElementsByClassName("letter_tile");
     for (let i = 0; i < letterTiles.length; i++) {
         letterTiles[i].addEventListener("click", letterTileSwapper);
     }
@@ -25,7 +37,18 @@ function intro() {
     HORSEY.onpointerdown = beginChessDrag;
     HORSEY.onpointerup = stopChessDrag;
 
-    Sortable.create(document.getElementById("drake_subgrid2"), { handle: ".drake_desc" });
+    Sortable.create(document.getElementById("drake_subgrid2"), {
+        swap: true,
+        swapClass: 'drake_highlight',
+        handle: ".drake_desc",
+        filter: ".drake_filter",
+        animation: 150
+    });
+
+    let drakeDescriptions = document.getElementsByClassName("drake_desc");
+    for (let i = 0; i < drakeDescriptions.length; i++) {
+        drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
+    }
 
     loadPage(9);
 }
@@ -178,5 +201,34 @@ function letterTileSwapper(event) {
     } else if (tile.parentNode === tc2) {
         tc2.removeChild(tile);
         tc1.appendChild(tile);
+    }
+}
+
+function checkDrakeDescriptions() {
+
+    let complete = true;
+
+    let drakeContainer = document.getElementById("drake_subgrid2");
+
+    let drakeDescriptions = Array.from(drakeContainer.children);
+    for (let i = 0; i < drakeDescriptions.length; i++) {
+        if (parseInt(drakeDescriptions[i].id.slice(-1)) === i+1) {
+            if (!drakeDescriptions[i].classList.add("drake_filter")) {
+                drakeDescriptions[i].classList.add("drake_filter");
+            }
+        } else {
+            complete = false;
+            if (drakeDescriptions[i].classList.contains("drake_filter")) {
+                drakeDescriptions[i].classList.remove("drake_filter");
+            }
+        }
+    }
+
+    if (complete && !exitDrake) {
+        exitDrake = true;
+        drakeObserver.disconnect();
+        drakeContainer.addEventListener("build", nextPage);
+        let e = new Event("build");
+        drakeContainer.dispatchEvent(e);
     }
 }
