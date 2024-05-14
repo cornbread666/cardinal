@@ -34,6 +34,7 @@ body {
   align-items: center;
   justify-content: center;
   touch-action: none;
+  overflow: scroll;
 }
 
 .page {
