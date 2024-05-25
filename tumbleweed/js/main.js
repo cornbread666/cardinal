@@ -1,4 +1,5 @@
 let PAGE_NUMBER = 0;
+let docBody = document.body;
 let HORSEY = document.getElementById("horse_piece");
 
 const drakeListenerConfig = { attributes: false, childList: true, subtree: false };
@@ -166,6 +167,7 @@ function nextPage(event) {
     }
 
     if (validAnswer) {
+
         setTimeout(function() {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_out");
         }, 800);
@@ -176,6 +178,12 @@ function nextPage(event) {
             PAGE_NUMBER = PAGE_NUMBER + 1;
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
+
+        if (PAGE_NUMBER === 3) {
+            docBody.setAttribute("style", "touch-action: none");
+        } else {
+            docBody.setAttribute("style", "touch-action: auto");
+        }
     }
     
 }
