@@ -179,7 +179,8 @@ function nextPage(event) {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
 
-        if (PAGE_NUMBER === 3) {
+        if (PAGE_NUMBER === 2) { // setting no-scroll for chess page
+            console.log("egg");
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
