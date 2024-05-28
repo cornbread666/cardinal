@@ -379,6 +379,7 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 #sat_curved_arrow {
@@ -417,4 +418,48 @@ body {
 .shape_cont_img {
   width: 20vmin;
   height: 20vmin;
+}
+
+#maze {
+  width: 50vmin;
+  height: 50vmin;
+  z-index: 10;
+}
+
+#maze_start_square {
+  position: absolute;
+  top: 20vmin;
+  left: 0;
+  background: none;
+  width: 5vmin;
+  height: 5vmin;
+  z-index: -10;
+}
+
+#maze_end_square {
+  position: absolute;
+  top: 40vmin;
+  left: 45vmin;
+  background: none;
+  width: 5vmin;
+  height: 5vmin;
+  z-index: -10;
+}
+
+.maze_drag_circle {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 100%;
+  z-index: 20;
+  background-color: yellow;
+  opacity: 100%;
+}
+
+.maze_win {
+  background-color: green;
+  opacity: 0;
+  transition-delay: 1s;
+  transition-duration: 1s;
+  transition-property: opacity;
 }
