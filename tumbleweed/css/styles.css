@@ -446,20 +446,9 @@ body {
   z-index: -10;
 }
 
-.maze_drag_circle {
-  width: 10px;
-  height: 10px;
-  position: absolute;
-  border-radius: 100%;
+#maze_canvas {
   z-index: 20;
-  background-color: yellow;
-  opacity: 100%;
-}
-
-.maze_win {
-  background-color: green;
-  opacity: 0;
-  transition-delay: 1s;
-  transition-duration: 1s;
-  transition-property: opacity;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

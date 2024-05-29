@@ -2,6 +2,9 @@ let PAGE_NUMBER = 0;
 let docBody = document.body;
 let HORSEY = document.getElementById("horse_piece");
 
+let mazeCanvas = document.getElementById("maze_canvas");
+let mazeCtx;
+
 const drakeListenerConfig = { attributes: false, childList: true, subtree: false };
 const drakeCallback = (mutationList, observer) => {
     for (const mutation of mutationList) {
@@ -15,6 +18,7 @@ drakeObserver.observe(document.getElementById("drake_subgrid2"), drakeListenerCo
 let exitDrake = false;
 let VALID_MAZE_START = false;
 let VALID_MAZE_END = false;
+let MAZE_DRAG_PTS = [];
 
 // POTENTIAL TUMBLEWEED VARIABLES
 let VALID_HORSE = false;
@@ -40,8 +44,8 @@ function intro() {
     HORSEY.onpointerdown = beginChessDrag;
     HORSEY.onpointerup = stopChessDrag;
 
-    document.getElementById("maze").onpointerdown = beginMazeDrag;
-    document.getElementById("maze").onpointerup = stopMazeDrag;
+    mazeCanvas.onpointerdown = beginMazeDrag;
+    mazeCanvas.onpointerup = stopMazeDrag;
 
     Sortable.create(document.getElementById("drake_subgrid2"), {
         swap: true,
@@ -67,7 +71,7 @@ function beginChessDrag(e) {
 function stopChessDrag(e) {
     HORSEY.onpointermove = null;
     HORSEY.releasePointerCapture(e.pointerId);
-    let targetElements = document.elementsFromPoint(e.pageX, e.pageY);
+    let targetElements = document.elementsFromPoint(e.clientX, e.clientY);
     let targetFound = false;
     for (let i = 0; i < targetElements.length; i++) {
 
@@ -104,23 +108,30 @@ function chessDrag(e) {
 }
 
 function beginMazeDrag(e) {
-    document.getElementById("maze").onpointermove = mazeDrag;
-    document.getElementById("maze").setPointerCapture(e.pointerId);
 
-    let targetElements = document.elementsFromPoint(e.pageX, e.pageY);
+    mazeCanvas.setAttribute('width', document.getElementById("maze").getBoundingClientRect().width);
+    mazeCanvas.setAttribute('height', document.getElementById("maze").getBoundingClientRect().height);
+    mazeCtx = mazeCanvas.getContext("2d");
+
+    MAZE_DRAG_PTS.push([e.offsetX, e.offsetY]);
+    mazeCanvas.onpointermove = mazeDrag;
+    mazeCanvas.setPointerCapture(e.pointerId);
+
+    let targetElements = document.elementsFromPoint(e.clientX, e.clientY);
     for (let i = 0; i < targetElements.length; i++) {
         let te = targetElements[i];
         if (te.id === ("maze_start_square")) {
             VALID_MAZE_START = true;
+            console.log("egggggg");
         }
     }
 }
 
 function stopMazeDrag(e) {
-    document.getElementById("maze").onpointermove = null;
-    document.getElementById("maze").releasePointerCapture(e.pointerId);
+    mazeCanvas.onpointermove = null;
+    mazeCanvas.releasePointerCapture(e.pointerId);
 
-    let targetElements = document.elementsFromPoint(e.pageX, e.pageY);
+    let targetElements = document.elementsFromPoint(e.clientX, e.clientY);
     for (let i = 0; i < targetElements.length; i++) {
         let te = targetElements[i];
         if (te.id === ("maze_end_square")) {
@@ -135,34 +146,41 @@ function stopMazeDrag(e) {
     } else {
         VALID_MAZE_START = false;
         VALID_MAZE_END = false;
+        MAZE_DRAG_PTS = [];
     }
 }
 
 function mazeDrag(e) {
-    let c = document.createElement("div");
-    c.classList.add("maze_drag_circle", "drawn");
-    c.style.top = `${e.pageY}px`;
-    c.style.left = `${e.pageX}px`;
-    docBody.appendChild(c);
+    MAZE_DRAG_PTS.push([e.offsetX, e.offsetY]);
+    drawMazeLine(false);
+}
+
+function drawMazeLine(winner) {
+
+    mazeCtx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
+
+    mazeCtx.beginPath();
+    mazeCtx.lineWidth = winner ? "6" : "4";
+    mazeCtx.strokeStyle = winner ? "green" : "yellow";
+    let start = MAZE_DRAG_PTS[0];
+    mazeCtx.moveTo(start[0], start[1]);
+
+    for (let i = 1; i < MAZE_DRAG_PTS.length; i++) {
+        let point = MAZE_DRAG_PTS[i];
+        mazeCtx.lineTo(point[0], point[1]);
+    }
+
+    mazeCtx.stroke();
 }
 
 function clearMazeLine(success) {
 
-    let mazeCircles = document.getElementsByClassName("maze_drag_circle");
     if (success) {
-        for (let i = 0; i < mazeCircles.length; i++) {
-            mazeCircles[i].classList.add("maze_win");
-        }
-        setTimeout(function() {
-            while (mazeCircles[0]) {
-                docBody.removeChild(mazeCircles[0]);
-            }
-        }, 2000);
+        drawMazeLine(true);
     } else {
-        while (mazeCircles[0]) {
-            docBody.removeChild(mazeCircles[0]);
-        }
+        mazeCtx.clearRect(0, 0, mazeCanvas.width, mazeCanvas.height);
     }
+
 }
 
 function introBlurb() {
@@ -246,7 +264,7 @@ function nextPage(event) {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
 
-        window.scrollTo(0,0); 
+        //window.scrollTo(0,0); 
         if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11) { // setting no-scroll for chess & maze pages
             docBody.setAttribute("style", "touch-action: none");
         } else {
