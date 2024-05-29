@@ -24,6 +24,7 @@ let MAZE_DRAG_PTS = [];
 let VALID_HORSE = false;
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
+let CHEESE_PILLED = false;
 
 intro();
 
@@ -122,7 +123,6 @@ function beginMazeDrag(e) {
         let te = targetElements[i];
         if (te.id === ("maze_start_square")) {
             VALID_MAZE_START = true;
-            console.log("egggggg");
         }
     }
 }
@@ -146,11 +146,22 @@ function stopMazeDrag(e) {
     } else {
         VALID_MAZE_START = false;
         VALID_MAZE_END = false;
+        CHEESE_PILLED = false;
         MAZE_DRAG_PTS = [];
     }
 }
 
 function mazeDrag(e) {
+
+    let targetElements = document.elementsFromPoint(e.clientX, e.clientY);
+    for (let i = 0; i < targetElements.length; i++) {
+        let te = targetElements[i];
+        if (te.id === ("maze_cheese_square")) {
+            CHEESE_PILLED = true;
+            console.log("cheese pilled");
+        }
+    }
+
     MAZE_DRAG_PTS.push([e.offsetX, e.offsetY]);
     drawMazeLine(false);
 }
@@ -260,6 +271,9 @@ function nextPage(event) {
         
         setTimeout(function() {
             document.getElementById("page" + PAGE_NUMBER.toString()).style.display = "none";
+            if (PAGE_NUMBER == 12 && !CHEESE_PILLED) {
+                PAGE_NUMBER = PAGE_NUMBER + 1;
+            }
             PAGE_NUMBER = PAGE_NUMBER + 1;
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
