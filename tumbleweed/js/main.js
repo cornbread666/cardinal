@@ -246,6 +246,7 @@ function nextPage(event) {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
 
+        window.scrollTo(0,0); 
         if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11) { // setting no-scroll for chess & maze pages
             docBody.setAttribute("style", "touch-action: none");
         } else {
