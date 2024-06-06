@@ -653,12 +653,6 @@ html {
   --tw-contain-style:  ;
 }
 
-.avatar.placeholder > div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 @media (hover:hover) {
   .label a:hover {
     --tw-text-opacity: 1;
@@ -820,18 +814,6 @@ html {
   .btn.glass:hover {
     --glass-opacity: 25%;
     --glass-border-opacity: 15%;
-  }
-
-  .btn-outline.btn-primary:hover {
-    --tw-text-opacity: 1;
-    color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
-  }
-
-  @supports (color: color-mix(in oklab, black, black)) {
-    .btn-outline.btn-primary:hover {
-      background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
-      border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
-    }
   }
 
   .btn-outline.btn-accent:hover {
@@ -1002,21 +984,12 @@ html {
     border-color: var(--btn-color, var(--fallback-b2));
   }
 
-  .btn-primary {
-    --btn-color: var(--fallback-p);
-  }
-
   .btn-accent {
     --btn-color: var(--fallback-a);
   }
 }
 
 @supports (color: color-mix(in oklab, black, black)) {
-  .btn-outline.btn-primary.btn-active {
-    background-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
-    border-color: color-mix(in oklab, var(--fallback-p,oklch(var(--p)/1)) 90%, black);
-  }
-
   .btn-outline.btn-accent.btn-active {
     background-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
     border-color: color-mix(in oklab, var(--fallback-a,oklch(var(--a)/1)) 90%, black);
@@ -1029,17 +1002,7 @@ html {
   outline-offset: 2px;
 }
 
-.btn-primary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
-  outline-color: var(--fallback-p,oklch(var(--p)/1));
-}
-
 @supports (color: oklch(0% 0 0)) {
-  .btn-primary {
-    --btn-color: var(--p);
-  }
-
   .btn-accent {
     --btn-color: var(--a);
   }
@@ -1061,16 +1024,6 @@ html {
 .btn.glass.btn-active {
   --glass-opacity: 25%;
   --glass-border-opacity: 15%;
-}
-
-.btn-outline.btn-primary {
-  --tw-text-opacity: 1;
-  color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
-}
-
-.btn-outline.btn-primary.btn-active {
-  --tw-text-opacity: 1;
-  color: var(--fallback-pc,oklch(var(--pc)/var(--tw-text-opacity)));
 }
 
 .btn-outline.btn-accent {
@@ -1442,16 +1395,6 @@ html {
   }
 }
 
-.textarea-lg {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-  line-height: 2;
-}
-
 .card-compact .card-body {
   padding: 1rem;
   font-size: 0.875rem;
@@ -1480,22 +1423,17 @@ html {
   top: 0px;
 }
 
-.z-20 {
-  z-index: 20;
-}
-
 .z-10 {
   z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
 }
 
 .mx-10 {
   margin-left: 2.5rem;
   margin-right: 2.5rem;
-}
-
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .my-10 {
@@ -1515,10 +1453,6 @@ html {
   display: flex;
 }
 
-.min-h-screen {
-  min-height: 100vh;
-}
-
 .w-full {
   width: 100%;
 }
@@ -1527,24 +1461,16 @@ html {
   max-width: 100%;
 }
 
-.max-w-prose {
-  max-width: 65ch;
-}
-
-.max-w-sm {
-  max-width: 24rem;
-}
-
 .max-w-md {
   max-width: 28rem;
 }
 
-.shrink-0 {
-  flex-shrink: 0;
+.max-w-prose {
+  max-width: 65ch;
 }
 
-.grow {
-  flex-grow: 1;
+.shrink-0 {
+  flex-shrink: 0;
 }
 
 .cursor-pointer {
@@ -1563,10 +1489,6 @@ html {
   justify-content: center;
 }
 
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .rounded-none {
   border-radius: 0px;
 }
@@ -1575,21 +1497,8 @@ html {
   border-width: 2px;
 }
 
-.border-4 {
-  border-width: 4px;
-}
-
-.border-b {
-  border-bottom-width: 1px;
-}
-
 .border-b-4 {
   border-bottom-width: 4px;
-}
-
-.border-black {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .border-accent {
@@ -1597,24 +1506,14 @@ html {
   border-color: var(--fallback-a,oklch(var(--a)/var(--tw-border-opacity)));
 }
 
-.border-b-accent {
+.border-black {
   --tw-border-opacity: 1;
-  border-bottom-color: var(--fallback-a,oklch(var(--a)/var(--tw-border-opacity)));
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .bg-base-100 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
-}
-
-.bg-secondary-content {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-sc,oklch(var(--sc)/var(--tw-bg-opacity)));
-}
-
-.bg-base-200 {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
 }
 
 .py-6 {
@@ -1640,11 +1539,6 @@ html {
   font-weight: 700;
 }
 
-.text-accent {
-  --tw-text-opacity: 1;
-  color: var(--fallback-a,oklch(var(--a)/var(--tw-text-opacity)));
-}
-
 .text-neutral {
   --tw-text-opacity: 1;
   color: var(--fallback-n,oklch(var(--n)/var(--tw-text-opacity)));
@@ -1653,12 +1547,6 @@ html {
 .shadow-card {
   --tw-shadow: 0.8em 0.8em var(--fallback-b2,oklch(var(--a)/var(--tw-border-opacity)));
   --tw-shadow-colored: 0.8em 0.8em var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow-2xl {
-  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
