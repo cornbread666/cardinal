@@ -158,43 +158,11 @@ h1 {
   align-items: center;
 }
 
-.hamburger_container {
-  height: min(5vw, 30px);
-}
-
 .menu_button {
   margin-left: 10px;
   height: min(5vw, 30px);
   cursor: pointer;
   color: var(--my-yellow);
-}
-
-#hamburger_dropdown {
-  display: none;
-  position: absolute;
-  z-index: 1;
-  max-height: 400px;
-  overflow: auto;
-  background-color: #f1f1f1;
-  right: 0;
-  transform: translateX(-25%);
-}
-
-#hamburger_dropdown.show {
-  display: block;
-}
-
-.hamburger_option {
-  font-family: "Avenir", Arial;
-  font-size: min(3vw, 20px);
-  text-align: right;
-  cursor: pointer;
-  color: black;
-  padding: 5px;
-  text-decoration: none;
-  display: block;
-  border: 1px solid var(--my-black);
-  min-width: 10vw;
 }
 
 #head_spacer {
