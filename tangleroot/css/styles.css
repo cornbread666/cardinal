@@ -248,34 +248,6 @@ input[type="number"] {
   display: inline-flex;
 }
 
-#hamburger_dropdown {
-  display: none;
-  position: absolute;
-  z-index: 1;
-  max-height: 400px;
-  overflow: auto;
-  background-color: #f1f1f1;
-  right: 0;
-  transform: translateX(-25%);
-}
-
-#hamburger_dropdown.show {
-  display: block;
-}
-
-.hamburger_option {
-  font-family: "Avenir", Arial;
-  font-size: min(3vw, 20px);
-  text-align: right;
-  cursor: pointer;
-  color: black;
-  padding: 5px;
-  text-decoration: none;
-  display: block;
-  border: 1px solid var(--my-black);
-  min-width: 10vw;
-}
-
 .modal {
   position: fixed;
   top: 50%;

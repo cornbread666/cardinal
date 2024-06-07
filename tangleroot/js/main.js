@@ -101,7 +101,7 @@ intro();
 function intro() {
   document.getElementById("plantAdder").addEventListener("click", addPlant);
   document.getElementById("flvl_input").addEventListener("input", flvlUpdate);
-  document.getElementById("hamburger_button").addEventListener("click", navbar);
+  document.getElementById("home_button").addEventListener("click", (e) => { window.open("https://cornbread.games/home", "_blank").focus(); });
   document.getElementById("info_button").addEventListener("click", showInfo);
   document.getElementById("overlay").addEventListener("click", closeModal);
   document.getElementById("info_close").addEventListener("click", closeModal);
@@ -251,8 +251,6 @@ function chanceWindow(n) {
 }
 
 function toggleDropdown(event) {
-
-  document.getElementById("hamburger_dropdown").classList.remove("show");
 
   let num = event.target.id.match(/\d+/)[0];
   let optionsID = "options_container" + num.toString();
@@ -465,10 +463,6 @@ function closePlant(event) {
   updateTotalChance();
 }
 
-function navbar(event) {
-  document.getElementById("hamburger_dropdown").classList.toggle("show");
-}
-
 function showInfo() {
   document.getElementById("info_modal").classList.add("active");
   document.getElementById("overlay").classList.add("active");
@@ -489,12 +483,6 @@ window.onclick = function(event) {
       if (openDropdown.classList.contains("show")) {
         openDropdown.classList.remove("show");
       }
-    }
-  }
-  if (!event.target.matches("#hamburger_button")) {
-    let hd = document.getElementById("hamburger_dropdown");
-    if (hd.classList.contains("show")) {
-      hd.classList.remove("show");
     }
   }
 }
