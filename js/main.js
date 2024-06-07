@@ -694,6 +694,21 @@ document.addEventListener("DOMContentLoaded", () => {
     scoresImg.style.webkitTapHighlightColor = "transparent";
     scoresImg.classList.add("disable_select");
     header.appendChild(scoresImg);
+
+    homeImg = document.createElement("img");
+    homeImg.src = "icons/home_light.png";
+    if (colorMode == "dark") { homeImg.src = "icons/home_dark.png"; }
+    homeImg.id = "home_button";
+    homeImg.addEventListener("click", (e) => { window.open("https://cornbread.games/home", "_blank").focus(); });
+    homeImg.style.left = `${l}px`;
+    homeImg.style.top = `${t}px`;
+    homeImg.style.position = "absolute";
+    homeImg.style.height = "30px";
+    homeImg.style.cursor = "pointer";
+    homeImg.style.transform = "translate(-275%, 0)";
+    homeImg.style.webkitTapHighlightColor = "transparent";
+    homeImg.classList.add("disable_select");
+    header.appendChild(homeImg);
   }
 
   function setTimer(initial) {
@@ -1102,6 +1117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("highlight_button").src = "icons/highlight_light.png";
       document.getElementById("settings_button").src = "icons/settings_light.png";
       document.getElementById("scores_button").src = "icons/scores_light.png";
+      document.getElementById("home_button").src = "icons/home_light.png";
       if (document.getElementById("time")) {
         document.getElementById("time").style.color = "black";
       }
@@ -1197,6 +1213,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("highlight_button").src = "icons/highlight_dark.png";
       document.getElementById("settings_button").src = "icons/settings_dark.png";
       document.getElementById("scores_button").src = "icons/scores_dark.png";
+      document.getElementById("home_button").src = "icons/home_dark.png";
       if (document.getElementById("time")) {
         document.getElementById("time").style.color = "white";
       }
