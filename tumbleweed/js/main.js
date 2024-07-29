@@ -67,7 +67,7 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    loadPage(15);
+    //loadPage(15);
 }
 
 function beginChessDrag(e) {
@@ -267,7 +267,7 @@ function nextPage(event) {
         else {
             event.target.removeEventListener("click", nextPage);
             event.target.parentNode.classList.add("selected_option");
-        }   
+        }
     }
 
     if (validAnswer) {
@@ -275,8 +275,8 @@ function nextPage(event) {
         setTimeout(function() {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_out");
         }, 800);
-    
-        
+
+
         setTimeout(function() {
             document.getElementById("page" + PAGE_NUMBER.toString()).style.display = "none";
             if (PAGE_NUMBER == 12 && !CHEESE_PILLED) {
@@ -286,14 +286,14 @@ function nextPage(event) {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
         }, 1800);
 
-        //window.scrollTo(0,0); 
+        //window.scrollTo(0,0);
         if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11) { // setting no-scroll for chess & maze pages
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
         }
     }
-    
+
 }
 
 function loadPage(p) {
@@ -402,9 +402,9 @@ function makeoverScroll(event) {
         }, 500);
     }
 
-    
 
-    
-    
+
+
+
 
 }
