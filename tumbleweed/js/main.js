@@ -25,6 +25,7 @@ let VALID_HORSE = false;
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
 let CHEESE_PILLED = false;
+let MAKEOVER_CHOICES = [1, 1, 1, 1];
 
 intro();
 
@@ -40,6 +41,11 @@ function intro() {
     let letterTiles = document.getElementsByClassName("letter_tile");
     for (let i = 0; i < letterTiles.length; i++) {
         letterTiles[i].addEventListener("click", letterTileSwapper);
+    }
+
+    let makeoverArrows = document.getElementsByClassName("makeover triangle");
+    for (let i = 0; i < makeoverArrows.length; i++) {
+        makeoverArrows[i].addEventListener("click", makeoverScroll);
     }
 
     HORSEY.onpointerdown = beginChessDrag;
@@ -61,7 +67,7 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    //loadPage(12);
+    loadPage(15);
 }
 
 function beginChessDrag(e) {
@@ -136,6 +142,9 @@ function stopMazeDrag(e) {
         let te = targetElements[i];
         if (te.id === ("maze_end_square")) {
             VALID_MAZE_END = true;
+        } else if (te.id === ("maze_cheese_square")) {
+            CHEESE_PILLED = true;
+            VALID_MAZE_END = true;
         }
     }
 
@@ -158,7 +167,6 @@ function mazeDrag(e) {
         let te = targetElements[i];
         if (te.id === ("maze_cheese_square")) {
             CHEESE_PILLED = true;
-            console.log("cheese pilled");
         }
     }
 
@@ -339,4 +347,64 @@ function checkDrakeDescriptions() {
         let e = new Event("build");
         drakeContainer.dispatchEvent(e);
     }
+}
+
+function makeoverScroll(event) {
+
+    let max_choices = [5,5,5,5];
+
+    let tid = event.target.id;
+    let row = parseInt(tid.slice(-1)) - 1;
+    let dir = tid.slice(-2, -1);
+    let cur = MAKEOVER_CHOICES[row];
+
+    let curID = `makeover_row${row+1}_asset${cur}`;
+
+    if (dir === "r") {
+        if (cur === max_choices[row]) {
+            MAKEOVER_CHOICES[row] = 1;
+        } else {
+            MAKEOVER_CHOICES[row] = MAKEOVER_CHOICES[row] + 1;
+        }
+    } else if (dir === "l") {
+        if (cur === 1) {
+            MAKEOVER_CHOICES[row] = max_choices[row];
+        } else {
+            MAKEOVER_CHOICES[row] = MAKEOVER_CHOICES[row] - 1;
+        }
+    }
+
+    let newID = `makeover_row${row+1}_asset${MAKEOVER_CHOICES[row]}`;
+
+    if (dir === "r") {
+
+        document.getElementById(curID).classList.add("makeover_fly_out_right");
+        setTimeout(function() {
+            document.getElementById(curID).classList.remove("visible_asset");
+            document.getElementById(newID).classList.add("visible_asset");
+            document.getElementById(newID).classList.add("makeover_fly_from_left");
+        }, 250);
+        setTimeout(function() {
+            document.getElementById(curID).classList.remove("makeover_fly_out_right");
+            document.getElementById(newID).classList.remove("makeover_fly_from_left");
+        }, 500);
+    } else if (dir === "l") {
+
+        document.getElementById(curID).classList.add("makeover_fly_out_left");
+        setTimeout(function() {
+            document.getElementById(curID).classList.remove("visible_asset");
+            document.getElementById(newID).classList.add("visible_asset");
+            document.getElementById(newID).classList.add("makeover_fly_from_right");
+        }, 250);
+        setTimeout(function() {
+            document.getElementById(curID).classList.remove("makeover_fly_out_left");
+            document.getElementById(newID).classList.remove("makeover_fly_from_right");
+        }, 500);
+    }
+
+    
+
+    
+    
+
 }
