@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(index);
     document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.5";
 
-    index = 567; // COMMENT ME!!!!!!!!!!!!!!
+    //index = 567; // COMMENT ME!!!!!!!!!!!!!!
 
     gridFill = false;
 
