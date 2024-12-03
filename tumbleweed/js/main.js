@@ -25,7 +25,10 @@ let VALID_HORSE = false;
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
 let CHEESE_PILLED = false;
-let MAKEOVER_CHOICES = [1, 1, 1, 1];
+let MAKEOVER_STYLE_CHOICES = {"hair": 1, "eyes": 1, "misc": 1};
+let MAKEOVER_STYLE_MAX = [5, 3, 5];
+let MAKEOVER_COLOR_CHOICES = {"skin": 1, "hair": 1, "brows": 1, "eyes": 1, "mouth": 1};
+let MAKEOVER_COLOR_MAX = [5, 15, 5, 10, 5];
 
 intro();
 
@@ -351,12 +354,27 @@ function checkDrakeDescriptions() {
 
 function makeoverScroll(event) {
 
-    let max_choices = [5,5,5,5];
-
     let tid = event.target.id;
-    let row = parseInt(tid.slice(-1)) - 1;
+    let col = parseInt(tid.slice(-3, -2));
+    let row = parseInt(tid.slice(-1));
     let dir = tid.slice(-2, -1);
-    let cur = MAKEOVER_CHOICES[row];
+    let cur = 0;
+    let style = 1;
+    let color = 1;
+    
+    if (col === 1) {
+        cur = Object.keys(MAKEOVER_STYLE_CHOICES)[row-1];
+    } else {
+        cur = Object.keys(MAKEOVER_COLOR_CHOICES)[row-1];
+    }
+    
+
+    let curID = cur + "_image";
+    let curFile = document.getElementById(curID).src;
+    console.log(curID, curFile);
+
+
+    /* 
 
     let curID = `makeover_row${row+1}_asset${cur}`;
 
@@ -402,9 +420,5 @@ function makeoverScroll(event) {
         }, 500);
     }
 
-
-
-
-
-
+    */
 }

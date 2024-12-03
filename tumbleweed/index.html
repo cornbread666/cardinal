@@ -273,7 +273,7 @@
                 <div id="maze_end_square"></div>
                 <div id="maze_cheese_square"></div>
                 <canvas id="maze_canvas"></canvas>
-                <img src="css/assets/maze.png" class="shape_cont_img" id="maze" draggable="false">
+                <img src="css/assets/maze2.png" class="shape_cont_img" id="maze" draggable="false">
             </div>
         </div>
 
@@ -329,29 +329,80 @@
             <p class="prompt_text" id="prompt15">makeover time!</p>
 
             <div class="shape_container" id="makeover_shape_container">
-                <div class="makeover_row" id="makeover_row1">
-                    <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_l1" />
-                    <div class="makeover_asset_container" id="makeover_asset_container1">
-                        <img src="css/assets/dog.png" class="makeover_asset visible_asset" id="makeover_row1_asset1" />
-                        <img src="css/assets/turtle.png" class="makeover_asset" id="makeover_row1_asset2" />
-                        <img src="css/assets/cheese.png" class="makeover_asset" id="makeover_row1_asset3" />
-                        <img src="css/assets/horsey.png" class="makeover_asset" id="makeover_row1_asset4" />
-                        <img src="css/assets/triangle_salmon.png" class="makeover_asset" id="makeover_row1_asset5" />
+
+                <div class="makeover_column" id="makeover_c1">
+                    <p class="makeover_text" id="makeover_c1_prompt">style</p>
+                    <div class="makeover_row" id="makeover_c1r1">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c1l1" />
+                        <p class="makeover_text" id="makeover_c1r1_prompt">hair</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c1r1" />
                     </div>
-                    <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_r1" />
-                </div>
-                <div class="makeover_row" id="makeover_row2">
-                    <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_l2" />
-                    <div class="makeover_asset_container" id="makeover_asset_container2">
-                        <img src="css/assets/dog.png" class="makeover_asset visible_asset" id="makeover_row2_asset1" />
-                        <img src="css/assets/turtle.png" class="makeover_asset" id="makeover_row2_asset2" />
-                        <img src="css/assets/cheese.png" class="makeover_asset" id="makeover_row2_asset3" />
-                        <img src="css/assets/horsey.png" class="makeover_asset" id="makeover_row2_asset4" />
-                        <img src="css/assets/triangle_salmon.png" class="makeover_asset" id="makeover_row2_asset5" />
+                    <div class="makeover_row" id="makeover_c1r2">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c1l2" />
+                        <p class="makeover_text" id="makeover_c1r2_prompt">eyes</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c1r2" />
                     </div>
-                    <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_r2" />
+                    <div class="makeover_row" id="makeover_c1r3">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c1l3" />
+                        <p class="makeover_text" id="makeover_c1r3_prompt">misc</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c1r3" />
+                    </div>
                 </div>
-                <img src="css/assets/cheese.png" id="makeover_face" />
+
+                <div id="makeover_image_container">
+                    <img src="css/assets/makeover/base/base1_1.png" class="makeover_asset base" id="base_image" />
+                    <img src="css/assets/makeover/brows/brows1_1.png" class="makeover_asset brows" id="brows_image" />
+                    <img src="css/assets/makeover/eyes/eyes1_1.png" class="makeover_asset eyes" id="eyes_image" />
+                    <img src="css/assets/makeover/mouth/mouth1_1.png" class="makeover_asset mouth" id="mouth_image" />
+                    <img src="css/assets/makeover/hair/hair1_1.png" class="makeover_asset hair" id="hair_image" />
+                    <img src="css/assets/makeover/misc/misc1_1.png" class="makeover_asset misc" id="misc_image" />
+                </div>
+
+                <div class="makeover_column" id="makeover_c2">
+                    <p class="makeover_text" id="makeover_c2_prompt">color</p>
+                    <div class="makeover_row" id="makeover_c2r1">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c2l1" />
+                        <p class="makeover_text" id="makeover_c2r1_prompt">skin</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c2r1" />
+                    </div>
+                    <div class="makeover_row" id="makeover_c2r2">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c2l2" />
+                        <p class="makeover_text" id="makeover_c2r2_prompt">hair</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c2r2" />
+                    </div>
+                    <div class="makeover_row" id="makeover_c2r3">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c2l3" />
+                        <p class="makeover_text" id="makeover_c2r3_prompt">brows</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c2r3" />
+                    </div>
+                    <div class="makeover_row" id="makeover_c2r4">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c2l4" />
+                        <p class="makeover_text" id="makeover_c2r4_prompt">eyes</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c2r4" />
+                    </div>
+                    <div class="makeover_row" id="makeover_c2r5">
+                        <img src="css/assets/triangle_ob_flip.png" class="makeover triangle" id="makeover_triangle_c2l5" />
+                        <p class="makeover_text" id="makeover_c2r5_prompt">mouth</p>
+                        <img src="css/assets/triangle_ob.png" class="makeover triangle" id="makeover_triangle_c2r5" />
+                    </div>
+                </div>
+
+            </div>
+            <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt15_triangle1"/>
+        </div>
+
+        <div class="page" id="page16">
+            <p class="prompt_text" id="prompt16">what do you see?</p>
+
+            <div class="shape_container" id="inkblot_shape_container">
+                <img src="css/assets/inkblot.png" class="shape_cont_img" id="inkblot" draggable="false">
+            </div>
+
+            <div class="answer_container" id="answer_container16">
+                <div class="option" id="prompt16_option1">
+                    <input type="text" class="answer_input" id="inkblot_input" name="inkblot" maxlength="50"><br><br>
+                    <img src="css/assets/triangle_ob.png" class="answer triangle" id="prompt16_triangle1"/>
+                </div>
             </div>
         </div>
 
