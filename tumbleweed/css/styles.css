@@ -511,14 +511,6 @@ body {
   left: 0;
 }
 
-.makeover_asset.base {
-  z-index: 1;
-}
-
-.makeover_asset.base {
-  z-index: 10;
-}
-
 .visible_asset {
   display: flex;
   opacity: 100%;

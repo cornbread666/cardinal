@@ -19,16 +19,16 @@ let exitDrake = false;
 let VALID_MAZE_START = false;
 let VALID_MAZE_END = false;
 let MAZE_DRAG_PTS = [];
+let MAKEOVER_STYLE_CHOICES = {"hair": 1, "eyes": 1, "misc": 1};
+let MAKEOVER_STYLE_MAX = [5, 3, 5];
+let MAKEOVER_COLOR_CHOICES = {"skin": 1, "hair": 1, "brows": 1, "eyes": 1, "mouth": 1};
+let MAKEOVER_COLOR_MAX = [5, 15, 5, 10, 5];
 
 // POTENTIAL TUMBLEWEED VARIABLES
 let VALID_HORSE = false;
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
 let CHEESE_PILLED = false;
-let MAKEOVER_STYLE_CHOICES = {"hair": 1, "eyes": 1, "misc": 1};
-let MAKEOVER_STYLE_MAX = [5, 3, 5];
-let MAKEOVER_COLOR_CHOICES = {"skin": 1, "hair": 1, "brows": 1, "eyes": 1, "mouth": 1};
-let MAKEOVER_COLOR_MAX = [5, 15, 5, 10, 5];
 
 intro();
 
@@ -358,39 +358,68 @@ function makeoverScroll(event) {
     let col = parseInt(tid.slice(-3, -2));
     let row = parseInt(tid.slice(-1));
     let dir = tid.slice(-2, -1);
-    let cur = 0;
+    let cur = "";
     let style = 1;
     let color = 1;
     
     if (col === 1) {
         cur = Object.keys(MAKEOVER_STYLE_CHOICES)[row-1];
+        style = MAKEOVER_STYLE_CHOICES[cur];
+        if (cur === "hair" || cur === "eyes") {
+            color = MAKEOVER_COLOR_CHOICES[cur];
+        }
     } else {
         cur = Object.keys(MAKEOVER_COLOR_CHOICES)[row-1];
+        color = MAKEOVER_COLOR_CHOICES[cur];
+        if (cur === "hair" || cur === "eyes") {
+            style = MAKEOVER_STYLE_CHOICES[cur];
+        }
     }
-    
 
     let curID = cur + "_image";
     let curFile = document.getElementById(curID).src;
-    console.log(curID, curFile);
+    //console.log(curID, style, color, col, row, dir, curFile);
 
+    if (col === 1) {
+        if (dir === "r") {
+            if (style === MAKEOVER_STYLE_MAX[row-1]) {
+                style = 1;
+            } else {
+                style = style + 1;
+            }
+        } else if (dir === "l") {
+            if (style === 1) {
+                style = MAKEOVER_STYLE_MAX[row-1];
+            } else {
+                style = style - 1;
+            }
+        }
+        MAKEOVER_STYLE_CHOICES[cur] = style;
+    } else if (col === 2) {
+        if (dir === "r") {
+            if (color === MAKEOVER_COLOR_MAX[row-1]) {
+                color = 1;
+            } else {
+                color = color + 1;
+            }
+        } else if (dir === "l") {
+            if (color === 1) {
+                color = MAKEOVER_COLOR_MAX[row-1];
+            } else {
+                color = color - 1;
+            }
+        }
+        MAKEOVER_COLOR_CHOICES[cur] = color;
+    }
+
+    console.log(cur, style, color);
+
+    let newFile = `css/assets/makeover/${cur}/${cur}${style}_${color}.png`;
+    document.getElementById(curID).src = newFile;
 
     /* 
 
     let curID = `makeover_row${row+1}_asset${cur}`;
-
-    if (dir === "r") {
-        if (cur === max_choices[row]) {
-            MAKEOVER_CHOICES[row] = 1;
-        } else {
-            MAKEOVER_CHOICES[row] = MAKEOVER_CHOICES[row] + 1;
-        }
-    } else if (dir === "l") {
-        if (cur === 1) {
-            MAKEOVER_CHOICES[row] = max_choices[row];
-        } else {
-            MAKEOVER_CHOICES[row] = MAKEOVER_CHOICES[row] - 1;
-        }
-    }
 
     let newID = `makeover_row${row+1}_asset${MAKEOVER_CHOICES[row]}`;
 
