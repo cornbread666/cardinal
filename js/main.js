@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 685 - 691
   "21420434532310016400220101123033", "411322245049130031022400", "4404234030051100710600331120", "11020342264032000120305402101222", "321104421034550233000031", "3004224301145400263200100121", "4020440200010595300502401231",
   // 692 - 698
-  "2412413300026424103030140313202232"];
+  "2412413300026424103030140313202232", "003033440220002240156005"];
 
   intro();
 
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(index);
     document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.5";
 
-    //index = 691; // COMMENT ME!!!!!!!!!!!!!!
+    //index = 693; // COMMENT ME!!!!!!!!!!!!!!
 
     gridFill = false;
 
