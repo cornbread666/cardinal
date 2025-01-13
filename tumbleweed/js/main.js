@@ -23,11 +23,18 @@ let MAKEOVER_STYLE_CHOICES = {"hair": 1, "eyes": 1, "misc": 1};
 let MAKEOVER_STYLE_MAX = [5, 3, 5];
 let MAKEOVER_COLOR_CHOICES = {"skin": 1, "hair": 1, "brows": 1, "eyes": 1, "mouth": 1};
 let MAKEOVER_COLOR_MAX = [5, 15, 5, 10, 5];
+let DILEMMA_ROUND = 0;
+let DILEMMA_ITERATIONS = Math.floor(Math.random() * 5) + 8; // random amount of dilemma rounds from 8-12
+let DILEMMA_DECISION = true;
+
+let PROGRESS_BAR = 2;
+let PROGRESS_INTERVAL;
 
 // POTENTIAL TUMBLEWEED VARIABLES
 let VALID_HORSE = false;
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
+let INKBLOT_ANSWER = "";
 let CHEESE_PILLED = false;
 
 intro();
@@ -70,7 +77,10 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    //loadPage(15);
+    document.getElementById("cooperate").addEventListener("click", dilemma);
+    document.getElementById("defect").addEventListener("click", dilemma);
+
+    //loadPage(16);
 }
 
 function beginChessDrag(e) {
@@ -183,7 +193,7 @@ function drawMazeLine(winner) {
 
     mazeCtx.beginPath();
     mazeCtx.lineWidth = winner ? "6" : "4";
-    mazeCtx.strokeStyle = winner ? "green" : "yellow";
+    mazeCtx.strokeStyle = winner ? "#70d863" : "#f4c67f";
     let start = MAZE_DRAG_PTS[0];
     mazeCtx.moveTo(start[0], start[1]);
 
@@ -220,6 +230,106 @@ function startQuiz() {
         document.getElementById("page1").classList.add("page_fly_in");
     }, 1001);
     PAGE_NUMBER = 1;
+}
+
+function dilemma(e) {
+
+    if (DILEMMA_ROUND <= DILEMMA_ITERATIONS) {
+        let player = document.getElementById("dilemma_score1");
+        let playerScore = parseInt(player.innerText);
+        let comper = document.getElementById("dilemma_score2");
+        let comperScore = parseInt(comper.innerText);
+
+        let playerDecision = e.target.id === "cooperate" ? true : false;
+
+        if (DILEMMA_DECISION) {
+            document.getElementById("computer_cooperate").classList.add("dilemma_choice");
+            document.getElementById("computer_defect").classList.remove("dilemma_choice");
+        } else {
+            document.getElementById("computer_cooperate").classList.remove("dilemma_choice");
+            document.getElementById("computer_defect").classList.add("dilemma_choice");
+        }
+
+        if (playerDecision && DILEMMA_DECISION) {
+            playerScore += 3;
+            comperScore += 3;
+        } else if (!playerDecision && DILEMMA_DECISION) {
+            playerScore += 5;
+            DILEMMA_DECISION = false;
+            document.getElementById("dilemma_emoji2").src = "css/assets/mad.png";
+        } else if (playerDecision && !DILEMMA_DECISION) {
+            comperScore += 5;
+        } else if (!playerDecision && !DILEMMA_DECISION) {
+            playerScore += 1;
+            comperScore += 1;
+        }
+
+        if (playerScore < comperScore) {
+            document.getElementById("dilemma_emoji1").src = "css/assets/sad.png";
+            document.getElementById("dilemma_emoji2").src = "css/assets/devil.png";
+        }
+
+        player.innerText = `${playerScore}`;
+        comper.innerText = `${comperScore}`;
+
+        console.log(playerScore, comperScore);
+    }
+    
+    DILEMMA_ROUND += 1;
+    
+    if (DILEMMA_ROUND > DILEMMA_ITERATIONS) {
+        let dilemmaContainer = document.getElementById("dilemma_shape_container");
+        document.getElementById("dilemma_score_container").classList.add("selected_option");
+        dilemmaContainer.addEventListener("build", nextPage);
+        let e = new Event("build");
+        dilemmaContainer.dispatchEvent(e);
+    }
+}
+
+function endQuiz() {
+
+    PROGRESS_INTERVAL = setInterval(fillProgress, 10);
+    document.getElementById("page21").onanimationend = (e) => {
+        if (e.animationName === "fadeout") {
+            document.getElementById("page21").style.display = "none";
+            document.getElementById("page22").style.display = "flex";
+            generateTumbleweed();
+        }
+    }
+}
+
+function fillProgress() {
+
+    let progressFill = document.getElementById("progress_fill");
+
+    let randNum = Math.random()
+    if (randNum >= 0.5) {
+        PROGRESS_BAR = PROGRESS_BAR + 1;
+        progressFill.style.width = `${PROGRESS_BAR}%`;
+    }
+
+    if (PROGRESS_BAR >= 100) {
+        clearInterval(PROGRESS_INTERVAL);
+        progressFill.classList.add("complete");
+        progressFill.ontransitionend = () => {
+            document.getElementById("page21").classList.add("fadeout");
+        }
+    }
+}
+
+function generateTumbleweed() {
+
+    //ANGVOL = Math.PI * 0.06;
+    let tumbleweedp5 = new p5(tumbleweedSketch);
+
+    let tumbleweedURL = document.getElementById("tumbleweed_canvas").toDataURL("image/png", 1.0);
+    document.getElementById("tumbleweed_canvas").style.display = "none";
+
+    let i = document.createElement("img");
+    i.id = "tumbleweed";
+    i.src = tumbleweedURL;
+    document.getElementById("tumbleweed_container").appendChild(i);
+    i.classList.add("fadein");
 }
 
 function nextPage(event) {
@@ -266,6 +376,16 @@ function nextPage(event) {
             let newNum = Math.abs(tidNum - 4) + 1;
             document.getElementById(tidSliced + newNum.toString()).parentNode.classList.add("selected_option");
             event.target.removeEventListener("click", nextPage);
+        } else if (PAGE_NUMBER === 16) {
+            let ink = document.getElementById("inkblot_input").value;
+            if (ink.length > 0) {
+                INKBLOT_ANSWER = ink;
+                event.target.removeEventListener("click", nextPage);
+                event.target.parentNode.classList.add("selected_option");
+            } else {
+                validAnswer = false;
+            }
+            
         }
         else {
             event.target.removeEventListener("click", nextPage);
@@ -279,7 +399,6 @@ function nextPage(event) {
             document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_out");
         }, 800);
 
-
         setTimeout(function() {
             document.getElementById("page" + PAGE_NUMBER.toString()).style.display = "none";
             if (PAGE_NUMBER == 12 && !CHEESE_PILLED) {
@@ -290,10 +409,29 @@ function nextPage(event) {
         }, 1800);
 
         //window.scrollTo(0,0);
-        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11) { // setting no-scroll for chess & maze pages
+        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 21) { // setting no-scroll for chess, maze, & final page
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
+        }
+        
+        console.log(PAGE_NUMBER);
+
+        if (PAGE_NUMBER === 17) {
+            document.getElementById("cooperate").removeEventListener("click", dilemma);
+            document.getElementById("defect").removeEventListener("click", dilemma);
+        }
+
+        if (PAGE_NUMBER === 18) {
+            setTimeout(function() {
+                plinko();
+            }, 2000);
+        }
+
+        if (PAGE_NUMBER === 21) {
+            setTimeout(function() {
+                endQuiz();
+            }, 2000);
         }
     }
 
@@ -417,37 +555,10 @@ function makeoverScroll(event) {
     let newFile = `css/assets/makeover/${cur}/${cur}${style}_${color}.png`;
     document.getElementById(curID).src = newFile;
 
-    /* 
+}
 
-    let curID = `makeover_row${row+1}_asset${cur}`;
+function plinko() {
+    
+    let plinkop5 = new p5(plinkoSketch);
 
-    let newID = `makeover_row${row+1}_asset${MAKEOVER_CHOICES[row]}`;
-
-    if (dir === "r") {
-
-        document.getElementById(curID).classList.add("makeover_fly_out_right");
-        setTimeout(function() {
-            document.getElementById(curID).classList.remove("visible_asset");
-            document.getElementById(newID).classList.add("visible_asset");
-            document.getElementById(newID).classList.add("makeover_fly_from_left");
-        }, 250);
-        setTimeout(function() {
-            document.getElementById(curID).classList.remove("makeover_fly_out_right");
-            document.getElementById(newID).classList.remove("makeover_fly_from_left");
-        }, 500);
-    } else if (dir === "l") {
-
-        document.getElementById(curID).classList.add("makeover_fly_out_left");
-        setTimeout(function() {
-            document.getElementById(curID).classList.remove("visible_asset");
-            document.getElementById(newID).classList.add("visible_asset");
-            document.getElementById(newID).classList.add("makeover_fly_from_right");
-        }, 250);
-        setTimeout(function() {
-            document.getElementById(curID).classList.remove("makeover_fly_out_left");
-            document.getElementById(newID).classList.remove("makeover_fly_from_right");
-        }, 500);
-    }
-
-    */
 }
