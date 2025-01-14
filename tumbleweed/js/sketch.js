@@ -274,9 +274,10 @@ let plinkoSketch = function(p) {
   p.plinker;
   p.pegs = [];
   p.bounds = [];
-  p.cols = 7;
-  p.rows = 12;
+  p.cols = 11;
+  p.rows = 22;
   p.spacing;
+  p.optionSpacing;
   p.peachFont;
   p.startTime;
   p.mdu;
@@ -289,11 +290,9 @@ let plinkoSketch = function(p) {
   p.setup = function() {
 
     p.startTime = p.millis();
-
-    p.pw = p.windowWidth;
-    p.ph = p.windowHeight;
-    p.pd = Math.min(p.pw, p.ph);
-    p.mainCanvas = p.createCanvas(p.pd * 0.6, p.pd * 0.8);
+    p.pw = Math.min(p.windowWidth * 0.95, p.windowHeight * 0.7143);
+    p.ph = Math.min(p.windowHeight * 0.95, p.windowWidth * 1.2635);
+    p.mainCanvas = p.createCanvas(p.pw, p.ph);
     p.mainCanvas.parent("plinko_container");
     p.mainCanvas.id("plinko_canvas");
 
@@ -301,13 +300,13 @@ let plinkoSketch = function(p) {
 
     for (let i = 0; i < p.cols; i++) {
       for (let j = 0; j < p.rows; j++) {
-        var offset = (p.mdu * 8.15) * (j % 2);
+        var offset = (p.mdu * 4.9) * (j % 2);
         if (j % 2 === 1) {
           if (i < p.cols-1) {
-            p.newPeg = new p.peg((p.mdu * 16.3 * i) + offset + p.mdu, (p.mdu * 9 * j) + (p.mdu * 10), p.mdu);
+            p.newPeg = new p.peg((p.mdu * 9.8 * i) + offset + p.mdu, (p.mdu * 4.9 * j) + (p.mdu * 10), p.mdu * 0.5);
           }
         } else {
-          p.newPeg = new p.peg((p.mdu * 16.3 * i) + offset + p.mdu, (p.mdu * 9 * j) + (p.mdu * 10), p.mdu);
+          p.newPeg = new p.peg((p.mdu * 9.8 * i) + offset + p.mdu, (p.mdu * 4.9 * j) + (p.mdu * 10), p.mdu * 0.5);
         }
         p.pegs.push(p.newPeg);
       }
@@ -324,8 +323,10 @@ let plinkoSketch = function(p) {
     var rightB = new p.boundary(p.width + 5, p.height/2, 10, p.height, false, "rightB");
     p.bounds.push(rightB);
 
+    p.optionSpacing = p.width / 7;
+
     for (let i = 0; i < p.cols + 2; i++) {
-      var x = i * p.spacing;
+      var x = i * p.optionSpacing;
       var h = p.mdu * 10;
       var w = p.mdu;
       var y = p.height - h / 2;
@@ -421,13 +422,21 @@ let plinkoSketch = function(p) {
                   "kids who paint their nails with whiteout", "theater kids", "kids who wear shorts in the winter",
                   "kids who've thrown up during a school play", "you and your friend sam"];
     for (let i = 0; i < p.cols; i++) {
-      var y = (i * p.spacing + (p.spacing / 2)) - p.width/2;
-      var x = -p.height/2 + 2*p.mdu;
-      p.sidewaysText(cliques[i], x, y);
+
+      // sideways coordinates
+      /*var y = (i * p.optionSpacing + (p.optionSpacing / 2)) - p.width/2;
+      var x = -p.height/2 + 2*p.mdu;*/
+
+      // normal coordinates
+      var x = i * p.optionSpacing + p.mdu;
+      var y = p.height - 2*p.mdu;
+      p.optionsText(cliques[i], x, y);
     }
   }
 
-  p.sidewaysText = function(text, x, y) {
+  p.optionsText = function(text, x, y) {
+    // sideways styling
+    /*
     p.push();
     p.textSize(p.width*0.03);
     p.fill(0);
@@ -437,6 +446,16 @@ let plinkoSketch = function(p) {
     p.translate(p.width/2, p.height/2);
     p.rotate(-p.HALF_PI);
     p.text(text, x, y, 20*p.mdu);
+    p.pop();*/
+
+    // normal styling
+    p.push();
+    p.textSize(p.width*0.025);
+    p.fill(0);
+    p.noStroke();
+    p.textAlign(p.CENTER, p.BOTTOM);
+    p.textLeading(p.width*0.025);
+    p.text(text, x, y, p.mdu * 12);
     p.pop();
   }
 
@@ -457,20 +476,22 @@ let plinkoSketch = function(p) {
         p.bounds[i].show();
       }
   
-      p.drawText();
-      p.drawOptions();
-  
       for (let i = 0; i < p.pegs.length; i++) {
         p.pegs[i].show();
       }
+
+      p.drawText();
   
       if (p.millis() - p.startTime >= 800) {
         if (p.plinker == null) {
-          p.plinker = new p.plink(p.width/2, 0, 4*p.mdu);
+          p.plinker = new p.plink(p.width/2, 0, 2.45*p.mdu);
         }
         p.plinker.show();
         p.checkFinished();
       }
+
+      p.drawOptions();
+
     } else {
       console.log("done");
     }

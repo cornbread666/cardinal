@@ -747,11 +747,16 @@ body {
   color: white;
 }
 
+#page19 {
+  max-height: 95%;
+  max-width: 95%;
+}
+
 #plinko_container {
   margin-top: 0;
   display: flex;
-  width: 60vmin;
-  height: 80vmin;
+  width: min(95vw,71.43vh);
+  height: min(95vh, 126.35vw);
   align-items: center;
   justify-content: center;
   outline: 3px solid #f4c67f;

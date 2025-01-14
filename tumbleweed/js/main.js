@@ -80,7 +80,7 @@ function intro() {
     document.getElementById("cooperate").addEventListener("click", dilemma);
     document.getElementById("defect").addEventListener("click", dilemma);
 
-    //loadPage(16);
+    //loadPage(19);
 }
 
 function beginChessDrag(e) {
@@ -444,6 +444,11 @@ function loadPage(p) {
         document.getElementById("title_page").style.display = "none";
         document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
     }, 1001);
+    if (PAGE_NUMBER === 19) {
+        setTimeout(function() {
+            plinko();
+        }, 2000);
+    }
 }
 
 function letterTileSwapper(event) {
