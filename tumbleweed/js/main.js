@@ -5,6 +5,9 @@ let HORSEY = document.getElementById("horse_piece");
 let mazeCanvas = document.getElementById("maze_canvas");
 let mazeCtx;
 
+let sigCanvas = document.getElementById("signature_canvas");
+let sigCtx;
+
 const drakeListenerConfig = { attributes: false, childList: true, subtree: false };
 const drakeCallback = (mutationList, observer) => {
     for (const mutation of mutationList) {
@@ -18,24 +21,28 @@ drakeObserver.observe(document.getElementById("drake_subgrid2"), drakeListenerCo
 let exitDrake = false;
 let VALID_MAZE_START = false;
 let VALID_MAZE_END = false;
+let VALID_SIG_START = false;
+let VALID_SIG_END = false;
 let MAZE_DRAG_PTS = [];
+let SIG_DRAG_PTS = [];
 let MAKEOVER_STYLE_CHOICES = {"hair": 1, "eyes": 1, "misc": 1};
 let MAKEOVER_STYLE_MAX = [5, 3, 5];
 let MAKEOVER_COLOR_CHOICES = {"skin": 1, "hair": 1, "brows": 1, "eyes": 1, "mouth": 1};
 let MAKEOVER_COLOR_MAX = [5, 15, 5, 10, 5];
-let DILEMMA_ROUND = 0;
-let DILEMMA_ITERATIONS = Math.floor(Math.random() * 5) + 8; // random amount of dilemma rounds from 8-12
-let DILEMMA_DECISION = true;
 
 let PROGRESS_BAR = 2;
 let PROGRESS_INTERVAL;
 
 // POTENTIAL TUMBLEWEED VARIABLES
+let TEACHER_NAME = "";
 let VALID_HORSE = false;
+let ORIGINAL_SEASON = "";
+let FAVE_SEASON = "";
 let TILES_LENGTH = 0;
 let CRUSH_NAME = "";
 let INKBLOT_ANSWER = "";
 let CHEESE_PILLED = false;
+let CLIQUE = "";
 
 intro();
 
@@ -64,6 +71,11 @@ function intro() {
     mazeCanvas.onpointerdown = beginMazeDrag;
     mazeCanvas.onpointerup = stopMazeDrag;
 
+    sigCanvas.onpointerdown = beginSigDrag;
+    sigCanvas.onpointerup = stopSigDrag;
+    sigCanvas.setAttribute('width', window.innerWidth * 0.8);
+    sigCanvas.setAttribute('height', window.innerHeight * 0.3);
+
     Sortable.create(document.getElementById("drake_subgrid2"), {
         swap: true,
         swapClass: 'drake_highlight',
@@ -77,10 +89,7 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    document.getElementById("cooperate").addEventListener("click", dilemma);
-    document.getElementById("defect").addEventListener("click", dilemma);
-
-    //loadPage(19);
+    //loadPage(21);
 }
 
 function beginChessDrag(e) {
@@ -232,63 +241,9 @@ function startQuiz() {
     PAGE_NUMBER = 1;
 }
 
-function dilemma(e) {
-
-    if (DILEMMA_ROUND <= DILEMMA_ITERATIONS) {
-        let player = document.getElementById("dilemma_score1");
-        let playerScore = parseInt(player.innerText);
-        let comper = document.getElementById("dilemma_score2");
-        let comperScore = parseInt(comper.innerText);
-
-        let playerDecision = e.target.id === "cooperate" ? true : false;
-
-        if (DILEMMA_DECISION) {
-            document.getElementById("computer_cooperate").classList.add("dilemma_choice");
-            document.getElementById("computer_defect").classList.remove("dilemma_choice");
-        } else {
-            document.getElementById("computer_cooperate").classList.remove("dilemma_choice");
-            document.getElementById("computer_defect").classList.add("dilemma_choice");
-        }
-
-        if (playerDecision && DILEMMA_DECISION) {
-            playerScore += 3;
-            comperScore += 3;
-        } else if (!playerDecision && DILEMMA_DECISION) {
-            playerScore += 5;
-            DILEMMA_DECISION = false;
-            document.getElementById("dilemma_emoji2").src = "css/assets/mad.png";
-        } else if (playerDecision && !DILEMMA_DECISION) {
-            comperScore += 5;
-        } else if (!playerDecision && !DILEMMA_DECISION) {
-            playerScore += 1;
-            comperScore += 1;
-        }
-
-        if (playerScore < comperScore) {
-            document.getElementById("dilemma_emoji1").src = "css/assets/sad.png";
-            document.getElementById("dilemma_emoji2").src = "css/assets/devil.png";
-        }
-
-        player.innerText = `${playerScore}`;
-        comper.innerText = `${comperScore}`;
-
-        console.log(playerScore, comperScore);
-    }
-    
-    DILEMMA_ROUND += 1;
-    
-    if (DILEMMA_ROUND > DILEMMA_ITERATIONS) {
-        let dilemmaContainer = document.getElementById("dilemma_shape_container");
-        document.getElementById("dilemma_score_container").classList.add("selected_option");
-        dilemmaContainer.addEventListener("build", nextPage);
-        let e = new Event("build");
-        dilemmaContainer.dispatchEvent(e);
-    }
-}
-
 function endQuiz() {
 
-    PROGRESS_INTERVAL = setInterval(fillProgress, 10);
+    PROGRESS_INTERVAL = setInterval(fillProgress, 50);
     document.getElementById("page21").onanimationend = (e) => {
         if (e.animationName === "fadeout") {
             document.getElementById("page21").style.display = "none";
@@ -319,17 +274,26 @@ function fillProgress() {
 
 function generateTumbleweed() {
 
-    //ANGVOL = Math.PI * 0.06;
     let tumbleweedp5 = new p5(tumbleweedSketch);
+    let backgroundp5 = new p5(backgroundSketch);
+    let dotsp5 = new p5(dotSketch);
+    let grainp5 = new p5(grainSketch);
 
     let tumbleweedURL = document.getElementById("tumbleweed_canvas").toDataURL("image/png", 1.0);
     document.getElementById("tumbleweed_canvas").style.display = "none";
 
-    let i = document.createElement("img");
-    i.id = "tumbleweed";
-    i.src = tumbleweedURL;
-    document.getElementById("tumbleweed_container").appendChild(i);
-    i.classList.add("fadein");
+    let ti = document.createElement("img");
+    ti.id = "tumbleweed";
+    ti.src = tumbleweedURL;
+    document.getElementById("tumbleweed_container").appendChild(ti);
+
+    /*let backgroundURL = document.getElementById("tumbleweed_bg_canvas").toDataURL("image/png", 1.0);
+    document.getElementById("tumbleweed_bg_canvas").style.display = "none";
+
+    let bi = document.createElement("img");
+    bi.id = "tumbleweed_background";
+    bi.src = backgroundURL;
+    document.body.appendChild(bi);*/
 }
 
 function nextPage(event) {
@@ -360,6 +324,10 @@ function nextPage(event) {
             } else {
                 validAnswer = false;
             }
+        } else if (PAGE_NUMBER === 2) { // TEACHER PAGE
+            let t = event.target.id.slice(-1);
+            TEACHER_NAME = document.getElementById(`prompt2_answer${t}`).innerText;
+            event.target.parentNode.classList.add("selected_option");
         } else if (PAGE_NUMBER === 5) { // CRUSH PAGE
             let c = document.getElementById("crush_input").value;
             if (c.length > 0) {
@@ -373,7 +341,9 @@ function nextPage(event) {
             let tid = event.target.id;
             let tidSliced = tid.slice(0, -1);
             let tidNum = parseInt(tid.slice(-1));
+            ORIGINAL_SEASON = document.getElementById(`prompt8_answer${tidNum}`).innerText;
             let newNum = Math.abs(tidNum - 4) + 1;
+            FAVE_SEASON = document.getElementById(`prompt8_answer${newNum}`).innerText;
             document.getElementById(tidSliced + newNum.toString()).parentNode.classList.add("selected_option");
             event.target.removeEventListener("click", nextPage);
         } else if (PAGE_NUMBER === 16) {
@@ -385,7 +355,6 @@ function nextPage(event) {
             } else {
                 validAnswer = false;
             }
-            
         }
         else {
             event.target.removeEventListener("click", nextPage);
@@ -409,7 +378,7 @@ function nextPage(event) {
         }, 1800);
 
         //window.scrollTo(0,0);
-        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 21) { // setting no-scroll for chess, maze, & final page
+        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 18 || PAGE_NUMBER === 20 || PAGE_NUMBER === 21) { // setting no-scroll for chess, maze, & final page
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
@@ -418,23 +387,23 @@ function nextPage(event) {
         console.log(PAGE_NUMBER);
 
         if (PAGE_NUMBER === 17) {
-            document.getElementById("cooperate").removeEventListener("click", dilemma);
-            document.getElementById("defect").removeEventListener("click", dilemma);
-        }
-
-        if (PAGE_NUMBER === 18) {
             setTimeout(function() {
                 plinko();
             }, 2000);
         }
 
-        if (PAGE_NUMBER === 21) {
+        if (PAGE_NUMBER === 19) {
             setTimeout(function() {
-                endQuiz();
+                typewriter();
             }, 2000);
         }
-    }
 
+        if (PAGE_NUMBER === 20) {
+            setTimeout(function() {
+                endQuiz();
+            }, 3000);
+        }
+    }
 }
 
 function loadPage(p) {
@@ -444,10 +413,13 @@ function loadPage(p) {
         document.getElementById("title_page").style.display = "none";
         document.getElementById("page" + PAGE_NUMBER.toString()).classList.add("page_fly_in");
     }, 1001);
-    if (PAGE_NUMBER === 19) {
+    if (PAGE_NUMBER === 18) {
         setTimeout(function() {
             plinko();
         }, 2000);
+    }
+    if (PAGE_NUMBER === 21) {
+        endQuiz();
     }
 }
 
@@ -563,7 +535,143 @@ function makeoverScroll(event) {
 }
 
 function plinko() {
-    
     let plinkop5 = new p5(plinkoSketch);
+}
+
+function finishPlinko(option) {
+    let plinkoContainer = document.getElementById("plinko_container");
+    plinkoContainer.addEventListener("build", nextPage);
+    let e = new Event("build");
+    plinkoContainer.dispatchEvent(e);
+
+    CLIQUE = option;
+}
+
+function beginSigDrag(e) {
+
+    sigCtx = sigCanvas.getContext("2d");
+
+    SIG_DRAG_PTS.push([e.offsetX, e.offsetY]);
+    sigCanvas.onpointermove = sigDrag;
+    sigCanvas.setPointerCapture(e.pointerId);
+
+    let targetElements = document.elementsFromPoint(e.clientX, e.clientY);
+    for (let i = 0; i < targetElements.length; i++) {
+        let te = targetElements[i];
+        if (te.id === ("signature_container")) {
+            VALID_SIG_START = true;
+        }
+    }
+}
+
+function stopSigDrag(e) {
+    sigCanvas.releasePointerCapture(e.pointerId);
+    sigCanvas.onpointermove = null;
+    SIG_DRAG_PTS.push(["x", "y"]);
+}
+
+function endSigPage() {
+    sigCanvas.onpointerdown = null;
+    sigCanvas.onpointerup = null;
+    nextPage(e);
+}
+
+function sigDrag(e) {
+    SIG_DRAG_PTS.push([e.offsetX, e.offsetY]);
+    drawSigLine();
+}
+
+function drawSigLine() {
+
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+
+    sigCtx.beginPath();
+    sigCtx.lineWidth = "4";
+    sigCtx.strokeStyle = "black";
+    let start = SIG_DRAG_PTS[0];
+    sigCtx.moveTo(start[0], start[1]);
+
+    for (let i = 1; i < SIG_DRAG_PTS.length; i++) {
+        let point = SIG_DRAG_PTS[i];
+        if (point[0] === "x" && point[1] === "y") {
+            let newPoint = SIG_DRAG_PTS[i+1];
+            sigCtx.moveTo(newPoint[0], newPoint[1]);
+            i += 1;
+        } else {
+            sigCtx.lineTo(point[0], point[1]);
+            sigCtx.stroke();
+        }
+    }
+}
+
+function typewriter() {
+
+    let letter = `Dear ${CRUSH_NAME},<br /><br />
+        Remember when we were just ${CLIQUE} in ${TEACHER_NAME}'s class? Life was so simple then.<br /><br />
+        As I write, it's currently ${FAVE_SEASON}, which made me think of you and the times we'd play chess on your front porch.<br /><br />`;
+    
+    if (VALID_HORSE) {
+        letter += "I still play to this day. Sometimes I picture you across the board and I smile.<br /><br />";
+    } else {
+        letter += "I never really knew how to play, but it didn't matter as long as we were together.<br /><br />";
+    }
+    
+    letter += `
+    I don't know where you are now, or if this letter will ever find you. But I hope you are happy.<br /><br />
+    I'm happy too, in my own funny way.<br /><br />
+    With love,<br /><br />`;
+
+    var typer = new Typewriter('#letter_container', {
+        skipAddStyles: true,
+        delay: 60,
+    });
+
+    typer
+        .pauseFor(1000)
+        .typeString(letter)
+        .start();
+
+    let timeoutPause = (letter.length * 60) + 1500;
+    setTimeout(function() {
+        document.getElementById("page20").insertBefore(sigCanvas, document.getElementById("prompt20_option1"));
+        sigCanvas.style.border = "none";
+        sigCanvas.style.width = "10em";
+        sigCanvas.style.alignSelf = "flex-start";
+        let cursor = document.getElementsByClassName("Typewriter__cursor")[0];
+        cursor.parentNode.removeChild(cursor);
+        drawSignature();
+    }, timeoutPause);
+
+}
+
+function drawSignature() {
+
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+
+    sigCtx.beginPath();
+    sigCtx.lineWidth = "4";
+    sigCtx.strokeStyle = "black";
+    let start = SIG_DRAG_PTS[0];
+    sigCtx.moveTo(start[0], start[1]);
+
+    for (let i = 1; i < SIG_DRAG_PTS.length; i++) {
+        let point = SIG_DRAG_PTS[i];
+        setTimeout(function() {
+            if (point[0] === "x" && point[1] === "y") {
+                if (i < SIG_DRAG_PTS.length-1) {
+                    let newPoint = SIG_DRAG_PTS[i+1];
+                    sigCtx.moveTo(newPoint[0], newPoint[1]);
+                    i += 1;
+                }
+            } else {
+                sigCtx.lineTo(point[0], point[1]);
+                sigCtx.stroke();
+            }
+        }, 30 * i);
+    }
+
+    setTimeout(function() {
+        document.getElementById("prompt20_option1").style.display = "flex";
+    }, (SIG_DRAG_PTS.length * 30) + 1000);
 
 }
