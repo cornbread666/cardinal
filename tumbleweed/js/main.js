@@ -89,7 +89,7 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    //loadPage(21);
+    loadPage(21);
 }
 
 function beginChessDrag(e) {
