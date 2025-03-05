@@ -716,6 +716,10 @@ body {
   height: 100vh;
 }
 
+#tumbleweed_background {
+  filter: blur(40px);
+}
+
 #tumbleweed_foreground {
   z-index: 90;
 }

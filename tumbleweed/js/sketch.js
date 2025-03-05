@@ -227,14 +227,14 @@ let backgroundSketch = function(b) {
     b.c.setAlpha(alpha);
     b.fill(b.c);
     b.noStroke();
-    b.drawingContext.filter = "blur(40px)";
+    //b.drawingContext.filter = "blur(40px)";
     b.beginShape();
     b.curveVertex(b.vertices[b.vertices.length-1].x, b.vertices[b.vertices.length-1].y);
     b.vertices.forEach(v => b.curveVertex(v.x, v.y));
     b.curveVertex(b.vertices[0].x, b.vertices[0].y);
     b.curveVertex(b.vertices[1].x, b.vertices[1].y);
     b.endShape();
-    b.drawingContext.filter = "none";
+    //b.drawingContext.filter = "none";
     b.pop();
   }
 
