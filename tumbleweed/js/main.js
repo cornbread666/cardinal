@@ -378,7 +378,7 @@ function nextPage(event) {
         }, 1800);
 
         //window.scrollTo(0,0);
-        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 18 || PAGE_NUMBER === 20) { // setting no-scroll for chess, maze, & final page
+        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 18 || PAGE_NUMBER === 20 || PAGE_NUMBER === 21) { // setting no-scroll for chess, maze, & final page
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
