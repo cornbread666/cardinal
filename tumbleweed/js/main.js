@@ -89,7 +89,7 @@ function intro() {
         drakeDescriptions[i].onpointerup = checkDrakeDescriptions;
     }
 
-    loadPage(21);
+    loadPage(18);
 }
 
 function beginChessDrag(e) {
@@ -279,8 +279,6 @@ function generateTumbleweed() {
     let dotsp5 = new p5(dotSketch);
     let grainp5 = new p5(grainSketch);
 
-    document.body.style.overflow = "hidden";
-
     let tumbleweedURL = document.getElementById("tumbleweed_canvas").toDataURL("image/png", 1.0);
     document.getElementById("tumbleweed_canvas").style.display = "none";
 
@@ -402,6 +400,7 @@ function nextPage(event) {
 
         if (PAGE_NUMBER === 20) {
             setTimeout(function() {
+                document.body.style.overflow = "hidden";
                 endQuiz();
             }, 3000);
         }
