@@ -728,8 +728,8 @@ body {
 #tumbleweed_background, #tumbleweed_foreground {
   opacity: 0;
   animation: fadein 6s forwards;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
 }
 
 #tumbleweed_background {
@@ -744,8 +744,8 @@ body {
   z-index: 150;
   opacity: 0;
   animation: grain_fade 6s forwards;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
 }
 
 @keyframes grain_fade {
