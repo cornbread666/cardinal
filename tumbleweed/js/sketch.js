@@ -263,7 +263,7 @@ let dotSketch = function(d) {
 
   d.setup = function() {
 
-    d.mainCanvas = d.createCanvas(d.windowWidth, d.windowHeight);
+    d.mainCanvas = d.createCanvas(d.displayWidth, d.displayHeight);
     d.mainCanvas.style("position", "absolute");
     //d.mainCanvas.parent("tumbleweed_container");
     d.mainCanvas.parent(document.body);
@@ -321,7 +321,7 @@ let dotSketch = function(d) {
 
     d.dotCanvas = d.createGraphics(d.width, d.height);
 
-    let numDots = d.floor(0.0008 * (d.width * d.height));
+    let numDots = d.floor(0.0004 * (d.width * d.height));
     d.dotMaker(numDots, 0.2, 75);
     d.dotMaker(numDots, 0.2, 75);
     d.dotMaker(numDots, 0.2, 75);
@@ -330,7 +330,7 @@ let dotSketch = function(d) {
   }
 
   d.windowResized = function() {
-    d.resizeCanvas(d.windowWidth, d.windowHeight);
+    d.resizeCanvas(d.displayWidth, d.displayHeight);
   }
 
 }
@@ -386,7 +386,7 @@ let grainSketch = function(g) {
 
   g.setup = function() {
 
-    g.mainCanvas = g.createCanvas(g.windowWidth, g.windowHeight);
+    g.mainCanvas = g.createCanvas(g.displayWidth, g.displayHeight);
     g.mainCanvas.style("position", "absolute");
     g.mainCanvas.parent(document.body);
     g.mainCanvas.id("tumbleweed_grain");
@@ -427,7 +427,7 @@ let grainSketch = function(g) {
   }
 
   g.windowResized = function() {
-    g.resizeCanvas(g.windowWidth, g.windowHeight);
+    g.resizeCanvas(g.displayWidth, g.displayHeight);
   }
 }
 
