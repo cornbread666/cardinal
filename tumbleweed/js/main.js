@@ -279,6 +279,8 @@ function generateTumbleweed() {
     let dotsp5 = new p5(dotSketch);
     let grainp5 = new p5(grainSketch);
 
+    document.body.style.overflow = "hidden";
+
     let tumbleweedURL = document.getElementById("tumbleweed_canvas").toDataURL("image/png", 1.0);
     document.getElementById("tumbleweed_canvas").style.display = "none";
 
