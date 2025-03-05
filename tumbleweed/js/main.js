@@ -400,6 +400,7 @@ function nextPage(event) {
 
         if (PAGE_NUMBER === 20) {
             setTimeout(function() {
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
                 document.body.style.overflow = "hidden";
                 endQuiz();
             }, 3000);
