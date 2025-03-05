@@ -255,6 +255,10 @@ let backgroundSketch = function(b) {
   b.windowResized = function() {
     b.resizeCanvas(b.windowWidth, b.windowHeight);
   }
+
+  b.deviceTurned = function() {
+    b.resizeCanvas(b.windowWidth, b.windowHeight);
+  }
 }
 
 let dotSketch = function(d) {
@@ -330,6 +334,10 @@ let dotSketch = function(d) {
   }
 
   d.windowResized = function() {
+    d.resizeCanvas(d.displayWidth, d.displayHeight);
+  }
+
+  d.deviceTurned = function() {
     d.resizeCanvas(d.displayWidth, d.displayHeight);
   }
 
@@ -427,6 +435,10 @@ let grainSketch = function(g) {
   }
 
   g.windowResized = function() {
+    g.resizeCanvas(g.displayWidth, g.displayHeight);
+  }
+
+  g.deviceTurned = function() {
     g.resizeCanvas(g.displayWidth, g.displayHeight);
   }
 }
