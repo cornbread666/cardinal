@@ -22,71 +22,67 @@ let tumbleweedSketch = function(t) {
   t.RADIUS;
   t.ANGVOL;
   t.ROOTED;
+  t.BOTTOM_LINES;
+  t.MIDDLE_LINES;
+  t.TOP_LINES;
 
   t.setup = function() {
-
-    console.log("running!");
 
     t.pw = t.windowWidth / 2;
     t.ph = t.windowHeight / 2;
     t.pd = Math.min(t.pw, t.ph);
-    //t.mainCanvas = t.createCanvas(t.pd, t.pd);
     t.mainCanvas = t.createCanvas(1000, 1000);
     t.mainCanvas.parent("tumbleweed_container");
     t.mainCanvas.id("tumbleweed_canvas");
 
-    // Variations
-    //t.PALETTE = ["#3A2923", "#684F44", "#7D5F60", "#A6624B", "#C59D7A", "#F1B87D", "#D17F76", "#6D918F", "#8C9687"];
-    //t.PALETTE = ["#767A34", "#FBA570", "#490B32", "#F49579", "#F3AF9B", "#FEE581", "#FCCFC7", "#F3DDF0", "#C4CBE6"];
-    //t.PALETTE = ["#A86F45", "#B0A24F", "#FAE8E2", "#D2664F", "#EFC39E", "#F7CA82", "#FDA684", "#D2664F", "#A1ACA7"];
-    //t.PALETTE = ["#997B66", "#797D62", "#E4B074", "#D08C60", "#F8D488", "#E5C59E", "#F1DCA7", "#D9AE94", "#9B9B7A"];
-    t.PALETTE = ["#264653", "#287271", "#8AB17D", "#732c2c", "#F4A261", "#EFB366", "#EE8959", "#2A9D8F", "#E9C46A"];
-    t.BG_PALETTE = [t.PALETTE[0], t.PALETTE[1], t.PALETTE[2]]; // background element colors
-    
-    //t.TW_PALETTE = ["#7E3B10", "#bc6c25", "#dda15e"]; // BROWNS
-    t.TW_PALETTE = ["#6B0F1A", "#F4A261", "#EFB366"]; // REDS
-    
-    //t.TW_PALETTE = [t.PALETTE[3], t.PALETTE[4], t.PALETTE[5]]; // tumbleweed colors
-    t.FG_PALETTE = [t.PALETTE[6], t.PALETTE[7], t.PALETTE[8]]; // foreground element colors
-    
+    t.TW_PALETTE = FINAL_TW_PALETTE;
+
     if (CHEESE_PILLED) {
-      t.RADIUS = t.random(0.6, 0.7);
+      t.RADIUS = t.random(0.55, 0.65);
     } else {
-      t.RADIUS = t.random(0.7, 0.8);
+      t.RADIUS = t.random(0.65, 0.75);
+    }
+
+    t.RADIUS = 0.75;
+    
+    // volatility of angle change: 0.04 - 0.08
+    if (TILES_LENGTH <= 4) {
+      t.ANGVOL = t.PI * 0.04;
+    } else {
+      t.ANGVOL = t.PI * (TILES_LENGTH / 100);
     }
     
-    
-    t.ANGVOL = t.PI * 0.08; // volatility of angle change: 0.04 - 0.08
-    
-    
-    t.ROOTED = VALID_HORSE; // if the tumbleweed's lines all originate from one position
-    
-    
-    //SEED = 101; // consistently display tumbleweed
-    //randomSeed(SEED);
+    t.ROOTED = (EXIT_DRAKE && VALID_HORSE); // if the tumbleweed's lines all originate from one position
 
-    // Globals
     t.cnv2 = t.createGraphics(t.width, t.height);
     t.twCanvas = t.createGraphics(t.width, t.height);
-    t.dotCanvas = t.createGraphics(t.width, t.height);
     t.frame = t.width * 0.05; // frame of undrawable space within the canvas
     t.edgeBuff = t.width * 0.05; // how far away lines will stay away from of window
     t.lineLength = t.height * 0.001;
 
     t.background(255, 0);
     t.alphaCircle();
-    //t.blobMaker(30, 150);
-    //t.lineMaker(20000, 8, 0.05, 1); // numLines, stroke, alpha, color index
-    t.lineMaker(20000, 12, 0.1, 1); // numLines, stroke, alpha, color index
-    //t.dotMaker(100, 1, 125);
-    t.lineMaker(30000, 4, 0.1, 2);
-    //t.dotMaker(200, 0.4, 180);
-    //t.blobMaker(20, 8);
-    //t.dotMaker(300, 0.3, 255);
-    t.lineMaker(50000, 1, 1, 3);
+    t.BOTTOM_LINES = t.floor(t.random(20000, 30000));
+    t.BOTTOM_STROKE = t.random(10, 12);
+    t.MIDDLE_LINES = t.floor(t.random(40000, 50000));
+    t.MIDDLE_STROKE = t.random(4, 6);
+    t.TOP_LINES = t.floor(t.random(60000, 80000));
+    t.TOP_STROKE = t.random(0.5, 1.5);
+    t.lineMaker(t.BOTTOM_LINES, t.BOTTOM_STROKE, 0.1, 1); // 20k - 30k, 10 - 12
+    t.lineMaker(t.MIDDLE_LINES, t.MIDDLE_STROKE, 0.1, 2); // 40k - 50k, 4 - 6
+    t.lineMaker(t.TOP_LINES, t.TOP_STROKE, 1, 3); // 60k - 80k, .5 - 1.5
+
+    console.log(`STATS:
+      PALETTE: ${t.TW_PALETTE},
+      RADIUS: ${t.RADIUS},
+      VOLATILITY: ${t.ANGVOL},
+      ROOTED: ${t.ROOTED.toString().toUpperCase()},
+      BOTTOM LINES: ${t.BOTTOM_LINES},
+      MIDDLE LINES: ${t.MIDDLE_LINES},
+      TOP LINES: ${t.TOP_LINES},`);
     
     t.image(t.twCanvas, 0, 0);
-    t.image(t.dotCanvas, 0, 0);
+    
   }
 
   t.alphaCircle = function() {
@@ -139,7 +135,9 @@ let tumbleweedSketch = function(t) {
     if (t.ROOTED) {
       t.minDim = Math.min(t.height, t.width);
       t.x = (t.width / 2) - (t.minDim * (t.RADIUS / 4));
+      t.x += t.random(-20, 20);
       t.y = (t.height / 2) - (t.minDim * (t.RADIUS / 4));
+      t.y += t.random(-20, 20);
     } else {
       t.count = 0;
       while (t.count < 40) {
@@ -191,7 +189,7 @@ let tumbleweedSketch = function(t) {
 
 let backgroundSketch = function(b) {
 
-  b.BG_PALETTE = ["#264653", "#287271", "#8AB17D"];
+  b.BG_PALETTE = FINAL_BG_PALETTE;
 
   b.setup = function() {
 
@@ -263,7 +261,7 @@ let backgroundSketch = function(b) {
 
 let dotSketch = function(d) {
 
-  d.FG_PALETTE = ["#EE8959", "#2A9D8F", "#E9C46A"];
+  d.FG_PALETTE = FINAL_DT_PALETTE;
 
   d.setup = function() {
 
@@ -414,7 +412,7 @@ let grainSketch = function(g) {
     g.grainBuffer.shader(g.grainShader)
     g.grainShader.setUniform('noiseSeed', g.random()) // to make the grain change each frame
     g.grainShader.setUniform('source', g.mainCanvas)
-    g.grainShader.setUniform('noiseAmount', 0.5)
+    g.grainShader.setUniform('noiseAmount', 0.3)
     g.grainBuffer.rectMode(g.CENTER)
     g.grainBuffer.noStroke()
     g.grainBuffer.rect(0, 0, g.width, g.height)
@@ -428,7 +426,7 @@ let grainSketch = function(g) {
   }
 
   g.draw = function() {
-    g.background(255);
+    g.background(255 + g.random(-7,7), 255 + g.random(-7,7), 255 + g.random(-7,7)); // 254,109,105 - warm brown
     g.frameRate(6);
     g.applyGrain();
     //g.noLoop();
