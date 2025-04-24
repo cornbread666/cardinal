@@ -817,3 +817,7 @@ body {
   pointer-events: all;
   opacity: 1;
 }
+
+#tumbleweed_canvas {
+  display: none;
+}

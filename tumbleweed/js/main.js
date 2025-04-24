@@ -213,8 +213,6 @@ function loadTumbleweed() {
     FINAL_TW_PALETTE = JSON.parse(localStorage.getItem("twPalette"));
     COLOR_PREFERENCES = JSON.parse(localStorage.getItem("colorPrefs"));
 
-    console.log(FINAL_BG_PALETTE, FINAL_DT_PALETTE, FINAL_TW_PALETTE);
-
     let backgroundp5 = new p5(backgroundSketch);
     let dotsp5 = new p5(dotSketch);
     let grainp5 = new p5(grainSketch);
@@ -526,20 +524,21 @@ function generateTumbleweed() {
     let dotsp5 = new p5(dotSketch);
     let grainp5 = new p5(grainSketch);
 
-    let tumbleweedURL = document.getElementById("tumbleweed_canvas").toDataURL("image/png", 1.0);
-    document.getElementById("tumbleweed_canvas").style.display = "none";
+    document.getElementById("tumbleweed_canvas").toBlob((blob) => {
+        let ti = document.createElement("img");
+        twURL = URL.createObjectURL(blob);
+        ti.id = "tumbleweed";
+        ti.src = twURL;
+        window.localStorage.setItem("twImage", twURL);
+        document.getElementById("tumbleweed_canvas").style.display = "none";
+        document.getElementById("tumbleweed_container").appendChild(ti);
+    });
 
-    window.localStorage.setItem("twImage", tumbleweedURL);
     window.localStorage.setItem("quizCompleted", true);
     window.localStorage.setItem("bgPalette", JSON.stringify(FINAL_BG_PALETTE));
     window.localStorage.setItem("dtPalette", JSON.stringify(FINAL_DT_PALETTE));
     window.localStorage.setItem("twPalette", JSON.stringify(FINAL_TW_PALETTE));
     window.localStorage.setItem("colorPrefs", JSON.stringify(COLOR_PREFERENCES));
-
-    let ti = document.createElement("img");
-    ti.id = "tumbleweed";
-    ti.src = tumbleweedURL;
-    document.getElementById("tumbleweed_container").appendChild(ti);
 
     populateStats();
 
