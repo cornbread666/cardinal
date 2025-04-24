@@ -392,7 +392,7 @@ function startQuiz() {
 
 function endQuiz() {
 
-    PROGRESS_INTERVAL = setInterval(fillProgress, 10);
+    PROGRESS_INTERVAL = setInterval(fillProgress, 50);
     document.getElementById("page21").onanimationend = (e) => {
         if (e.animationName === "fadeout") {
             document.getElementById("page21").style.display = "none";
@@ -868,6 +868,7 @@ function checkDrakeDescriptions() {
     }
 
     if (complete && !EXIT_DRAKE) {
+        document.getElementById("prompt9_triangle1").removeEventListener("click", nextPage);
         EXIT_DRAKE = true;
         drakeObserver.disconnect();
         drakeContainer.addEventListener("build", nextPage);
