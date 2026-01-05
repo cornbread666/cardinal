@@ -10,8 +10,8 @@
     <body>
 
         <header id="header">
-            <img src="css/assets/icons/stats.png" class="menu_button" id="stats_button" />
-            <img src="css/assets/icons/home.png" class="menu_button" id="home_button" />
+            <img src="css/assets/icons/stats.png" class="menu_button" id="stats_button" draggable="false"/>
+            <img src="css/assets/icons/home.png" class="menu_button" id="home_button" draggable="false"/>
         </header>
 
         <div class="page" id="title_page">
@@ -27,14 +27,14 @@
                 <span class="bounce_text" id="bounce9">E</span>
                 <span class="bounce_text" id="bounce10">D</span>
             </div>
-            <img src="css/assets/triangle_ob.png" class="triangle" id="play_triangle"/>
+            <img src="css/assets/triangle_ob.png" class="triangle" id="play_triangle" draggable="false"/>
         </div>
 
         <div class="page" id="intro_page">
             <p class="prompt_text" id="intro_prompt">hello and welcome to tumbleweed!<br><br>
             to match you with your very own unique tumbleweed, we need to conduct a simple personality quiz.<br><br>
             let's begin!</p>
-            <img src="css/assets/triangle_ob.png" class="triangle" id="intro_triangle"/>
+            <img src="css/assets/triangle_ob.png" class="triangle" id="intro_triangle" draggable="false"/>
         </div>
 
         <div class="page" id="page1">
@@ -485,6 +485,7 @@
 
         <div id="modal_overlay"></div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/4.0.11/dexie.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/p5@1.9.3/lib/p5.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.js"></script>

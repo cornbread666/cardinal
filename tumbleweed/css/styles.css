@@ -62,7 +62,7 @@ body {
 
 .bounce_text {
   opacity: 0;
-  animation: bounce 8s infinite ease-in-out, bounceFadeIn 2s linear forwards;
+  animation: bounce 5s infinite ease-in-out, bounceFadeIn 1s linear forwards;
 }
 
 #play_triangle {
@@ -81,7 +81,7 @@ body {
   30% {
     transform: translateY(20px);
   }
-  50% {
+  60% {
     transform: translateY(0);
   }
 }

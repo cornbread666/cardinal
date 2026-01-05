@@ -1,3 +1,5 @@
+
+
 class Timer {
     constructor() {
       this.isRunning = false;
@@ -188,14 +190,15 @@ function intro() {
 
     //loadPage(21);
 
-    /*
-    localStorage.removeItem("quizCompleted");
-    localStorage.removeItem("twImage");
-    localStorage.removeItem("bgPalette");
-    localStorage.removeItem("dtPalette");
-    localStorage.removeItem("twPalette");
-    localStorage.removeItem("colorPrefs");
-    */
+    if (localStorage.getItem("finalVersion") === null) {
+        localStorage.removeItem("quizCompleted");
+        localStorage.removeItem("twImage");
+        localStorage.removeItem("bgPalette");
+        localStorage.removeItem("dtPalette");
+        localStorage.removeItem("twPalette");
+        localStorage.removeItem("colorPrefs");
+        localStorage.setItem("finalVersion", true);
+    }
 
     let completed = window.localStorage.getItem("quizCompleted");
     if (completed) {
@@ -208,6 +211,7 @@ function loadTumbleweed() {
     loadPage(22);
 
     let twimg = localStorage.getItem("twImage");
+    console.log(twimg);
     FINAL_BG_PALETTE = JSON.parse(localStorage.getItem("bgPalette"));
     FINAL_DT_PALETTE = JSON.parse(localStorage.getItem("dtPalette"));
     FINAL_TW_PALETTE = JSON.parse(localStorage.getItem("twPalette"));
@@ -525,13 +529,21 @@ function generateTumbleweed() {
     let grainp5 = new p5(grainSketch);
 
     document.getElementById("tumbleweed_canvas").toBlob((blob) => {
+
+        const fr = new FileReader();
+        fr.readAsDataURL(blob);
+        fr.onloadend = function () {
+            tw64 = fr.result;
+            window.localStorage.setItem("twImage", tw64);
+        }
+
         let ti = document.createElement("img");
-        twURL = URL.createObjectURL(blob);
+        let twURL = URL.createObjectURL(blob);
         ti.id = "tumbleweed";
         ti.src = twURL;
-        window.localStorage.setItem("twImage", twURL);
         document.getElementById("tumbleweed_canvas").style.display = "none";
         document.getElementById("tumbleweed_container").appendChild(ti);
+        console.log(twURL);
     });
 
     window.localStorage.setItem("quizCompleted", true);
@@ -558,14 +570,14 @@ function populateStats() {
 
     let data = {
         labels: [
-            "Boisterism", // Yellow
-            "Logistance", // Green
-            "Fangrosity", // Red
-            "Ambigen", // Orange
-            "Grell", // Purple
-            "Synesthettes", // Pink
-            "Prolowning", // Brown
-            "Mattriness" // Blue
+            "Zeal", // Yellow
+            "Semblance", // Green
+            "Proclivity", // Red
+            "Bouquet", // Orange
+            "Panache", // Purple
+            "Veneer", // Pink
+            "Hallow", // Brown
+            "Wist" // Blue
         ],
         datasets: [{
             label: "Qualities",
@@ -579,7 +591,7 @@ function populateStats() {
             pointBorderColor: "#FFFFFF",
             pointHoverBackgroundColor: "#FFFFFF",
             pointHoverBorderColor: FINAL_TW_PALETTE[0]
-        }]
+        }],
     };
 
     let config = {
@@ -588,7 +600,7 @@ function populateStats() {
         options: {
             elements: {
                 line: {
-                    borderWidth: 1
+                    borderWidth: 2
                 }
             },
             scales: {
@@ -605,8 +617,20 @@ function populateStats() {
                 legend: {
                     display: false
                 }
-            }
-        }
+            },
+            scales: {
+                r: {
+                    pointLabels: {
+                        font: {
+                            size: 20
+                        },
+                    },
+                    ticks: {
+                        display: false
+                    },
+                },
+            },
+        },
     }
 
     new Chart(radarCtx, config);
