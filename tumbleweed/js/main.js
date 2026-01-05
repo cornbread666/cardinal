@@ -806,7 +806,7 @@ function nextPage(event) {
         }, 1800);
 
         //window.scrollTo(0,0);
-        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 18 || PAGE_NUMBER === 20 || PAGE_NUMBER === 21) { // setting no-scroll for chess, maze, & final page
+        if (PAGE_NUMBER === 2 || PAGE_NUMBER === 11 || PAGE_NUMBER === 18 || PAGE_NUMBER === 20 || PAGE_NUMBER === 21 || PAGE_NUMBER === 22) { // setting no-scroll for chess, maze, & final page
             docBody.setAttribute("style", "touch-action: none");
         } else {
             docBody.setAttribute("style", "touch-action: auto");
@@ -852,6 +852,11 @@ function loadPage(p) {
     }
     if (PAGE_NUMBER === 21) {
         endQuiz();
+    }
+    if (PAGE_NUMBER === 22) { // set no-scroll
+        console.log("echo");
+        docBody.setAttribute("style", "touch-action: none");
+        docBody.setAttribute("style", "overflow: hidden");
     }
 }
 

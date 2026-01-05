@@ -785,8 +785,8 @@ body {
   grid-auto-flow: row;
   gap: 10px;
   position: fixed;
-  width: 90%;
-  height: 90%;
+  width: 80%;
+  height: 80%;
   z-index: 300;
   align-items: center;
   justify-content: center;
