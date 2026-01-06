@@ -140,6 +140,12 @@ let FINAL_TW_PALETTE;
 let FINAL_BG_PALETTE;
 let FINAL_DT_PALETTE;
 
+const dbPromise = idb.openDB('tumbleweedDB', 5, {
+    upgrade(db) {
+        db.createObjectStore('tumbleweeds');
+    }
+});
+
 intro();
 
 function intro() {
@@ -190,6 +196,8 @@ function intro() {
 
     //loadPage(21);
 
+    //localStorage.removeItem("finalVersion");
+
     if (localStorage.getItem("finalVersion") === null) {
         localStorage.removeItem("quizCompleted");
         localStorage.removeItem("twImage");
@@ -207,15 +215,28 @@ function intro() {
     }
 }
 
+async function dbGet(key) {
+    return await (await dbPromise).get('tumbleweeds', key);
+}
+
+async function dbSet(key, val) {
+    return (await dbPromise).put('tumbleweeds', val, key);
+}
+
+async function keys() {
+    return (await dbPromise).getAllKeys("tumbleweeds");
+}
+
 function loadTumbleweed() {
+    
     loadPage(22);
 
-    let twimg = localStorage.getItem("twImage");
-    console.log(twimg);
     FINAL_BG_PALETTE = JSON.parse(localStorage.getItem("bgPalette"));
     FINAL_DT_PALETTE = JSON.parse(localStorage.getItem("dtPalette"));
     FINAL_TW_PALETTE = JSON.parse(localStorage.getItem("twPalette"));
     COLOR_PREFERENCES = JSON.parse(localStorage.getItem("colorPrefs"));
+
+    console.log(FINAL_BG_PALETTE);
 
     let backgroundp5 = new p5(backgroundSketch);
     let dotsp5 = new p5(dotSketch);
@@ -223,8 +244,11 @@ function loadTumbleweed() {
 
     let ti = document.createElement("img");
     ti.id = "tumbleweed";
-    ti.src = twimg;
-    document.getElementById("tumbleweed_container").appendChild(ti);
+    dbGet("tmblwd").then((val) => {
+        twimg = URL.createObjectURL(val);
+        ti.src = twimg;
+        document.getElementById("tumbleweed_container").appendChild(ti);
+    });
 
     populateStats();
 
@@ -530,12 +554,9 @@ function generateTumbleweed() {
 
     document.getElementById("tumbleweed_canvas").toBlob((blob) => {
 
-        const fr = new FileReader();
-        fr.readAsDataURL(blob);
-        fr.onloadend = function () {
-            tw64 = fr.result;
-            window.localStorage.setItem("twImage", tw64);
-        }
+        dbSet("tmblwd", blob)
+            .then(() => console.log("Tumbleweed saved"))
+            .catch((err) => console.log("Save error: ", err));
 
         let ti = document.createElement("img");
         let twURL = URL.createObjectURL(blob);
@@ -543,7 +564,7 @@ function generateTumbleweed() {
         ti.src = twURL;
         document.getElementById("tumbleweed_canvas").style.display = "none";
         document.getElementById("tumbleweed_container").appendChild(ti);
-        console.log(twURL);
+        //console.log(twURL);
     });
 
     window.localStorage.setItem("quizCompleted", true);
@@ -776,6 +797,13 @@ function nextPage(event) {
             let ink = document.getElementById("inkblot_input").value;
             if (ink.length > 0) {
                 INKBLOT_ANSWER = ink;
+                lockAnswer(event);
+                event.target.parentNode.classList.add("selected_option");
+            } else {
+                validAnswer = false;
+            }
+        } else if (PAGE_NUMBER === 19) { // SIGNATURE
+            if (SIG_DRAG_PTS.length > 0) {
                 lockAnswer(event);
                 event.target.parentNode.classList.add("selected_option");
             } else {
