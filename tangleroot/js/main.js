@@ -24,6 +24,10 @@ const plantsJSON =
     '{ "Name" : "Calquat tree" , "Base_chance" : 6000 , "Hespori_chance" : 12 }],' +
   '"Celastrus" : [' +
     '{ "Name" : "Celastrus tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
+  '"Coral" : [' +
+    '{ "Name" : "Elkhorn" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Pillar" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
+    '{ "Name" : "Umbral" , "Base_chance" : 98364 , "Hespori_chance" : 196 }],' +
   '"Crystal" : [' +
     '{ "Name" : "Crystal tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
   '"Flower" : [' +
@@ -44,7 +48,10 @@ const plantsJSON =
     '{ "Name" : "Dragonfruit tree" , "Base_chance" : 9000 , "Hespori_chance" : 18 }],' +
   '"Hardwood" : [' +
     '{ "Name" : "Teak tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 },' +
-    '{ "Name" : "Mahogany tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 }],' +
+    '{ "Name" : "Mahogany tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 },' +
+    '{ "Name" : "Camphor tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 },' +
+    '{ "Name" : "Ironwood tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 },' +
+    '{ "Name" : "Rosewood tree" , "Base_chance" : 5000 , "Hespori_chance" : 10 }],' +
   '"Herb" : [' +
     '{ "Name" : "Guam" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
     '{ "Name" : "Marrentill" , "Base_chance" : 98364 , "Hespori_chance" : 196 },' +
@@ -69,8 +76,11 @@ const plantsJSON =
     '{ "Name" : "Asgarnian" , "Base_chance" : 89933 , "Hespori_chance" : 179 },' +
     '{ "Name" : "Jute" , "Base_chance" : 89933 , "Hespori_chance" : 179 },' +
     '{ "Name" : "Yanillian" , "Base_chance" : 74944 , "Hespori_chance" : 149 },' +
+    '{ "Name" : "Flax" , "Base_chance" : 89933 , "Hespori_chance" : 179 },' +
     '{ "Name" : "Krandorian" , "Base_chance" : 64238 , "Hespori_chance" : 128 },' +
-    '{ "Name" : "Wildblood" , "Base_chance" : 56208 , "Hespori_chance" : 112 }],' +
+    '{ "Name" : "Wildblood" , "Base_chance" : 56208 , "Hespori_chance" : 112 },' +
+    '{ "Name" : "Hemp" , "Base_chance" : 56208 , "Hespori_chance" : 112 },' +
+    '{ "Name" : "Cotton" , "Base_chance" : 56208 , "Hespori_chance" : 112 }],' +
   '"Mushroom" : [' +
     '{ "Name" : "Mushroom" , "Base_chance" : 7500 , "Hespori_chance" : 15 }],' +
   '"Redwood" : [' +
@@ -208,6 +218,7 @@ function actionsWindow(n) {
   actions.id = "action_input2" + n;
   actions.setAttribute("type", "number");
   actions.setAttribute("name", actions.id);
+  actions.setAttribute("placeholder", 0);
   actions.autocomplete = "off";
   actions.style.visibility = "hidden";
   actions.setAttribute("min", "0");
@@ -418,22 +429,22 @@ function flvlUpdate(event) {
   for (var i = 0; i <toUpdate.length; i++) {
     toUpdate[i].dispatchEvent(e);
   }
-
-  updateTotalChance()
 }
 
-function updateTotalChance() {
+function updateTotalChance(actions, adjustedChance) {
   let allChances = document.getElementsByClassName("chance_number");
-  var tc = 0.0;
+  var tc = 1.0;
 
   for (var i = 0; i < allChances.length; i++) {
-    tc += parseFloat(allChances[i].innerText);
+    tc *= 1 - (parseFloat(allChances[i].innerText) / 100);
   }
 
-  let chanceText = document.getElementById("total_chance_num");
-  chanceText.innerText = (tc / 100).toLocaleString(undefined,{style: "percent", minimumFractionDigits: 4});
+  tc = 1 - tc;
 
-  let daysto = Math.ceil(100 / tc).toString();
+  let chanceText = document.getElementById("total_chance_num");
+  chanceText.innerText = (tc).toLocaleString(undefined,{style: "percent", minimumFractionDigits: 4});
+
+  let daysto = Math.ceil(100 / 100 / tc).toString();
   if (daysto === "Infinity") {
     daysto = "∞";
   }
