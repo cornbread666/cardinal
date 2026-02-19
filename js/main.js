@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     msPerDay = 1000 * 60 * 60 * 24;
     utc1 = Date.UTC(firstDay.getFullYear(), firstDay.getMonth(), firstDay.getDate());
     utc2 = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-    index = (Math.abs(utc2 - utc1) / msPerDay);
+    index = (Math.abs(utc2 - utc1) / msPerDay) - 1099;
     console.log(index);
     document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.5";
 
