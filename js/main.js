@@ -416,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     index = (Math.abs(utc2 - utc1) / msPerDay) - 1099;
     console.log(index);
     document.getElementById("version_info").innerText = "cardinal #" + index.toString() + " — v1.4.5";
-
+    
     //index = 1118 // COMMENT ME!!!!!!!!!!!!!!
 
     gridFill = false;
