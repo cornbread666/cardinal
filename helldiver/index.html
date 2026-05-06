@@ -64,6 +64,8 @@
         </div>
     </div>
 
+    <div id="overlay"></div>
+
     <div id="modal_container">
         <div class="modal" id="keypad_modal">
             <div class="modal_header" id="keypad_header">
@@ -85,10 +87,33 @@
                 <div class="keypad_button" id="keypad_button_K">OK</div>
             </div>
         </div>
+
+        <div class="modal text" id="penalty_modal">
+            <div class="modal_header text" id="penalty_header">
+                <p class="modal_text" id="penalty_head_text"></p>
+                <button class="close_button" id="penalty_close">&times;</button>
+            </div>
+            <div class="modal_body text" id="penalty_body"></div>
+        </div>
+
+        <div class="modal text" id="success_modal">
+            <div class="modal_header text" id="success_header">
+                <p class="modal_text" id="success_head_text"></p>
+                <button class="close_button" id="success_close">&times;</button>
+            </div>
+            <div class="modal_body text" id="success_body"></div>
+        </div>
+
+        <div class="modal text" id="hint_modal">
+            <div class="modal_header text" id="hint_header">
+                <p class="modal_text" id="hint_head_text"></p>
+                <button class="close_button" id="hint_close">&times;</button>
+            </div>
+            <div class="modal_body text" id="hint_body"></div>
+        </div>
+
     </div>
     
-
-    <div id="overlay"></div>
     <script src="js/main.js"></script>
 </body>
 </html>
