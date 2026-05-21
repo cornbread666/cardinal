@@ -636,7 +636,6 @@ function drawShipTriangle(x1, y1, x2, y2, x3, y3, color) {
     let swu = shipCanvas.width/100;
     let shu = shipCanvas.height/100;
 
-    shipContext.filter = 'blur(12px)';
     shipContext.fillStyle = color;
     shipContext.globalAlpha = 0.8;
     shipContext.beginPath();
@@ -697,7 +696,7 @@ function shipDrag(e) {
 
     ship_drag_pts.push([e.offsetX, e.offsetY]);
     highlightShip(e.offsetX, e.offsetY);
-    drawShipLine(true);
+    drawShipLine(false);
 }
 
 function drawShipLine(drawLine) {
@@ -785,6 +784,10 @@ function machineSetup(machineObj) {
 }
 
 function closeMachine(success, code="", message="", take=[], discard=[]) {
+
+    if (document.getElementById("speech_button")) {
+        speechRec.stop();
+    }
 
     if(document.getElementById("selfie_cam")) {
         let selfie = document.getElementById("selfie_cam");
