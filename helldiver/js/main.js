@@ -104,11 +104,52 @@ const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpe
 const speechRec = new SpeechRecognition();
 let speechActive = false;
 let videoCanvas = document.createElement("canvas");
-let videoContext = videoCanvas.getContext("2d", { willReadFrequently: true }) ;
+let videoContext = videoCanvas.getContext("2d", { willReadFrequently: true });
+let shipCanvas = document.createElement("canvas");
+shipCanvas.id = "ship_canvas";
+let shipContext = shipCanvas.getContext("2d");
+let ship_drag_pts = [];
+let ship_triangles = [{"active": 0, "x1": 62, "y1": 30, "x2": 57, "y2": 35, "x3": 66, "y3": 35, "color": "lightpink"},
+                    {"active": 0, "x1": 42, "y1": 35, "x2": 40, "y2": 40, "x3": 48, "y3": 38, "color": "lightpink"},
+                    {"active": 0, "x1": 37, "y1": 45, "x2": 38, "y2": 49, "x3": 43, "y3": 45, "color": "lightpink"},
+                    {"active": 0, "x1": 39, "y1": 58, "x2": 49, "y2": 59, "x3": 46, "y3": 54, "color": "lightpink"},
+                    {"active": 0, "x1": 50, "y1": 62, "x2": 42, "y2": 68, "x3": 54, "y3": 69, "color": "lightpink"},
+                    {"active": 0, "x1": 59, "y1": 71, "x2": 63, "y2": 75, "x3": 68, "y3": 72, "color": "lightpink"},
+                    {"active": 0, "x1": 77, "y1": 60, "x2": 76, "y2": 65, "x3": 84, "y3": 63, "color": "lightpink"},
+                    {"active": 0, "x1": 74, "y1": 49, "x2": 69, "y2": 55, "x3": 81, "y3": 54, "color": "lightpink"},
+                    {"active": 0, "x1": 62, "y1": 49, "x2": 53, "y2": 50, "x3": 59, "y3": 53, "color": "lightpink"},
+                    {"active": 0, "x1": 67, "y1": 66, "x2": 80, "y2": 77, "x3": 85, "y3": 68, "color": "lightpink"},
+                    {"active": 0, "x1": 46, "y1": 22, "x2": 41, "y2": 25, "x3": 48, "y3": 25, "color": "lightcyan"},
+                    {"active": 0, "x1": 65, "y1": 23, "x2": 62, "y2": 28, "x3": 69, "y3": 28, "color": "lightcyan"},
+                    {"active": 0, "x1": 78, "y1": 22, "x2": 78, "y2": 25, "x3": 83, "y3": 24, "color": "lightcyan"},
+                    {"active": 0, "x1": 72, "y1": 34, "x2": 71, "y2": 39, "x3": 78, "y3": 37, "color": "lightcyan"},
+                    {"active": 0, "x1": 66, "y1": 40, "x2": 65, "y2": 45, "x3": 72, "y3": 43, "color": "lightcyan"},
+                    {"active": 0, "x1": 76, "y1": 41, "x2": 74, "y2": 46, "x3": 81, "y3": 45, "color": "lightcyan"},
+                    {"active": 0, "x1": 28, "y1": 38, "x2": 30, "y2": 43, "x3": 35, "y3": 41, "color": "lightcyan"},
+                    {"active": 0, "x1": 30, "y1": 44, "x2": 26, "y2": 48, "x3": 32, "y3": 47, "color": "lightcyan"},
+                    {"active": 0, "x1": 46, "y1": 43, "x2": 49, "y2": 48, "x3": 53, "y3": 45, "color": "lightcyan"},
+                    {"active": 0, "x1": 56, "y1": 55, "x2": 57, "y2": 61, "x3": 63, "y3": 58, "color": "lightcyan"},
+                    {"active": 0, "x1": 28, "y1": 59, "x2": 31, "y2": 63, "x3": 36, "y3": 60, "color": "lightcyan"},
+                    {"active": 0, "x1": 26, "y1": 67, "x2": 30, "y2": 71, "x3": 34, "y3": 68, "color": "lightcyan"},
+                    {"active": 0, "x1": 39, "y1": 69, "x2": 40, "y2": 74, "x3": 46, "y3": 71, "color": "lightcyan"},
+                    {"active": 0, "x1": 27, "y1": 31, "x2": 39, "y2": 37, "x3": 33, "y3": 23, "color": "lightcyan"},
+                    {"active": 0, "x1": 59, "y1": 26, "x2": 59, "y2": 22, "x3": 54, "y3": 25, "color": "lightgreen"},
+                    {"active": 0, "x1": 78, "y1": 29, "x2": 77, "y2": 25, "x3": 72, "y3": 28, "color": "lightgreen"},
+                    {"active": 0, "x1": 82, "y1": 34, "x2": 78, "y2": 31, "x3": 77, "y3": 34, "color": "lightgreen"},
+                    {"active": 0, "x1": 54, "y1": 26, "x2": 45, "y2": 31, "x3": 55, "y3": 32, "color": "lightgreen"},
+                    {"active": 0, "x1": 59, "y1": 37, "x2": 51, "y2": 40, "x3": 59, "y3": 43, "color": "lightgreen"},
+                    {"active": 0, "x1": 67, "y1": 50, "x2": 71, "y2": 47, "x3": 64, "y3": 47, "color": "lightgreen"},
+                    {"active": 0, "x1": 35, "y1": 56, "x2": 38, "y2": 50, "x3": 29, "y3": 51, "color": "lightgreen"},
+                    {"active": 0, "x1": 68, "y1": 63, "x2": 72, "y2": 57, "x3": 65, "y3": 59, "color": "lightgreen"},
+                    {"active": 0, "x1": 64, "y1": 67, "x2": 59, "y2": 63, "x3": 56, "y3": 67, "color": "lightgreen"},
+                    {"active": 0, "x1": 41, "y1": 65, "x2": 43, "y2": 61, "x3": 38, "y3": 62, "color": "lightgreen"},
+                    {"active": 0, "x1": 52, "y1": 74, "x2": 56, "y2": 72, "x3": 51, "y3": 71, "color": "lightgreen"}];
 
 intro();
 
 function intro() {
+
+    //screen.orientation.lock("portrait");
 
     timeText(timeAllowed * 60); // convert to seconds
     addKeypadListeners();
@@ -117,7 +158,25 @@ function intro() {
     document.getElementById("play_icon").addEventListener("click", startGame);
 }
 
-function startGame() {
+async function startGame() {
+
+    if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+    }
+    screen.orientation.lock('portrait')
+        .then(() => {
+            console.log("Orientation locked successfully!");
+        })
+        .catch((error) => {
+            if (error.name === "NotSupportedError") {
+                console.error("The device does not support locking to this orientation.");
+            } else if (error.name === "NotAllowedError") {
+                console.error("Locking was denied (e.g., must be in full-screen mode).");
+            } else {
+                console.error("An error occurred:", error);
+            }
+    });
+
     gameRunning = true;
     
     timer.start();
@@ -305,7 +364,7 @@ function openHint(attempt, hint, take) {
     bubbleContainer.appendChild(bubble1);
     bubbleContainer.appendChild(bubble2);
 
-    hintText.appendChild(modalTextElement("Hint"));
+    hintText.appendChild(modalTextElement(""));
     hintText.appendChild(bubbleContainer);
 }
 
@@ -518,7 +577,7 @@ async function accessSelfieCam(bg, machineObj) {
         bg.appendChild(sickle);
 
         selfieInterval = setInterval(() => {
-            checkForBlackout(vid, machineObj);
+            checkForBlackout(vid, machineObj, stream);
         }, 1000);
 
     } catch (err) {
@@ -527,7 +586,7 @@ async function accessSelfieCam(bg, machineObj) {
 
 }
 
-function checkForBlackout(vid, machineObj) {
+function checkForBlackout(vid, machineObj, stream) {
 
     if (vid.videoWidth > 0 && vid.videoHeight > 0) {
 
@@ -551,6 +610,168 @@ function checkForBlackout(vid, machineObj) {
     }
 }
 
+async function closeStreams() {
+
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: "user" }});
+        stream.getTracks().forEach(function(track) {
+            track.stop();
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
+async function shipTracer(bgElement, machineObj) {
+
+    let img = await setShipCanvasDimensions();
+    let shipsWidth, shipsHeight;
+
+    let imgRatio = img.naturalHeight / img.naturalWidth;
+    let viewRatio = window.innerHeight / window.innerWidth;
+
+    if (viewRatio > imgRatio) {
+        shipsWidth = window.innerWidth;
+        shipsHeight = shipsWidth * imgRatio;
+    } else {
+        shipsHeight = window.innerHeight;
+        shipsWidth = shipsHeight / imgRatio;
+    }
+    
+    shipCanvas.width = shipsWidth;
+    shipCanvas.height = shipsHeight; 
+
+    /*ship_triangles.forEach(ship => {
+        drawShipTriangle(ship.x1, ship.y1, ship.x2, ship.y2, ship.x3, ship.y3, ship.color);
+    });*/
+
+    bgElement.appendChild(shipCanvas);
+    shipCanvas.onpointerdown = beginShipDrag;
+    shipCanvas.onpointerup = stopShipDrag;
+}
+
+function drawShipTriangle(x1, y1, x2, y2, x3, y3, color) {
+    let swu = shipCanvas.width/100;
+    let shu = shipCanvas.height/100;
+
+    shipContext.filter = 'blur(12px)';
+    shipContext.fillStyle = color;
+    shipContext.globalAlpha = 0.8;
+    shipContext.beginPath();
+
+    shipContext.moveTo(x1*swu, y1*shu);
+    shipContext.lineTo(x2*swu, y2*shu);
+    shipContext.lineTo(x3*swu, y3*shu);
+    shipContext.fill();
+}
+
+function highlightShip(px, py) {
+
+    let swu = shipCanvas.width/100;
+    let shu = shipCanvas.height/100;
+
+    ship_triangles.forEach(ship => {
+
+        let x1 = ship.x1 * swu;
+        let x2 = ship.x2 * swu;
+        let x3 = ship.x3 * swu;
+        let y1 = ship.y1 * shu;
+        let y2 = ship.y2 * shu;
+        let y3 = ship.y3 * shu;
+
+        let denom = (y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3);
+        let a = ((y2 - y3) * (px - x3) + (x3 - x2) * (py - y3)) / denom;
+        let b = ((y3 - y1) * (px - x3) + (x1 - x3) * (py - y3)) / denom;
+        let c = 1 - a - b;
+
+        if (a >= 0 && a <= 1 && b >= 0 && b <= 1 && c >= 0 && c <= 1) {
+            ship.active = 1;
+        }
+    })
+
+}
+
+function beginShipDrag(e) {
+
+    ship_drag_pts.push([e.offsetX, e.offsetY]);
+    shipCanvas.onpointermove = shipDrag;
+    shipCanvas.setPointerCapture(e.pointerId);
+}
+
+function stopShipDrag(e) {
+    shipCanvas.onpointermove = null;
+    shipCanvas.releasePointerCapture(e.pointerId);
+
+    clearShipLine(false);
+
+    if (false) {
+        nextPage(e);
+    } else {
+        ship_drag_pts = [];
+    }
+}
+
+function shipDrag(e) {
+
+    ship_drag_pts.push([e.offsetX, e.offsetY]);
+    highlightShip(e.offsetX, e.offsetY);
+    drawShipLine(true);
+}
+
+function drawShipLine(drawLine) {
+
+    shipContext.clearRect(0, 0, shipCanvas.width, shipCanvas.height);
+
+    ship_triangles.forEach(ship => {
+        if (ship.active === 1)  {
+            drawShipTriangle(ship.x1, ship.y1, ship.x2, ship.y2, ship.x3, ship.y3, ship.color);
+        }
+    });
+
+    if (drawLine) {
+        shipContext.beginPath();
+        shipContext.filter = 'blur(0px)';
+        shipContext.globalAlpha = 1.0;
+        shipContext.lineWidth = "4";
+        shipContext.strokeStyle = "white";
+        let start = ship_drag_pts[0];
+        shipContext.moveTo(start[0], start[1]);
+    
+        for (let i = 1; i < ship_drag_pts.length; i++) {
+            let point = ship_drag_pts[i];
+            shipContext.lineTo(point[0], point[1]);
+        }
+    
+        shipContext.stroke();
+    }
+}
+
+function clearShipLine(success) {
+
+    if (success) {
+        drawShipLine(true);
+    } else {
+        shipContext.clearRect(0, 0, shipCanvas.width, shipCanvas.height);
+        ship_triangles.forEach(ship => {
+            if (ship.active === 1)  {
+                ship.active = 0;
+            }
+        });
+    }
+}
+
+async function setShipCanvasDimensions() {
+
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Failed to load image'));
+        img.src = "css/assets/card_51.jpg";
+    });
+    
+}
+
 function machineSetup(machineObj) {
 
     let bg = document.createElement("div");
@@ -563,11 +784,16 @@ function machineSetup(machineObj) {
 
     switch (machineObj["Code"]) {
         case "90":
-            bg.style.backgroundImage = "url(css/assets/nakamura.png)"
+            bg.style.backgroundImage = "url(css/assets/nakamura.png)";
             speechButton(bg, machineObj);
             break;
         case "99":
             accessSelfieCam(bg, machineObj);
+            close.addEventListener("click", closeStreams);
+            break;
+        case "74":
+            bg.style.backgroundImage = "url(css/assets/card_51.jpg)";
+            shipTracer(bg, machineObj);
             break;
         default:
             console.log("oops!");

@@ -364,3 +364,11 @@ br {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+#ship_canvas {
+    touch-action: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
