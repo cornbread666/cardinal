@@ -149,8 +149,6 @@ intro();
 
 function intro() {
 
-    //screen.orientation.lock("portrait");
-
     timeText(timeAllowed * 60); // convert to seconds
     addKeypadListeners();
     initializeSpeech();
@@ -159,23 +157,6 @@ function intro() {
 }
 
 async function startGame() {
-
-    if (!document.fullscreenElement) {
-        await document.documentElement.requestFullscreen();
-    }
-    screen.orientation.lock('portrait')
-        .then(() => {
-            console.log("Orientation locked successfully!");
-        })
-        .catch((error) => {
-            if (error.name === "NotSupportedError") {
-                console.error("The device does not support locking to this orientation.");
-            } else if (error.name === "NotAllowedError") {
-                console.error("Locking was denied (e.g., must be in full-screen mode).");
-            } else {
-                console.error("An error occurred:", error);
-            }
-    });
 
     gameRunning = true;
     
