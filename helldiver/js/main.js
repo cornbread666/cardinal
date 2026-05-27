@@ -65,6 +65,9 @@ class Timer {
     }
 
     penalty(min) { // time added in minutes
+        if (min > 0) {
+            PENALTIES_TAKEN += 1;
+        }
         let p = min * 60000;
         this.overallTime += p;
     }
@@ -74,11 +77,12 @@ const keypadJSON =
     '{ "Codes" : [' +
         '{ "Code" : "4259", "Take" : ["70"], "Discard" : ["00", "90"], "Message" : "Great work, dummy!" },' +
         '{ "Code" : "7143", "Take" : ["74"], "Discard" : ["65"], "Message" : "Now that\'s thinking on your feet... er, head" },' +
+        '{ "Code" : "1121", "Take" : [], "Discard" : [], "Message" : "Inputting the code stops the self-destruct sequence. With control on the command decks established, the orbital defense system is yours." },' +
         '{ "Code" : "1957", "Take" : ["65"], "Discard" : ["84", "G", "X"], "Message" : "Space quote goes here" }],' +
     ' "Machines" : [' +
         '{ "Code" : "90", "Take" : ["82"], "Discard" : ["90"], "Message" : "Loud and clear!" },' +
-        '{ "Code" : "99", "Take" : ["37"], "Discard" : ["99"], "Message" : "Gross!" },' +
-        '{ "Code" : "74", "Take" : ["9"], "Discard" : ["74"], "Message" : "Sure, whatever!" }],' +
+        '{ "Code" : "93", "Take" : ["37"], "Discard" : ["93"], "Message" : "Gross!" },' +
+        '{ "Code" : "74", "Take" : ["9"], "Discard" : ["74"], "Message" : "Nice flying!" }],' +
     ' "Hints" : [' +
         '{ "Code" : "89", "Hint" : "get good idiot", "Take" : ["73"] },' +
         '{ "Code" : "34", "Hint" : "I can\'t believe this...", "Take" : ["74"] }]}';
@@ -105,6 +109,10 @@ const speechRec = new SpeechRecognition();
 let speechActive = false;
 let videoCanvas = document.createElement("canvas");
 let videoContext = videoCanvas.getContext("2d", { willReadFrequently: true });
+let GLASS_BONUS = false;
+let CURRENT_MACHINE;
+let HINTS_USED = 0;
+let PENALTIES_TAKEN = 0;
 let shipCanvas = document.createElement("canvas");
 shipCanvas.id = "ship_canvas";
 let shipContext = shipCanvas.getContext("2d");
@@ -208,6 +216,8 @@ function addKeypadListeners() {
     document.getElementById("code_icon").addEventListener("click", function() { openKeypad("code") });
     document.getElementById("machine_icon").addEventListener("click", function() { openKeypad("machine") });
     document.getElementById("hint_icon").addEventListener("click", function() { openKeypad("hint") });
+    document.getElementById("glass_icon").addEventListener("click", function() { openPenalty("glass", 0, 0) });
+    document.getElementById("penalty_icon").addEventListener("click", function() { openPenalty("penalty", 2, 0) });
     overlay.addEventListener("click", closeKeypad);
     document.getElementById("keypad_close").addEventListener("click", closeKeypad);
     document.getElementById("penalty_close").addEventListener("click", closePenalty);
@@ -273,13 +283,28 @@ function openPenalty(code="none", t=0, attempt) {
     } else if (code === "hint") {
         penaltyText.appendChild(modalTextElement("Hint not found!"));
         penaltyHead.textContent = `Hint n° ${attempt}`;
+    } else if (code === "glass") {
+        if (!GLASS_BONUS) {
+            GLASS_BONUS = true;
+            penaltyText.appendChild(modalTextElement("This button does nothing."));
+            penaltyText.appendChild(modalTextElement("Take a 5-minute bonus as a reward for having a curious mind."));
+            penaltyHead.textContent = "";
+            timer.penalty(-5);
+        } else {
+            penaltyText.appendChild(modalTextElement("Don't be greedy."));
+            penaltyHead.textContent = "";
+        }
+    } else if (code === "penalty") {
+        penaltyText.appendChild(modalTextElement("I hope you did something to deserve this."));
+        penaltyText.appendChild(skull);
+        penaltyHead.textContent = `Penalty`;
+        timer.penalty(2);
     }
 
     if (t !== 0) {
         penaltyText.appendChild(modalTextElement(`You lose ${t} minutes`));
         penaltyText.appendChild(skull);
     }
-
 }
 
 function openCode(attempt, message, take=[], discard=[]) {
@@ -321,6 +346,18 @@ function openCode(attempt, message, take=[], discard=[]) {
         }
         successText.appendChild(bubbleContainer);
     }
+
+    if (attempt === "1121") {
+        pauseGame();
+        successHead.textContent = "YOU WIN!";
+        successText.appendChild(modalTextElement("Darrow turns to you, nods, then speaks into his wrist: \"The station is secure. Now we prep for the invasion of Mercury.\""));
+        
+        let score = document.createElement("img");
+        score.src = "css/assets/star.png";
+        score.id = "star_icon";
+        successText.appendChild(score);
+        score.addEventListener("click", winScreen);
+    }
 }
 
 function openHint(attempt, hint, take) {
@@ -349,6 +386,21 @@ function openHint(attempt, hint, take) {
     hintText.appendChild(bubbleContainer);
 }
 
+function winScreen() {
+
+    let wt = timer.getTime() / 1000;
+
+    let mins = Math.floor(wt / 60);
+    let formattedMins = String(mins).padStart(2, '0');
+    let secs = Math.floor(wt % 60);
+    let formattedSecs = String(secs).padStart(2, '0');
+
+    document.getElementById("win_screen").style.display = "flex";
+    document.getElementById("win_time_text").textContent = `${formattedMins}:${formattedSecs}`;
+    document.getElementById("win_hints_text").textContent = `${HINTS_USED}`;
+    document.getElementById("win_penalties_text").textContent = `${PENALTIES_TAKEN}`;
+}
+
 function hintReplacer(e, n, text) {
 
     e.target.style.backgroundImage = "linear-gradient(to bottom left, #90ee90, #228b22)";
@@ -356,8 +408,10 @@ function hintReplacer(e, n, text) {
     let replacer = hintText.firstElementChild;
 
     if (n === "1") {
+        HINTS_USED += 1;
         replacer.textContent = text;
     } else if (n === "2") {
+        HINTS_USED += 1;
         replacer.textContent = "Take:";
         let bubble = numberBubble(text, "take");
         replacer.insertAdjacentElement("afterend", bubble);
@@ -410,7 +464,6 @@ function keypadPress(event) {
         } else if (keypadInput.value.length < 2) {
             keypadInput.value = keypadInput.value + last_char;
         }
-        
     }
 }
 
@@ -421,6 +474,11 @@ function keypadAttempt(code) {
     if (keypadMode === "code") {
         for (var c in validKeypadEntries["Codes"]) {
             if (code === validKeypadEntries["Codes"][c]["Code"]) {
+                /*if (code === "1121") {
+                    openPenalty("winner", 0, 0);
+                } else {
+                    
+                }*/
                 codePass(validKeypadEntries["Codes"][c]);
                 passed = true;
             }
@@ -482,8 +540,7 @@ function timeText(t) { // delivered in seconds
         timeElement.style.color = "red";
     }
     
-    timeElement.textContent = `${formattedMins}:${formattedSecs}`;
-    
+    timeElement.textContent = `${formattedMins}:${formattedSecs}`;   
 }
 
 function modalTextElement(s) {
@@ -510,16 +567,16 @@ function numberBubble(n, action, text="") {
     return bubble;
 }
 
-function speechButton(bgElement, machineObj) {
+function speechButton(bgElement) {
 
     let button = document.createElement("div");
-    button.addEventListener("click", function() { recordSpeech(machineObj) });
+    button.addEventListener("click", recordSpeech);
     button.id = "speech_button";
 
     bgElement.appendChild(button);
 }
 
-function recordSpeech(machineObj) {
+function recordSpeech() {
 
     let word;
 
@@ -528,7 +585,7 @@ function recordSpeech(machineObj) {
     speechRec.onresult = (event) => {
         word = event.results[0][0].transcript;
         if (word.toLowerCase() === "registers" || word.toLowerCase() === "register") {
-            closeMachine(true, machineObj["Code"], machineObj["Message"], machineObj["Take"], machineObj["Discard"]);
+            closeMachine(true, CURRENT_MACHINE["Code"], CURRENT_MACHINE["Message"], CURRENT_MACHINE["Take"], CURRENT_MACHINE["Discard"]);
         }
         console.log(`Word: ${word}`);
         console.log(`Confidence: ${event.results[0][0].confidence}`);
@@ -541,7 +598,7 @@ function recordSpeech(machineObj) {
     return word;
 }
 
-async function accessSelfieCam(bg, machineObj) {
+async function accessSelfieCam(bg) {
     let stream = null;
     let vid = document.createElement("video");
     vid.id = "selfie_cam";
@@ -558,7 +615,7 @@ async function accessSelfieCam(bg, machineObj) {
         bg.appendChild(sickle);
 
         selfieInterval = setInterval(() => {
-            checkForBlackout(vid, machineObj, stream);
+            checkForBlackout(vid, stream);
         }, 1000);
 
     } catch (err) {
@@ -567,7 +624,7 @@ async function accessSelfieCam(bg, machineObj) {
 
 }
 
-function checkForBlackout(vid, machineObj, stream) {
+function checkForBlackout(vid, stream) {
 
     if (vid.videoWidth > 0 && vid.videoHeight > 0) {
 
@@ -586,7 +643,7 @@ function checkForBlackout(vid, machineObj, stream) {
         let avgBrightness = totalBrightness / (data.length / (4 * 50));
     
         if (avgBrightness < 25) {
-            closeMachine(true, machineObj["Code"], machineObj["Message"], machineObj["Take"], machineObj["Discard"]);
+            closeMachine(true, CURRENT_MACHINE["Code"], CURRENT_MACHINE["Message"], CURRENT_MACHINE["Take"], CURRENT_MACHINE["Discard"]);
         }
     }
 }
@@ -604,7 +661,7 @@ async function closeStreams() {
 
 }
 
-async function shipTracer(bgElement, machineObj) {
+async function shipTracer(bgElement) {
 
     let img = await setShipCanvasDimensions();
     let shipsWidth, shipsHeight;
@@ -621,7 +678,9 @@ async function shipTracer(bgElement, machineObj) {
     }
     
     shipCanvas.width = shipsWidth;
-    shipCanvas.height = shipsHeight; 
+    shipCanvas.height = shipsHeight;
+    shipCanvas.classList.remove("correct_ships");
+    clearShipLine(false);
 
     /*ship_triangles.forEach(ship => {
         drawShipTriangle(ship.x1, ship.y1, ship.x2, ship.y2, ship.x3, ship.y3, ship.color);
@@ -683,11 +742,23 @@ function stopShipDrag(e) {
     shipCanvas.onpointermove = null;
     shipCanvas.releasePointerCapture(e.pointerId);
 
-    clearShipLine(false);
+    let clicked = 0;
+    let correct = false;
 
-    if (false) {
-        nextPage(e);
+    ship_triangles.forEach(ship => {
+        if (ship.active === 1 && ship.color === "lightpink")  {
+            clicked+=1;
+        }
+    });
+
+    if (clicked === 10) {
+        correct = true;
+    }
+
+    if (correct) {
+        clearShipLine(true);
     } else {
+        clearShipLine(false);
         ship_drag_pts = [];
     }
 }
@@ -711,10 +782,9 @@ function drawShipLine(drawLine) {
 
     if (drawLine) {
         shipContext.beginPath();
-        shipContext.filter = 'blur(0px)';
         shipContext.globalAlpha = 1.0;
-        shipContext.lineWidth = "4";
-        shipContext.strokeStyle = "white";
+        shipContext.lineWidth = "10";
+        shipContext.strokeStyle = "purple";
         let start = ship_drag_pts[0];
         shipContext.moveTo(start[0], start[1]);
     
@@ -731,6 +801,10 @@ function clearShipLine(success) {
 
     if (success) {
         drawShipLine(true);
+        shipCanvas.classList.add("correct_ships");
+        setTimeout(() => {
+            closeMachine(true, CURRENT_MACHINE["Code"], CURRENT_MACHINE["Message"], CURRENT_MACHINE["Take"], CURRENT_MACHINE["Discard"]);
+          }, 3000);
     } else {
         shipContext.clearRect(0, 0, shipCanvas.width, shipCanvas.height);
         ship_triangles.forEach(ship => {
@@ -754,6 +828,7 @@ async function setShipCanvasDimensions() {
 
 function machineSetup(machineObj) {
 
+    CURRENT_MACHINE = machineObj;
     let bg = document.createElement("div");
     bg.id = "machine_bg";
     bg.classList.add("machine_background");
@@ -765,15 +840,15 @@ function machineSetup(machineObj) {
     switch (machineObj["Code"]) {
         case "90":
             bg.style.backgroundImage = "url(css/assets/nakamura.png)";
-            speechButton(bg, machineObj);
+            speechButton(bg);
             break;
         case "99":
-            accessSelfieCam(bg, machineObj);
+            accessSelfieCam(bg);
             close.addEventListener("click", closeStreams);
             break;
         case "74":
             bg.style.backgroundImage = "url(css/assets/card_51.jpg)";
-            shipTracer(bg, machineObj);
+            shipTracer(bg);
             break;
         default:
             console.log("oops!");
