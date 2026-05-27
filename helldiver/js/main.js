@@ -842,7 +842,7 @@ function machineSetup(machineObj) {
             bg.style.backgroundImage = "url(css/assets/nakamura.png)";
             speechButton(bg);
             break;
-        case "99":
+        case "93":
             accessSelfieCam(bg);
             close.addEventListener("click", closeStreams);
             break;
