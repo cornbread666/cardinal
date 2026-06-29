@@ -77,7 +77,7 @@ const keypadJSON =
     '{ "Codes" : [' +
         '{ "Code" : "4259", "Take" : ["52", "70"], "Discard" : ["00", "90"], "Message" : "Great work, dummy!" },' +
         '{ "Code" : "7143", "Take" : ["74"], "Discard" : ["65"], "Message" : "Now that\'s thinking on your feet... er, head" },' +
-        '{ "Code" : "3720", "Take" : ["72"], "Discard" : ["21", "96"], "Message" : "nom nom" },' +
+        '{ "Code" : "3720", "Take" : ["75"], "Discard" : ["21", "96"], "Message" : "nom nom" },' +
         '{ "Code" : "1121", "Take" : [], "Discard" : [], "Message" : "Inputting the code stops the self-destruct sequence. With control on the command decks established, the orbital defense system is yours." },' +
         '{ "Code" : "1957", "Take" : ["65"], "Discard" : ["84", "I", "II", "III"], "Message" : "Space quote goes here" }],' +
     ' "Machines" : [' +
