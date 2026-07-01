@@ -75,14 +75,14 @@ class Timer {
 
 const keypadJSON =
     '{ "Codes" : [' +
-        '{ "Code" : "4259", "Take" : ["52", "70"], "Discard" : ["00", "90"], "Message" : "Great work, dummy!" },' +
+        '{ "Code" : "4259", "Take" : ["61", "70"], "Discard" : ["00", "90"], "Message" : "Great work, dummy!" },' +
         '{ "Code" : "7143", "Take" : ["74"], "Discard" : ["65"], "Message" : "Now that\'s thinking on your feet... er, head" },' +
         '{ "Code" : "3720", "Take" : ["75"], "Discard" : ["21", "96"], "Message" : "nom nom" },' +
         '{ "Code" : "1121", "Take" : [], "Discard" : [], "Message" : "Inputting the code stops the self-destruct sequence. With control on the command decks established, the orbital defense system is yours." },' +
         '{ "Code" : "1957", "Take" : ["65"], "Discard" : ["84", "I", "II", "III"], "Message" : "Space quote goes here" }],' +
     ' "Machines" : [' +
         '{ "Code" : "90", "Take" : ["82"], "Discard" : ["90"], "Message" : "Loud and clear!" },' +
-        '{ "Code" : "93", "Take" : ["55"], "Discard" : ["93", "?"], "Message" : "Gross!" },' +
+        '{ "Code" : "102", "Take" : ["55"], "Discard" : ["102", "?"], "Message" : "Gross!" },' +
         '{ "Code" : "74", "Take" : ["9"], "Discard" : ["74"], "Message" : "Nice flying!" }],' +
     ' "Hints" : [' +
         '{ "Code" : "89", "Hint" : "get good idiot", "Take" : ["73"] },' +
@@ -462,7 +462,7 @@ function keypadPress(event) {
         let digit = parseInt(last_char);
         if (keypadMode === "code" && keypadInput.value.length < 4) {
             keypadInput.value = keypadInput.value + last_char;
-        } else if (keypadInput.value.length < 2) {
+        } else if (keypadInput.value.length < 3) {
             keypadInput.value = keypadInput.value + last_char;
         }
     }
@@ -843,7 +843,7 @@ function machineSetup(machineObj) {
             bg.style.backgroundImage = "url(css/assets/nakamura.png)";
             speechButton(bg);
             break;
-        case "93":
+        case "102":
             accessSelfieCam(bg);
             close.addEventListener("click", closeStreams);
             break;
