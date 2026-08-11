@@ -8,8 +8,39 @@
     <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-    <header>
-        CURSE YOU, ANGELA!!
-    </header>
+    <div id="intro">
+        <h1>
+            Dutch Blitz
+        </h1>
+        <div class="option" id="player_count">
+            Players:
+            <input type="number" id="player_count_input" min="2" max="8" step="1" value="4" class="game_info_input"/>
+        </div>
+        <div class="option" id="goal_score">
+            Goal:
+            <input type="number" id="goal_score_input" min="1" max="999" step="1" value="75" class="game_info_input"/>
+        </div>
+        <button class="game_button" id="start_button" onclick="startGame()">Begin</button>
+    </div>
+
+    <div id="game">
+        <table id="game_table">
+            <thead>
+                <tr>
+                    <th scope="column" id="round_header">Round</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <tfoot>
+                    <th><button class="game_button" id="end_button" onclick="endGame()">End Game</button></th>
+            </tfoot>
+
+        </table>
+
+    </div>
+    
+    <script src="js/main.js"></script>
 </body>
 </html>
