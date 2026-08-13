@@ -92,6 +92,45 @@ h1 {
     height: 50px;
 }
 
+#dancing_div {
+    display: flex;
+    flex-direction: row;
+}
+
+.dancing_png {
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#boy_dancing {
+    animation: swap-boy 2s infinite step-end;
+}
+
+#girl_dancing {
+    animation: swap-girl 2s infinite step-end;
+}
+
+@keyframes swap-boy {
+    0%, 100% {
+      background-image: url("assets/boy1.png");
+    }
+    50% {
+      background-image: url("assets/boy2.png");
+    }
+}
+
+@keyframes swap-girl {
+    0%, 100% {
+      background-image: url("assets/girl2.png");
+    }
+    50% {
+      background-image: url("assets/girl1.png");
+    }
+}
+
 #end_button {
     padding: 5px 10px;
     margin-bottom: 10px;
@@ -137,27 +176,35 @@ table {
 }
 
 #round_header {
-    width: 10vmax;
+    width: 8vmax;
+}
+
+#math_header {
+    width: 2vmax;
 }
 
 th {
     padding: 0.25rem 0.75rem;
-    
+    white-space: nowrap;
 }
 
 thead th {
     border-bottom: 2px solid white;
-    font-size: 2rem;
+    font-size: 1.75rem;
 }
 
 tfoot th {
-    font-size: 2rem;
+    font-size: 1.75rem;
 }
 
 td {
     border-bottom: 2px solid white;
 	padding: 0.25rem 0.75rem;
     font-size: 1.25rem;
+}
+
+.math_column {
+    border-left: 2px solid white;
 }
 
 table thead,
@@ -176,12 +223,16 @@ table tfoot {
 }
 
 .color_picker {
-    margin-right: 10px;
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    vertical-align: middle;
-    border-radius: 100px;
-    cursor: pointer;
+    background-color: blue;
     z-index: 100;
+    display: none;
+}
+
+.color_picker.open {
+    display: block;
+}
+
+.color_slice {
+    cursor: pointer;
+    display: flex;
 }
