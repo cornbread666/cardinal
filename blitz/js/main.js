@@ -1,6 +1,7 @@
 //                  YELLOW      GREEN       BLUE       RED      PURPLE      INK         PINK        ORANGE
-let PLAYER_COLORS = ["#FCB500", "#009100", "#057976", "#DF2A01", "#73373C", "#755850", "#D2605B", "#E26E2A"];
+let PLAYER_COLORS = ["#FCB500", "#009100", "#057976", "#DF2A01", "#73373C", "#1B2A36", "#D2605B", "#E26E2A"];
 let NUM_PLAYERS;
+let PLAYERS_ADDED = 0;
 let GOAL_SCORE;
 let ROUND;
 let MAX_ROUNDS = 99;
@@ -92,8 +93,8 @@ function limitGameScore(event) {
 }
 
 function startGame() {
-    NUM_PLAYERS = document.getElementById("player_count_input").value;
-    GOAL_SCORE = document.getElementById("goal_score_input").value;
+    NUM_PLAYERS = parseInt(document.getElementById("player_count_input").value);
+    GOAL_SCORE = parseInt(document.getElementById("goal_score_input").value);
     ROUND = 0;
     console.log(`players: ${NUM_PLAYERS}, goal score: ${GOAL_SCORE}`);
     document.getElementById("intro").style.display = "none";
@@ -112,15 +113,9 @@ function startGame() {
     header.textContent = "Round";
     let footer = document.createElement("th");
     footer.colSpan = 2;
-    let button = document.createElement("button");
-    button.classList.add("game_button");
-    button.id = "end_button";
-    button.addEventListener("click", endGame);
-    button.textContent = "End Game";
 
     nr.appendChild(header);
     thead.appendChild(nr);
-    footer.appendChild(button);
     nr2.appendChild(footer);
     tfoot.appendChild(nr2);
     gameTable.appendChild(thead);
@@ -129,47 +124,63 @@ function startGame() {
 
     createPlayers();
     for (let r = 0; r < MAX_ROUNDS; r++) { createRound(); }
+    addButtonTray();
 }
 
 function createPlayers() {
+
+    for (let i = 0; i < NUM_PLAYERS; i++) {
+        addPlayer();
+    }
+}
+
+function addPlayer() {
+
     let headRow = document.querySelector("#game_table thead tr");
     let footRow = document.querySelector("#game_table tfoot tr");
 
-    for (let i = 0; i < NUM_PLAYERS; i++) {
+    // HEADER
+    let newCol = document.createElement("th");
+    let playerNum = PLAYERS_ADDED + 1;
+    newCol.classList.add("player_name_cell");
+    newCol.textContent = `Player ${PLAYERS_ADDED+1}`;
+    newCol.contentEditable = "true";
+    newCol.tabIndex = "0";
+    newCol.style.backgroundColor = PLAYER_COLORS[PLAYERS_ADDED];
+    newCol.id = `P${PLAYERS_ADDED+1}_NAME`;
+    newCol.addEventListener("focus", function() {
+        let range = document.createRange();
+        range.selectNodeContents(this);
         
-        // HEADER
-        let newCol = document.createElement("th");
-        newCol.classList.add("player_name_cell");
-        newCol.textContent = `Player ${i+1}`;
-        newCol.contentEditable = "true";
-        newCol.tabIndex = "0";
-        newCol.style.backgroundColor = PLAYER_COLORS[i];
-        newCol.id = `P${i+1}_NAME`;
-        newCol.addEventListener("focus", function() {
-            let range = document.createRange();
-            range.selectNodeContents(this);
-            
-            let selection = window.getSelection();
-            selection.removeAllRanges(); 
-            selection.addRange(range);
+        let selection = window.getSelection();
+        selection.removeAllRanges(); 
+        selection.addRange(range);
 
-            // COLOR PICKER
-            chooseColor(newCol.getBoundingClientRect(), i+1);
-        });
+        // COLOR PICKER
+        chooseColor(newCol.getBoundingClientRect(), playerNum);
+    });
 
-        headRow.appendChild(newCol);
+    headRow.appendChild(newCol);
 
-        // FOOTER
-        let newFoot = document.createElement("th");
-        newFoot.textContent = "0";
-        newFoot.contentEditable = false;
-        newFoot.tabIndex = "-1";
-        newFoot.style.backgroundColor = PLAYER_COLORS[i];
-        newFoot.id = `P${i+1}_SCORE`;
-        newFoot.classList.add("player_totaler");
+    // FOOTER
+    let newFoot = document.createElement("th");
+    newFoot.textContent = "0";
+    newFoot.contentEditable = false;
+    newFoot.tabIndex = "-1";
+    newFoot.style.backgroundColor = PLAYER_COLORS[PLAYERS_ADDED];
+    newFoot.id = `P${PLAYERS_ADDED+1}_SCORE`;
+    newFoot.classList.add("player_totaler");
 
-        footRow.appendChild(newFoot);
-    }
+    footRow.appendChild(newFoot);
+
+    PLAYERS_ADDED += 1;
+
+}
+
+function addNewPlayer() {
+    NUM_PLAYERS += 1;
+    addPlayer();
+    addRounds(NUM_PLAYERS);
 }
 
 function chooseColor(rect, player) {
@@ -222,6 +233,40 @@ function colorSliceChooser(event, player, colorIndex) {
     event.target.parentNode.classList.remove("open");
     event.target.parentNode.replaceChildren();
 
+}
+
+function addRounds(pIndex) {
+
+    let tableBody = document.querySelector("#game_table tbody");
+
+    counter = 1;
+    for (let i = 0; i < tableBody.rows.length; i++) {
+        let round = Math.floor(i / 3) + 1;
+        console.log(round);
+        let row = tableBody.rows[i];
+        let td = document.createElement("td");
+        if (counter === 1) {
+            td.contentEditable = "true";
+            td.tabIndex = "0";
+            td.style.backgroundColor = PLAYER_COLORS[pIndex-1];
+            td.id = `P${pIndex}_SUB_ROUND${round.toString().padStart(PADDING, "0")}`;
+        } else if (counter === 2) {
+            td.contentEditable = "true";
+            td.tabIndex = "0";
+            td.style.backgroundColor = PLAYER_COLORS[pIndex-1];
+            td.id = `P${pIndex}_ADD_ROUND${round.toString().padStart(PADDING, "0")}`;
+        } else {
+            td.contentEditable = "false";
+            td.tabIndex = "-1";
+            td.style.backgroundColor = "#5E3023";
+            td.textContent = "0";
+            td.classList.add("player_summer");
+            td.id = `P${pIndex}_TOTAL_ROUND${round.toString().padStart(PADDING, "0")}`;
+        }
+        row.appendChild(td);
+        counter += 1;
+        if (counter > 3) { counter = 1; }
+    }
 }
 
 function createRound() {
@@ -297,16 +342,6 @@ function createRound() {
 }
 
 function updateScore() {
-    /*document.querySelectorAll(".player_summer").forEach(summer => {
-
-        let playerNum = summer.id.slice(0,2);
-        let round = summer.id.slice(-5)
-
-        let sub = parseInt(document.getElementById(`${playerNum}_SUB_ROUND${round}`).textContent) || 0;
-        let add = parseInt(document.getElementById(`${playerNum}_ADD_ROUND${round}`).textContent) || 0;
-
-        summer.textContent = `${add - sub}`;
-    });*/
 
     document.querySelectorAll(".player_totaler").forEach(totaler => {
 
@@ -333,9 +368,15 @@ function updateScore() {
     });
 }
 
+function addButtonTray() {
+    document.getElementById("button_container").style.display = "flex";
+}
+
 function endGame() {
     console.log("Game Over!");
     document.getElementById("intro").style.display = "flex";
     document.getElementById("game").style.display = "none";
     document.getElementById("game_table").replaceChildren();
+    document.getElementById("button_container").style.display = "none";
+    PLAYERS_ADDED = 0;
 }

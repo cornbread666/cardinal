@@ -15,7 +15,7 @@ input[type=number] {
 }
 
 :root {
-    overscroll-behavior: contain;
+    overscroll-behavior: none;
 }
 
 * {
@@ -31,10 +31,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     font-family: Arial, Helvetica, sans-serif;
     overflow-x: hidden;
-    overscroll-behavior: none;
 }
 
 h1 {
@@ -131,15 +130,36 @@ h1 {
     }
 }
 
-#end_button {
+.side_button {
+    width: 75%;
+    color: white;
     padding: 5px 10px;
     margin-bottom: 10px;
+}
+
+#end_button {
+    background-color: #DF2A01;
+}
+
+#add_button {
+    background-color: #057976;
+}
+
+#done_button {
+    background-color: #009100;
 }
 
 #game {
     display: none;
     width: 100vw;
     height: 100vh;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: auto;
+}
+
+#game::-webkit-scrollbar {
+    display: none;
 }
 
 .player_container {
@@ -176,7 +196,7 @@ table {
 }
 
 #round_header {
-    width: 10%;
+    width: 8%;
 }
 
 th {
@@ -187,11 +207,11 @@ th {
 
 thead th {
     border-bottom: 2px solid white;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
 tfoot th {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
 td {
@@ -232,4 +252,13 @@ table tfoot {
 .color_slice {
     cursor: pointer;
     display: flex;
+}
+
+#button_container {
+    height: 100%;
+    width: 6%;
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
