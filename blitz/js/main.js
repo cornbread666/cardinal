@@ -179,9 +179,11 @@ function addPlayer() {
 }
 
 function addNewPlayer() {
-    NUM_PLAYERS += 1;
-    addPlayer();
-    addRounds(NUM_PLAYERS);
+    if (NUM_PLAYERS < 8) {
+        NUM_PLAYERS += 1;
+        addPlayer();
+        addRounds(NUM_PLAYERS);
+    }
 }
 
 function chooseColor(rect, player) {
