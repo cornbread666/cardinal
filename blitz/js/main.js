@@ -6,6 +6,7 @@ let GOAL_SCORE;
 let ROUND;
 let MAX_ROUNDS = 99;
 let PADDING = 5;
+let scoreChart = null;
 
 main();
 
@@ -373,10 +374,102 @@ function addButtonTray() {
 }
 
 function endGame() {
-    console.log("Game Over!");
     document.getElementById("intro").style.display = "flex";
     document.getElementById("game").style.display = "none";
     document.getElementById("game_table").replaceChildren();
     document.getElementById("button_container").style.display = "none";
+    document.getElementById("results").style.display = "none";
     PLAYERS_ADDED = 0;
+}
+
+function finishGame() {
+    document.getElementById("game").style.display = "none";
+    document.getElementById("button_container").style.display = "none";
+    document.getElementById("results").style.display = "flex";
+
+    createChart();
+}
+
+function createChart() {
+
+    let players = [];
+    for (let p = 1; p <= PLAYERS_ADDED; p++) {
+        let nameCell = document.getElementById(`P${p}_NAME`);
+        players.push({
+            name: nameCell.textContent.trim() || `Player ${p}`,
+            color: nameCell.style.backgroundColor,
+            deltas: []
+        });
+    }
+
+    let lastRound = 0;
+    for (let r = 1; r <= MAX_ROUNDS; r++) {
+        let id = r.toString().padStart(PADDING, "0");
+        players.forEach((pl, i) => {
+            let subText = document.getElementById(`P${i+1}_SUB_ROUND${id}`).textContent.trim();
+            let addText = document.getElementById(`P${i+1}_ADD_ROUND${id}`).textContent.trim();
+            if (subText !== "" || addText !== "") { lastRound = r; }
+            pl.deltas.push((parseInt(addText) || 0) - (parseInt(subText) || 0));
+        });
+    }
+
+    players.forEach(pl => {
+        let total = 0;
+        pl.scores = [0];
+        pl.deltas.slice(0, lastRound).forEach(d => {
+            total += d;
+            pl.scores.push(total);
+        });
+    });
+
+    /// CHART CREATION
+
+    
+    if (scoreChart) { scoreChart.destroy(); }
+    Chart.defaults.color = "#FFF";
+    Chart.defaults.font.size = 16;
+    
+
+    let datasets = players.map(pl => ({
+        label: pl.name,
+        data: pl.scores,
+        borderColor: pl.color,
+        backgroundColor: pl.color,
+        tension: 0.2
+    }));
+
+    // optional goal line
+    datasets.push({
+        label: "Goal",
+        data: Array(lastRound + 1).fill(GOAL_SCORE),
+        borderColor: "#888",
+        borderDash: [6, 6],
+        pointRadius: 0
+    });
+
+    scoreChart = new Chart(document.getElementById("scores_chart"), {
+        type: "line",
+        data: {
+            labels: Array.from({ length: lastRound + 1 }, (_, i) => i),
+            datasets
+        },
+        options: {
+            scales: {
+                x: { title: { display: true, text: "Round" } },
+                y: { title: { display: true, text: "Score" } }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        filter: function(item, data) {
+                            return item.text !== "Goal";
+                        }
+                    }
+                }
+            },
+            animation: {
+                duration: 3000
+            }
+        }
+    });
 }

@@ -38,7 +38,13 @@
         <button class="game_button side_button" id="add_button" onclick="addNewPlayer()">+</button>
         <button class="game_button side_button" id="done_button" onclick="finishGame()">✓</button>
     </div>
+
+    <div id="results" style="display:none">
+        <canvas id="scores_chart"></canvas>
+        <button class="game_button side_button chart_button" id="end_button" onclick="endGame()">&times;</button>
+    </div>
     
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

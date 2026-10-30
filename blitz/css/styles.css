@@ -15,7 +15,7 @@ input[type=number] {
 }
 
 :root {
-    overscroll-behavior: none;
+    overscroll-behavior: contain;
 }
 
 * {
@@ -261,4 +261,23 @@ table tfoot {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+#results {
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+}
+
+#scores_chart {
+    display: block;
+    max-width: 90%;
+    height: auto;
+}
+
+.chart_button {
+    margin: 10px;
+    width: 8vmin;
+    height: 8vmin;
 }
